@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pending Approval - MealCraft</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #ff4757 0%, #ff6b81 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #2f3542;
+    }
+
+    .pending-container {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .pending-card {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 50px 40px;
+      max-width: 500px;
+      width: 100%;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .pending-icon {
+      font-size: 5rem;
+      margin-bottom: 20px;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.1);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    .pending-card h1 {
+      color: #ff4757;
+      font-size: 2rem;
+      margin-bottom: 15px;
+    }
+
+    .pending-card h2 {
+      color: #2f3542;
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+    }
+
+    .pending-card p {
+      color: #747d8c;
+      line-height: 1.6;
+      margin-bottom: 15px;
+    }
+
+    .info-box {
+      background: #f8f9fa;
+      border-radius: 15px;
+      padding: 25px;
+      margin: 25px 0;
+      text-align: left;
+      border-left: 4px solid #ff4757;
+    }
+
+    .info-box h3 {
+      color: #2f3542;
+      margin-bottom: 15px;
+      font-size: 1.1rem;
+    }
+
+    .info-box ul {
+      list-style: none;
+    }
+
+    .info-box li {
+      margin-bottom: 12px;
+      color: #747d8c;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .info-box li::before {
+      content: "•";
+      color: #ff4757;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+
+    .contact-email {
+      color: #ff4757;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .contact-email:hover {
+      text-decoration: underline;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: 'Poppins', sans-serif;
+      margin-top: 20px;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: #ff4757;
+      border: 2px solid #ff4757;
+    }
+
+    .btn-secondary:hover {
+      background: #ff4757;
+      color: #ffffff;
+    }
+
+    .loading-spinner {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid #ff4757;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-right: 10px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin: 15px 0;
+    }
+
+    .status-pending {
+      background: #fff3cd;
+      color: #856404;
+    }
+
+    .footer-links {
+      margin-top: 30px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .footer-links a {
+      color: #747d8c;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .footer-links a:hover {
+      color: #ff4757;
+    }
+
+    @media (max-width: 480px) {
+      .pending-card {
+        padding: 30px 20px;
+      }
+      .pending-card h1 {
+        font-size: 1.5rem;
+      }
+      .pending-card h2 {
+        font-size: 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="pending-container">
+    <div class="pending-card">
+      <div class="pending-icon">⏳</div>
+      <h1>Under Review</h1>
+      <h2>Thank You for Partnering with MealCraft!</h2>
+      
+      <div class="info-box">
+        <h3>Your restaurant is currently under review</h3>
+        <ul>
+          <li>Our team is verifying your restaurant details</li>
+          <li>You'll receive an email once approved</li>
+          <li>Approval typically takes 1-2 business days</li>
+          <li>You can track status in your dashboard</li>
+        </ul>
+      </div>
+
+      <p>
+        For any urgent queries, contact us at:
+        <br>
+        <a href="mailto:support@mealcraft.com" class="contact-email">support@mealcraft.com</a>
+      </p>
+
+      <div id="statusSection" style="display: none;">
+        <div class="status-badge status-pending" id="statusBadge">
+          ⏳ Pending Verification
+        </div>
+      </div>
+
+      <button class="btn btn-secondary" onclick="checkStatus()" id="checkStatusBtn">
+        <span class="loading-spinner" id="spinner" style="display: none;"></span>
+        <span id="btnText">Check Status</span>
+      </button>
+
+      <div class="footer-links">
+        <a href="#" onclick="logout()">Logout</a>
+        <a href="#" onclick="goToHome()">Back to Home</a>
+      </div>
+
+      <div id="message" class="message"></div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAT4CDao7eHCFU0OO_dee_m6BpjzKv_308",
+      authDomain: "mealcraft-9db35.firebaseapp.com",
+      projectId: "mealcraft-9db35",
+      messagingSenderId: "1052912873454",
+      appId: "1:1052912873454:web:2b794eb8e9524f0ba068ff"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        window.location.replace("../index.html");
+      }
+    });
+
+    window.checkStatus = async () => {
+      const user = auth.currentUser;
+      if (!user) return;
+
+      const spinner = document.getElementById('spinner');
+      const btnText = document.getElementById('btnText');
+      const checkStatusBtn = document.getElementById('checkStatusBtn');
+      
+      spinner.style.display = 'inline-block';
+      btnText.textContent = ' Checking...';
+      checkStatusBtn.disabled = true;
+
+      try {
+        const restaurantDoc = await getDoc(doc(db, 'restaurants', user.uid));
+        
+        if (restaurantDoc.exists()) {
+          const data = restaurantDoc.data();
+          
+          if (data.verified === 'approved') {
+            window.location.href = 'restaurant-dashboard.html';
+          } else if (data.verified === 'rejected') {
+            showMessage('Your application was rejected. Please contact support.', 'error');
+          } else {
+            showMessage('Still pending review. Please check back later.', 'success');
+          }
+        }
+      } catch (error) {
+        console.error('Error checking status:', error);
+        showMessage('Error checking status. Please try again.', 'error');
+      } finally {
+        spinner.style.display = 'none';
+        btnText.textContent = 'Check Status';
+        checkStatusBtn.disabled = false;
+      }
+    };
+
+    window.goToHome = () => {
+      window.location.href = 'home.html';
+    };
+
+    window.logout = async () => {
+      try {
+        await signOut(auth);
+        sessionStorage.clear();
+        window.location.replace("../index.html");
+      } catch (error) {
+        console.error('Logout error:', error);
+      }
+    };
+
+    const showMessage = (message, type) => {
+      const messageDiv = document.getElementById('message');
+      messageDiv.textContent = message;
+      messageDiv.className = `message ${type}`;
+      
+      setTimeout(() => {
+        messageDiv.className = 'message';
+      }, 5000);
+    };
+  </script>
+</body>
+</html>

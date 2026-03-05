@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel - MealCraft</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f1f2f6;
+      min-height: 100vh;
+      color: #2f3542;
+    }
+
+    .admin-container {
+      min-height: 100vh;
+    }
+
+    .admin-header {
+      background: #2f3542;
+      color: #ffffff;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .admin-header .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .admin-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255,255,255,0.1);
+      padding: 8px 15px;
+      border-radius: 30px;
+    }
+
+    .admin-avatar {
+      width: 35px;
+      height: 35px;
+      background: #ff4757;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+    }
+
+    .logout-btn {
+      background: rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      border: 2px solid #ffffff;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .logout-btn:hover {
+      background: #ffffff;
+      color: #ff4757;
+    }
+
+    .admin-content {
+      max-width: 1400px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .admin-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      margin-bottom: 40px;
+    }
+
+    .stat-card {
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+      transition: transform 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(135deg, #ff4757 0%, #ff6b81 100%);
+    }
+
+    .stat-card h3 {
+      color: #747d8c;
+      font-size: 1rem;
+      margin-bottom: 15px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .stat-card .number {
+      color: #2f3542;
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .stat-card .sub-text {
+      color: #747d8c;
+      font-size: 0.9rem;
+    }
+
+    .admin-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 30px;
+      background: #ffffff;
+      padding: 10px;
+      border-radius: 15px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    .tab-btn {
+      padding: 12px 25px;
+      border: none;
+      background: transparent;
+      color: #747d8c;
+      font-weight: 500;
+      cursor: pointer;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+      font-family: 'Poppins', sans-serif;
+      font-size: 1rem;
+    }
+
+    .tab-btn:hover {
+      background: #f1f2f6;
+      color: #ff4757;
+    }
+
+    .tab-btn.active {
+      background: #ff4757;
+      color: #ffffff;
+    }
+
+    .admin-section {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .section-header h2 {
+      color: #2f3542;
+      font-size: 1.5rem;
+    }
+
+    .filter-select {
+      padding: 10px 20px;
+      border: 2px solid #dfe4ea;
+      border-radius: 10px;
+      font-family: 'Poppins', sans-serif;
+      color: #2f3542;
+      cursor: pointer;
+      min-width: 200px;
+    }
+
+    .filter-select:focus {
+      outline: none;
+      border-color: #ff4757;
+    }
+
+    .restaurant-grid,
+    .users-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+      gap: 25px;
+    }
+
+    .restaurant-card,
+    .user-card {
+      background: #f8f9fa;
+      border-radius: 15px;
+      padding: 25px;
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+    }
+
+    .restaurant-card:hover,
+    .user-card:hover {
+      border-color: #ff4757;
+      box-shadow: 0 5px 20px rgba(255, 71, 87, 0.1);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      margin-bottom: 15px;
+    }
+
+    .card-header h3 {
+      color: #2f3542;
+      font-size: 1.2rem;
+      margin-right: 10px;
+    }
+
+    .status-badge {
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .status-pending {
+      background: #fff3cd;
+      color: #856404;
+    }
+
+    .status-approved {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .status-rejected {
+      background: #f8d7da;
+      color: #721c24;
+    }
+
+    .card-details {
+      margin: 15px 0;
+    }
+
+    .detail-row {
+      display: flex;
+      margin-bottom: 10px;
+      font-size: 0.9rem;
+    }
+
+    .detail-label {
+      width: 100px;
+      color: #747d8c;
+      font-weight: 500;
+    }
+
+    .detail-value {
+      color: #2f3542;
+      font-weight: 500;
+      flex: 1;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 10px;
+    }
+
+    .tag {
+      background: #dfe4ea;
+      padding: 4px 10px;
+      border-radius: 15px;
+      font-size: 0.8rem;
+      color: #2f3542;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.9rem;
+      flex: 1;
+      min-width: 100px;
+    }
+
+    .btn-approve {
+      background: #2ed573;
+      color: #ffffff;
+    }
+
+    .btn-approve:hover:not(:disabled) {
+      background: #28b463;
+      transform: translateY(-2px);
+    }
+
+    .btn-reject {
+      background: #ff4757;
+      color: #ffffff;
+    }
+
+    .btn-reject:hover:not(:disabled) {
+      background: #ff2e3a;
+      transform: translateY(-2px);
+    }
+
+    .btn-view {
+      background: #747d8c;
+      color: #ffffff;
+    }
+
+    .btn-view:hover:not(:disabled) {
+      background: #5f6a7a;
+      transform: translateY(-2px);
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: #747d8c;
+      grid-column: 1 / -1;
+    }
+
+    .empty-state .icon {
+      font-size: 4rem;
+      margin-bottom: 20px;
+      opacity: 0.5;
+    }
+
+    .empty-state h3 {
+      color: #2f3542;
+      margin-bottom: 10px;
+    }
+
+    .loading-spinner {
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #ff4757;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .message {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 15px 25px;
+      border-radius: 10px;
+      background: #ffffff;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+      display: none;
+      z-index: 1000;
+      animation: slideIn 0.3s ease;
+      max-width: 400px;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    .message.success {
+      border-left: 4px solid #2ed573;
+    }
+
+    .message.error {
+      border-left: 4px solid #ff4757;
+    }
+
+    .message.info {
+      border-left: 4px solid #ffa502;
+    }
+
+    .refresh-btn {
+      background: #ff4757;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .refresh-btn:hover {
+      background: #ff2e3a;
+      transform: translateY(-2px);
+    }
+
+    .search-box {
+      padding: 10px 15px;
+      border: 2px solid #dfe4ea;
+      border-radius: 10px;
+      font-family: 'Poppins', sans-serif;
+      min-width: 250px;
+    }
+
+    .search-box:focus {
+      outline: none;
+      border-color: #ff4757;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 40px;
+      max-width: 500px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+
+    .modal-content h3 {
+      color: #ff4757;
+      margin-bottom: 20px;
+    }
+
+    .modal-details {
+      margin: 20px 0;
+    }
+
+    .modal-details .detail-row {
+      padding: 10px 0;
+      border-bottom: 1px solid #dfe4ea;
+    }
+
+    .close-modal {
+      background: #ff4757;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+      font-weight: 500;
+    }
+
+    @media (max-width: 768px) {
+      .admin-header {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+        padding: 15px;
+      }
+      
+      .admin-stats {
+        grid-template-columns: 1fr;
+      }
+      
+      .admin-tabs {
+        flex-wrap: wrap;
+      }
+      
+      .tab-btn {
+        flex: 1;
+        padding: 10px;
+        font-size: 0.9rem;
+      }
+      
+      .restaurant-grid,
+      .users-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .section-header {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .filter-select {
+        width: 100%;
+      }
+      
+      .card-actions {
+        flex-direction: column;
+      }
+      
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="admin-container">
+    <header class="admin-header">
+      <div class="logo">
+        <span>🍳</span>
+        <span>MealCraft Admin</span>
+      </div>
+      <div class="header-actions">
+        <button class="refresh-btn" onclick="refreshData()">🔄 Refresh</button>
+        <div class="admin-info" id="adminInfo">
+          <div class="admin-avatar" id="adminAvatar">A</div>
+          <span id="adminEmail">Loading...</span>
+        </div>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+      </div>
+    </header>
+
+    <main class="admin-content">
+      <div class="admin-stats">
+        <div class="stat-card">
+          <h3>Total Users</h3>
+          <div class="number" id="totalUsers">-</div>
+          <div class="sub-text" id="userBreakdown">Customers: 0 | Partners: 0</div>
+        </div>
+        <div class="stat-card">
+          <h3>Total Restaurants</h3>
+          <div class="number" id="totalRestaurants">-</div>
+          <div class="sub-text" id="restaurantBreakdown">Total registered</div>
+        </div>
+        <div class="stat-card">
+          <h3>Pending Verification</h3>
+          <div class="number" id="pendingVerification">-</div>
+          <div class="sub-text">Awaiting review</div>
+        </div>
+        <div class="stat-card">
+          <h3>Approved Partners</h3>
+          <div class="number" id="approvedPartners">-</div>
+          <div class="sub-text">Active restaurants</div>
+        </div>
+      </div>
+
+      <div class="admin-tabs">
+        <button class="tab-btn active" onclick="switchTab('restaurants')" id="tabRestaurants">
+          🏪 Restaurants
+        </button>
+        <button class="tab-btn" onclick="switchTab('users')" id="tabUsers">
+          👥 Users
+        </button>
+      </div>
+
+      <div id="restaurantsSection" class="admin-section">
+        <div class="section-header">
+          <h2>Restaurant Management</h2>
+          <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <input type="text" class="search-box" id="restaurantSearch" placeholder="Search restaurants..." onkeyup="searchRestaurants()">
+            <select class="filter-select" id="restaurantFilter" onchange="filterRestaurants()">
+              <option value="all">All Restaurants</option>
+              <option value="pending">Pending</option>
+              <option value="approved">Approved</option>
+              <option value="rejected">Rejected</option>
+            </select>
+          </div>
+        </div>
+        <div id="restaurantList" class="restaurant-grid">
+          <div class="empty-state" id="restaurantLoading">
+            <div class="loading-spinner"></div>
+            <h3>Loading restaurants...</h3>
+          </div>
+        </div>
+      </div>
+
+      <div id="usersSection" class="admin-section" style="display: none;">
+        <div class="section-header">
+          <h2>User Management</h2>
+          <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <input type="text" class="search-box" id="userSearch" placeholder="Search users..." onkeyup="searchUsers()">
+            <select class="filter-select" id="userFilter" onchange="filterUsers()">
+              <option value="all">All Users</option>
+              <option value="customer">Customers</option>
+              <option value="restaurant">Restaurant Partners</option>
+            </select>
+          </div>
+        </div>
+        <div id="usersList" class="users-grid">
+          <div class="empty-state" id="usersLoading">
+            <div class="loading-spinner"></div>
+            <h3>Loading users...</h3>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Details Modal -->
+  <div class="modal" id="detailsModal">
+    <div class="modal-content">
+      <h3 id="modalTitle">Details</h3>
+      <div id="modalContent" class="modal-details"></div>
+      <button class="close-modal" onclick="closeModal()">Close</button>
+    </div>
+  </div>
+
+  <!-- Message Toast -->
+  <div id="message" class="message"></div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { 
+      getAuth, 
+      onAuthStateChanged, 
+      signOut 
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { 
+      getFirestore, 
+      collection, 
+      query, 
+      where, 
+      getDocs, 
+      doc, 
+      updateDoc,
+      getDoc,
+      orderBy,
+      limit 
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    // Firebase Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyAT4CDao7eHCFU0OO_dee_m6BpjzKv_308",
+      authDomain: "mealcraft-9db35.firebaseapp.com",
+      projectId: "mealcraft-9db35",
+      messagingSenderId: "1052912873454",
+      appId: "1:1052912873454:web:2b794eb8e9524f0ba068ff"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // Global variables
+    let allRestaurants = [];
+    let allUsers = [];
+    let filteredRestaurants = [];
+    let filteredUsers = [];
+    let isLoading = false;
+
+    // Check authentication and admin status
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        console.log('No user found, redirecting to login');
+        window.location.replace("../index.html");
+        return;
+      }
+
+      // Strict admin check
+      if (user.email !== 'admin@mealcraft.com') {
+        console.log('Access denied: Not admin', user.email);
+        showMessage('Access denied. Admin only area.', 'error');
+        setTimeout(() => {
+          window.location.replace("home.html");
+        }, 2000);
+        return;
+      }
+
+      // Update admin info
+      document.getElementById('adminEmail').textContent = user.email;
+      document.getElementById('adminAvatar').textContent = user.email.charAt(0).toUpperCase();
+      
+      // Load dashboard data
+      await loadDashboardData();
+    });
+
+    // Load all dashboard data
+    const loadDashboardData = async () => {
+      if (isLoading) return;
+      
+      isLoading = true;
+      
+      try {
+        // Show loading states
+        document.getElementById('totalUsers').textContent = '...';
+        document.getElementById('totalRestaurants').textContent = '...';
+        document.getElementById('pendingVerification').textContent = '...';
+        document.getElementById('approvedPartners').textContent = '...';
+
+        // Load users
+        await loadUsers();
+        
+        // Load restaurants
+        await loadRestaurants();
+        
+        // Update stats
+        updateStats();
+        
+      } catch (error) {
+        console.error('Error loading dashboard:', error);
+        
+        if (error.code === 'permission-denied') {
+          showMessage('Permission denied. Please check Firebase rules.', 'error');
+        } else {
+          showMessage('Error loading data: ' + error.message, 'error');
+        }
+      } finally {
+        isLoading = false;
+      }
+    };
+
+    // Load users from Firestore
+    const loadUsers = async () => {
+      try {
+        const usersSnapshot = await getDocs(collection(db, 'users'));
+        allUsers = [];
+        
+        usersSnapshot.forEach(doc => {
+          allUsers.push({ 
+            id: doc.id, 
+            ...doc.data() 
+          });
+        });
+        
+        filteredUsers = [...allUsers];
+        displayUsers(filteredUsers);
+        
+      } catch (error) {
+        console.error('Error loading users:', error);
+        throw error;
+      }
+    };
+
+    // Load restaurants from Firestore
+    const loadRestaurants = async () => {
+      try {
+        const restaurantsSnapshot = await getDocs(collection(db, 'restaurants'));
+        allRestaurants = [];
+        
+        restaurantsSnapshot.forEach(doc => {
+          const data = doc.data();
+          allRestaurants.push({ 
+            id: doc.id, 
+            ...data,
+            // Ensure verified status exists
+            verified: data.verified || 'pending'
+          });
+        });
+        
+        filteredRestaurants = [...allRestaurants];
+        displayRestaurants(filteredRestaurants);
+        
+      } catch (error) {
+        console.error('Error loading restaurants:', error);
+        throw error;
+      }
+    };
+
+    // Update statistics
+    const updateStats = () => {
+      // User stats
+      const customers = allUsers.filter(u => u.role === 'customer').length;
+      const partners = allUsers.filter(u => u.role === 'restaurant').length;
+      
+      document.getElementById('totalUsers').textContent = allUsers.length;
+      document.getElementById('userBreakdown').textContent = 
+        `Customers: ${customers} | Partners: ${partners}`;
+
+      // Restaurant stats
+      const pending = allRestaurants.filter(r => r.verified === 'pending').length;
+      const approved = allRestaurants.filter(r => r.verified === 'approved').length;
+      const rejected = allRestaurants.filter(r => r.verified === 'rejected').length;
+      
+      document.getElementById('totalRestaurants').textContent = allRestaurants.length;
+      document.getElementById('pendingVerification').textContent = pending;
+      document.getElementById('approvedPartners').textContent = approved;
+      document.getElementById('restaurantBreakdown').textContent = 
+        `Pending: ${pending} | Approved: ${approved} | Rejected: ${rejected}`;
+    };
+
+    // Display restaurants in grid
+    const displayRestaurants = (restaurants) => {
+      const list = document.getElementById('restaurantList');
+      const loadingEl = document.getElementById('restaurantLoading');
+      
+      if (loadingEl) {
+        loadingEl.style.display = 'none';
+      }
+      
+      if (!restaurants || restaurants.length === 0) {
+        list.innerHTML = `
+          <div class="empty-state">
+            <div class="icon">🏪</div>
+            <h3>No Restaurants Found</h3>
+            <p>There are no restaurants registered yet.</p>
+          </div>
+        `;
+        return;
+      }
+
+      // Sort: pending first, then by date
+      restaurants.sort((a, b) => {
+        if (a.verified === 'pending' && b.verified !== 'pending') return -1;
+        if (a.verified !== 'pending' && b.verified === 'pending') return 1;
+        
+        // Sort by creation date if available
+        const dateA = a.createdAt?.seconds || 0;
+        const dateB = b.createdAt?.seconds || 0;
+        return dateB - dateA;
+      });
+
+      let html = '';
+      restaurants.forEach(restaurant => {
+        const status = restaurant.verified || 'pending';
+        const statusClass = `status-badge status-${status}`;
+        const statusText = status === 'pending' ? '⏳ Pending' : 
+                          status === 'approved' ? '✅ Approved' : '❌ Rejected';
+        
+        const tags = restaurant.tags || [];
+        const tagsHtml = tags.length > 0 
+          ? `<div class="tags">${tags.map(tag => `<span class="tag">${tag}</span>`).join('')}</div>`
+          : '';
+
+        // Format date
+        const joinedDate = restaurant.createdAt 
+          ? new Date(restaurant.createdAt.seconds * 1000).toLocaleDateString() 
+          : 'N/A';
+
+        html += `
+          <div class="restaurant-card" id="restaurant-${restaurant.id}">
+            <div class="card-header">
+              <h3>${restaurant.restaurantName || 'Unnamed Restaurant'}</h3>
+              <span class="${statusClass}">${statusText}</span>
+            </div>
+            <div class="card-details">
+              <div class="detail-row">
+                <span class="detail-label">Owner:</span>
+                <span class="detail-value">${restaurant.ownerName || restaurant.ownerEmail || 'N/A'}</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Email:</span>
+                <span class="detail-value">${restaurant.ownerEmail || 'N/A'}</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Mobile:</span>
+                <span class="detail-value">${restaurant.mobile || 'N/A'}</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Location:</span>
+                <span class="detail-value">${restaurant.city || ''}, ${restaurant.country || ''}</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Address:</span>
+                <span class="detail-value">${restaurant.address || 'N/A'}</span>
+              </div>
+              ${restaurant.website ? `
+                <div class="detail-row">
+                  <span class="detail-label">Website:</span>
+                  <span class="detail-value"><a href="${restaurant.website}" target="_blank">Visit</a></span>
+                </div>
+              ` : ''}
+              <div class="detail-row">
+                <span class="detail-label">Joined:</span>
+                <span class="detail-value">${joinedDate}</span>
+              </div>
+              ${tagsHtml}
+            </div>
+            <div class="card-actions">
+              ${status !== 'approved' ? `
+                <button class="btn btn-approve" onclick="updateRestaurantStatus('${restaurant.id}', 'approved')">
+                  ✅ Approve
+                </button>
+              ` : ''}
+              ${status !== 'rejected' ? `
+                <button class="btn btn-reject" onclick="updateRestaurantStatus('${restaurant.id}', 'rejected')">
+                  ❌ Reject
+                </button>
+              ` : ''}
+              <button class="btn btn-view" onclick="viewDetails('restaurant', '${restaurant.id}')">
+                👁️ Details
+              </button>
+            </div>
+          </div>
+        `;
+      });
+      
+      list.innerHTML = html;
+    };
+
+    // Display users in grid
+    const displayUsers = (users) => {
+      const list = document.getElementById('usersList');
+      const loadingEl = document.getElementById('usersLoading');
+      
+      if (loadingEl) {
+        loadingEl.style.display = 'none';
+      }
+      
+      if (!users || users.length === 0) {
+        list.innerHTML = `
+          <div class="empty-state">
+            <div class="icon">👥</div>
+            <h3>No Users Found</h3>
+            <p>There are no users registered yet.</p>
+          </div>
+        `;
+        return;
+      }
+
+      let html = '';
+      users.forEach(user => {
+        const joinedDate = user.createdAt 
+          ? new Date(user.createdAt.seconds * 1000).toLocaleDateString() 
+          : 'N/A';
+
+        html += `
+          <div class="user-card">
+            <div class="card-header">
+              <h3>${user.username || 'Unknown User'}</h3>
+              <span class="status-badge ${user.role === 'customer' ? 'status-approved' : 'status-pending'}">
+                ${user.role === 'customer' ? '👤 Customer' : '🏪 Partner'}
+              </span>
+            </div>
+            <div class="card-details">
+              <div class="detail-row">
+                <span class="detail-label">Email:</span>
+                <span class="detail-value">${user.email || 'N/A'}</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Mobile:</span>
+                <span class="detail-value">${user.mobile || 'N/A'}</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Location:</span>
+                <span class="detail-value">${user.city || ''}, ${user.country || ''}</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Address:</span>
+                <span class="detail-value">${user.address || 'N/A'}</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Joined:</span>
+                <span class="detail-value">${joinedDate}</span>
+              </div>
+            </div>
+            <div class="card-actions">
+              <button class="btn btn-view" onclick="viewDetails('user', '${user.id}')">
+                👁️ View Details
+              </button>
+            </div>
+          </div>
+        `;
+      });
+      
+      list.innerHTML = html;
+    };
+
+    // Switch between tabs
+    window.switchTab = (tab) => {
+      const restaurantsSection = document.getElementById('restaurantsSection');
+      const usersSection = document.getElementById('usersSection');
+      const tabRestaurants = document.getElementById('tabRestaurants');
+      const tabUsers = document.getElementById('tabUsers');
+      
+      if (tab === 'restaurants') {
+        restaurantsSection.style.display = 'block';
+        usersSection.style.display = 'none';
+        tabRestaurants.classList.add('active');
+        tabUsers.classList.remove('active');
+      } else {
+        restaurantsSection.style.display = 'none';
+        usersSection.style.display = 'block';
+        tabRestaurants.classList.remove('active');
+        tabUsers.classList.add('active');
+      }
+    };
+
+    // Filter restaurants
+    window.filterRestaurants = () => {
+      const filter = document.getElementById('restaurantFilter').value;
+      
+      if (filter === 'all') {
+        filteredRestaurants = [...allRestaurants];
+      } else {
+        filteredRestaurants = allRestaurants.filter(r => r.verified === filter);
+      }
+      
+      displayRestaurants(filteredRestaurants);
+    };
+
+    // Filter users
+    window.filterUsers = () => {
+      const filter = document.getElementById('userFilter').value;
+      
+      if (filter === 'all') {
+        filteredUsers = [...allUsers];
+      } else {
+        filteredUsers = allUsers.filter(u => u.role === filter);
+      }
+      
+      displayUsers(filteredUsers);
+    };
+
+    // Search restaurants
+    window.searchRestaurants = () => {
+      const searchTerm = document.getElementById('restaurantSearch').value.toLowerCase();
+      
+      if (!searchTerm) {
+        filteredRestaurants = [...allRestaurants];
+      } else {
+        filteredRestaurants = allRestaurants.filter(restaurant => {
+          return (
+            (restaurant.restaurantName && restaurant.restaurantName.toLowerCase().includes(searchTerm)) ||
+            (restaurant.ownerEmail && restaurant.ownerEmail.toLowerCase().includes(searchTerm)) ||
+            (restaurant.city && restaurant.city.toLowerCase().includes(searchTerm)) ||
+            (restaurant.tags && restaurant.tags.some(tag => tag.toLowerCase().includes(searchTerm)))
+          );
+        });
+      }
+      
+      displayRestaurants(filteredRestaurants);
+    };
+
+    // Search users
+    window.searchUsers = () => {
+      const searchTerm = document.getElementById('userSearch').value.toLowerCase();
+      
+      if (!searchTerm) {
+        filteredUsers = [...allUsers];
+      } else {
+        filteredUsers = allUsers.filter(user => {
+          return (
+            (user.username && user.username.toLowerCase().includes(searchTerm)) ||
+            (user.email && user.email.toLowerCase().includes(searchTerm)) ||
+            (user.city && user.city.toLowerCase().includes(searchTerm))
+          );
+        });
+      }
+      
+      displayUsers(filteredUsers);
+    };
+
+    // Update restaurant status
+    window.updateRestaurantStatus = async (restaurantId, status) => {
+      try {
+        // Show loading state on the specific card
+        const card = document.getElementById(`restaurant-${restaurantId}`);
+        const buttons = card.querySelectorAll('.btn');
+        buttons.forEach(btn => {
+          btn.disabled = true;
+          btn.style.opacity = '0.5';
+        });
+
+        // Get restaurant data first
+        const restaurantDoc = await getDoc(doc(db, 'restaurants', restaurantId));
+        
+        if (!restaurantDoc.exists()) {
+          throw new Error('Restaurant not found');
+        }
+
+        const restaurantData = restaurantDoc.data();
+
+        // Update restaurant status
+        await updateDoc(doc(db, 'restaurants', restaurantId), {
+          verified: status,
+          updatedAt: new Date(),
+          updatedBy: auth.currentUser.email
+        });
+
+        // Update user's role if exists
+        if (restaurantData.ownerId) {
+          await updateDoc(doc(db, 'users', restaurantData.ownerId), {
+            role: status === 'approved' ? 'restaurant' : 'customer',
+            restaurantStatus: status,
+            updatedAt: new Date()
+          });
+        }
+
+        showMessage(`Restaurant ${status} successfully!`, 'success');
+        
+        // Refresh data
+        await loadRestaurants();
+        await loadUsers();
+        updateStats();
+        
+      } catch (error) {
+        console.error('Error updating status:', error);
+        showMessage('Error updating status: ' + error.message, 'error');
+        
+        // Reset buttons
+        const card = document.getElementById(`restaurant-${restaurantId}`);
+        if (card) {
+          const buttons = card.querySelectorAll('.btn');
+          buttons.forEach(btn => {
+            btn.disabled = false;
+            btn.style.opacity = '1';
+          });
+        }
+      }
+    };
+
+    // View details in modal
+    window.viewDetails = (type, id) => {
+      const modal = document.getElementById('detailsModal');
+      const modalTitle = document.getElementById('modalTitle');
+      const modalContent = document.getElementById('modalContent');
+      
+      let data = type === 'restaurant' 
+        ? allRestaurants.find(r => r.id === id)
+        : allUsers.find(u => u.id === id);
+      
+      if (!data) return;
+      
+      modalTitle.textContent = type === 'restaurant' ? 'Restaurant Details' : 'User Details';
+      
+      let html = '';
+      
+      if (type === 'restaurant') {
+        html = `
+          <div class="detail-row">
+            <span class="detail-label">ID:</span>
+            <span class="detail-value">${data.id}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Name:</span>
+            <span class="detail-value">${data.restaurantName || 'N/A'}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Owner:</span>
+            <span class="detail-value">${data.ownerName || data.ownerEmail || 'N/A'}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Email:</span>
+            <span class="detail-value">${data.ownerEmail || 'N/A'}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Mobile:</span>
+            <span class="detail-value">${data.mobile || 'N/A'}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Country:</span>
+            <span class="detail-value">${data.country || 'N/A'}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">State:</span>
+            <span class="detail-value">${data.state || 'N/A'}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">City:</span>
+            <span class="detail-value">${data.city || 'N/A'}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Address:</span>
+            <span class="detail-value">${data.address || 'N/A'}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Website:</span>
+            <span class="detail-value">${data.website || 'N/A'}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Tags:</span>
+            <span class="detail-value">${data.tags ? data.tags.join(', ') : 'N/A'}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Status:</span>
+            <span class="detail-value">${data.verified || 'pending'}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Created:</span>
+            <span class="detail-value">${data.createdAt ? new Date(data.createdAt.seconds * 1000).toLocaleString() : 'N/A'}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Updated:</span>
+            <span class="detail-value">${data.updatedAt ? new Date(data.updatedAt.seconds * 1000).toLocaleString() : 'N/A'}</span>
+          </div>
+        `;
+      } else {
+        html = `
+          <div class="detail-row">
+            <span class="detail-label">ID:</span>
+            <span class="detail-value">${data.id}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Username:</span>
+            <span class="detail-value">${data.username || 'N/A'}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Email:</span>
+            <span class="detail-value">${data.email || 'N/A'}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Role:</span>
+            <span class="detail-value">${data.role || 'N/A'}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Mobile:</span>
+            <span class="detail-value">${data.mobile || 'N/A'}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Country:</span>
+            <span class="detail-value">${data.country || 'N/A'}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">State:</span>
+            <span class="detail-value">${data.state || 'N/A'}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">City:</span>
+            <span class="detail-value">${data.city || 'N/A'}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Address:</span>
+            <span class="detail-value">${data.address || 'N/A'}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Created:</span>
+            <span class="detail-value">${data.createdAt ? new Date(data.createdAt.seconds * 1000).toLocaleString() : 'N/A'}</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Updated:</span>
+            <span class="detail-value">${data.updatedAt ? new Date(data.updatedAt.seconds * 1000).toLocaleString() : 'N/A'}</span>
+          </div>
+        `;
+      }
+      
+      modalContent.innerHTML = html;
+      modal.classList.add('active');
+    };
+
+    // Close modal
+    window.closeModal = () => {
+      document.getElementById('detailsModal').classList.remove('active');
+    };
+
+    // Refresh data
+    window.refreshData = async () => {
+      showMessage('Refreshing data...', 'info');
+      await loadDashboardData();
+      showMessage('Data refreshed!', 'success');
+    };
+
+    // Logout function
+    window.logout = async () => {
+      try {
+        await signOut(auth);
+        sessionStorage.clear();
+        window.location.replace("../index.html");
+      } catch (error) {
+        console.error('Logout error:', error);
+        showMessage('Error logging out', 'error');
+      }
+    };
+
+    // Show message
+    const showMessage = (message, type) => {
+      const messageDiv = document.getElementById('message');
+      messageDiv.textContent = message;
+      messageDiv.className = `message ${type}`;
+      messageDiv.style.display = 'block';
+      
+      setTimeout(() => {
+        messageDiv.style.display = 'none';
+      }, 3000);
+    };
+
+    // Close modal when clicking outside
+    window.onclick = (event) => {
+      const modal = document.getElementById('detailsModal');
+      if (event.target === modal) {
+        closeModal();
+      }
+    };
+  </script>
+</body>
+</html>

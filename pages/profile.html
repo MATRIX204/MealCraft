@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Profile - MealCraft</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f1f2f6;
+      min-height: 100vh;
+      color: #2f3542;
+    }
+
+    .profile-container {
+      min-height: 100vh;
+    }
+
+    .profile-header {
+      background: linear-gradient(135deg, #ff4757 0%, #ff6b81 100%);
+      color: #ffffff;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .profile-header .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 15px;
+    }
+
+    .nav-btn {
+      background: rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      border: 2px solid #ffffff;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+
+    .nav-btn:hover {
+      background: #ffffff;
+      color: #ff4757;
+    }
+
+    .profile-content {
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .profile-card {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    }
+
+    .profile-avatar {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .avatar-circle {
+      width: 120px;
+      height: 120px;
+      background: linear-gradient(135deg, #ff4757 0%, #ff6b81 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      font-size: 3rem;
+      font-weight: 600;
+      color: #ffffff;
+      border: 4px solid #ffffff;
+      box-shadow: 0 5px 15px rgba(255, 71, 87, 0.3);
+    }
+
+    .profile-name {
+      font-size: 1.8rem;
+      color: #2f3542;
+      margin-bottom: 5px;
+    }
+
+    .profile-role {
+      display: inline-block;
+      padding: 8px 20px;
+      background: #f1f2f6;
+      border-radius: 30px;
+      color: #747d8c;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .profile-details {
+      margin: 40px 0;
+    }
+
+    .details-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 25px;
+    }
+
+    .detail-item {
+      padding: 20px;
+      background: #f8f9fa;
+      border-radius: 15px;
+      transition: transform 0.3s ease;
+    }
+
+    .detail-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .detail-label {
+      color: #747d8c;
+      font-size: 0.9rem;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .detail-value {
+      color: #2f3542;
+      font-size: 1.1rem;
+      font-weight: 500;
+    }
+
+    .edit-section {
+      margin: 30px 0;
+      padding: 30px;
+      background: #f8f9fa;
+      border-radius: 15px;
+    }
+
+    .edit-section h3 {
+      margin-bottom: 20px;
+      color: #2f3542;
+    }
+
+    .edit-form {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .input-group {
+      margin-bottom: 15px;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: #2f3542;
+      font-size: 0.9rem;
+    }
+
+    .input-group input,
+    .input-group select {
+      width: 100%;
+      padding: 12px 15px;
+      border: 2px solid #dfe4ea;
+      border-radius: 10px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .input-group input:focus,
+    .input-group select:focus {
+      outline: none;
+      border-color: #ff4757;
+      box-shadow: 0 0 0 3px rgba(255, 71, 87, 0.1);
+    }
+
+    .profile-actions {
+      display: flex;
+      gap: 15px;
+      margin-top: 30px;
+    }
+
+    .btn {
+      padding: 14px 30px;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: 'Poppins', sans-serif;
+      flex: 1;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #ff4757 0%, #ff6b81 100%);
+      color: #ffffff;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(255, 71, 87, 0.4);
+    }
+
+    .btn-secondary {
+      background: #ffffff;
+      color: #ff4757;
+      border: 2px solid #ff4757;
+    }
+
+    .btn-secondary:hover {
+      background: #ff4757;
+      color: #ffffff;
+    }
+
+    .btn-danger {
+      background: #ffffff;
+      color: #ff4757;
+      border: 2px solid #ff4757;
+    }
+
+    .btn-danger:hover {
+      background: #ff4757;
+      color: #ffffff;
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .message {
+      margin-top: 20px;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      display: none;
+    }
+
+    .message.error {
+      display: block;
+      background: #fff5f5;
+      color: #ff4757;
+      border: 1px solid #ff4757;
+    }
+
+    .message.success {
+      display: block;
+      background: #f0fff4;
+      color: #2ed573;
+      border: 1px solid #2ed573;
+    }
+
+    .loading-spinner {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid #ff4757;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-right: 10px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .restaurant-status {
+      margin-top: 30px;
+      padding: 20px;
+      background: #fff3cd;
+      border-radius: 15px;
+      color: #856404;
+      border-left: 4px solid #ffa502;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 40px;
+      max-width: 400px;
+      width: 90%;
+      text-align: center;
+    }
+
+    .modal-content h3 {
+      color: #ff4757;
+      margin-bottom: 15px;
+    }
+
+    .modal-content p {
+      color: #747d8c;
+      margin-bottom: 25px;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 15px;
+    }
+
+    @media (max-width: 768px) {
+      .profile-header {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+        padding: 15px;
+      }
+      
+      .details-grid,
+      .edit-form {
+        grid-template-columns: 1fr;
+      }
+      
+      .profile-actions {
+        flex-direction: column;
+      }
+      
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="profile-container">
+    <header class="profile-header">
+      <div class="logo" onclick="goToHome()">🍳 MealCraft</div>
+      <div class="header-actions">
+        <button class="nav-btn" onclick="goToHome()">🏠 Home</button>
+        <button class="nav-btn" onclick="logout()">🚪 Logout</button>
+      </div>
+    </header>
+
+    <main class="profile-content">
+      <div class="profile-card">
+        <div class="profile-avatar">
+          <div class="avatar-circle" id="avatar">U</div>
+          <h2 class="profile-name" id="displayName">Loading...</h2>
+          <span class="profile-role" id="userRole">Customer</span>
+        </div>
+
+        <div id="restaurantStatus" class="restaurant-status" style="display: none;">
+          <p id="statusMessage"></p>
+        </div>
+
+        <div class="profile-details" id="profileDetails">
+          <div class="details-grid">
+            <div class="detail-item">
+              <div class="detail-label">📧 Email</div>
+              <div class="detail-value" id="email">-</div>
+            </div>
+            <div class="detail-item">
+              <div class="detail-label">📱 Mobile</div>
+              <div class="detail-value" id="mobile">-</div>
+            </div>
+            <div class="detail-item">
+              <div class="detail-label">📍 Location</div>
+              <div class="detail-value" id="location">-</div>
+            </div>
+            <div class="detail-item">
+              <div class="detail-label">🏠 Address</div>
+              <div class="detail-value" id="address">-</div>
+            </div>
+            <div class="detail-item">
+              <div class="detail-label">📅 Joined</div>
+              <div class="detail-value" id="joined">-</div>
+            </div>
+            <div class="detail-item">
+              <div class="detail-label">🔄 Last Updated</div>
+              <div class="detail-value" id="updated">-</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="edit-section" id="editSection" style="display: none;">
+          <h3>Edit Profile</h3>
+          <div class="edit-form">
+            <div class="input-group">
+              <label for="editMobile">Mobile Number</label>
+              <input type="tel" id="editMobile" placeholder="Enter mobile number">
+            </div>
+            <div class="input-group">
+              <label for="editCountry">Country</label>
+              <select id="editCountry">
+                <option value="">Select Country</option>
+                <option value="USA">United States</option>
+                <option value="UK">United Kingdom</option>
+                <option value="Canada">Canada</option>
+                <option value="Australia">Australia</option>
+                <option value="India">India</option>
+              </select>
+            </div>
+            <div class="input-group">
+              <label for="editState">State</label>
+              <input type="text" id="editState" placeholder="Enter state">
+            </div>
+            <div class="input-group">
+              <label for="editCity">City</label>
+              <input type="text" id="editCity" placeholder="Enter city">
+            </div>
+            <div class="input-group full-width">
+              <label for="editAddress">Full Address</label>
+              <input type="text" id="editAddress" placeholder="Enter full address">
+            </div>
+          </div>
+          <div class="profile-actions">
+            <button class="btn btn-secondary" onclick="toggleEdit()">Cancel</button>
+            <button class="btn btn-primary" onclick="saveProfile()">Save Changes</button>
+          </div>
+        </div>
+
+        <div class="profile-actions" id="actionButtons">
+          <button class="btn btn-primary" onclick="toggleEdit()">✏️ Edit Profile</button>
+          <button class="btn btn-danger" onclick="showDeleteModal()">🗑️ Delete Account</button>
+        </div>
+
+        <div id="message" class="message"></div>
+      </div>
+    </main>
+  </div>
+
+  <div class="modal" id="deleteModal">
+    <div class="modal-content">
+      <h3>Delete Account</h3>
+      <p>Are you sure you want to delete your account? This action cannot be undone.</p>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" onclick="hideDeleteModal()">Cancel</button>
+        <button class="btn btn-danger" onclick="deleteAccount()">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { 
+      getAuth, 
+      onAuthStateChanged, 
+      signOut,
+      deleteUser,
+      EmailAuthProvider,
+      reauthenticateWithCredential
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { 
+      getFirestore, 
+      doc, 
+      getDoc, 
+      updateDoc,
+      deleteDoc,
+      serverTimestamp 
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAT4CDao7eHCFU0OO_dee_m6BpjzKv_308",
+      authDomain: "mealcraft-9db35.firebaseapp.com",
+      projectId: "mealcraft-9db35",
+      messagingSenderId: "1052912873454",
+      appId: "1:1052912873454:web:2b794eb8e9524f0ba068ff"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    let currentUser = null;
+    let userData = null;
+
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        window.location.replace("../index.html");
+        return;
+      }
+      currentUser = user;
+      await loadUserProfile();
+    });
+
+    const loadUserProfile = async () => {
+      try {
+        const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
+        
+        if (userDoc.exists()) {
+          userData = userDoc.data();
+          
+          document.getElementById('avatar').textContent = 
+            (userData.username || currentUser.email || 'U').charAt(0).toUpperCase();
+          document.getElementById('displayName').textContent = 
+            userData.username || currentUser.displayName || 'User';
+          document.getElementById('userRole').textContent = 
+            userData.role === 'customer' ? '👤 Customer' : '🏪 Restaurant Partner';
+          document.getElementById('email').textContent = currentUser.email;
+          document.getElementById('mobile').textContent = userData.mobile || 'Not provided';
+          document.getElementById('location').textContent = 
+            `${userData.city || ''}, ${userData.country || ''}`.replace(/^, |, $/g, '') || 'Not provided';
+          document.getElementById('address').textContent = userData.address || 'Not provided';
+          document.getElementById('joined').textContent = 
+            userData.createdAt ? new Date(userData.createdAt.seconds * 1000).toLocaleDateString() : 'Recently';
+          document.getElementById('updated').textContent = 
+            userData.updatedAt ? new Date(userData.updatedAt.seconds * 1000).toLocaleDateString() : 'Never';
+
+          document.getElementById('editMobile').value = userData.mobile || '';
+          document.getElementById('editCountry').value = userData.country || '';
+          document.getElementById('editState').value = userData.state || '';
+          document.getElementById('editCity').value = userData.city || '';
+          document.getElementById('editAddress').value = userData.address || '';
+
+          if (userData.role === 'restaurant') {
+            const restaurantDoc = await getDoc(doc(db, 'restaurants', currentUser.uid));
+            
+            if (restaurantDoc.exists()) {
+              const restaurantData = restaurantDoc.data();
+              const status = restaurantData.verified || 'pending';
+              const statusSection = document.getElementById('restaurantStatus');
+              const statusMessage = document.getElementById('statusMessage');
+              
+              if (status === 'pending') {
+                statusSection.style.display = 'block';
+                statusSection.style.background = '#fff3cd';
+                statusSection.style.color = '#856404';
+                statusMessage.innerHTML = '⏳ Your restaurant is under review. We will notify you once approved.';
+              } else if (status === 'approved') {
+                statusSection.style.display = 'block';
+                statusSection.style.background = '#d4edda';
+                statusSection.style.color = '#155724';
+                statusMessage.innerHTML = '✅ Your restaurant is approved and live!';
+              } else if (status === 'rejected') {
+                statusSection.style.display = 'block';
+                statusSection.style.background = '#f8d7da';
+                statusSection.style.color = '#721c24';
+                statusMessage.innerHTML = '❌ Your application was rejected. Please contact support.';
+              }
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Error loading profile:', error);
+        showMessage('Error loading profile', 'error');
+      }
+    };
+
+    window.toggleEdit = () => {
+      const editSection = document.getElementById('editSection');
+      const profileDetails = document.getElementById('profileDetails');
+      const actionButtons = document.getElementById('actionButtons');
+      
+      if (editSection.style.display === 'none') {
+        editSection.style.display = 'block';
+        profileDetails.style.display = 'none';
+        actionButtons.style.display = 'none';
+      } else {
+        editSection.style.display = 'none';
+        profileDetails.style.display = 'block';
+        actionButtons.style.display = 'flex';
+      }
+    };
+
+    window.saveProfile = async () => {
+      const mobile = document.getElementById('editMobile').value.trim();
+      const country = document.getElementById('editCountry').value;
+      const state = document.getElementById('editState').value.trim();
+      const city = document.getElementById('editCity').value.trim();
+      const address = document.getElementById('editAddress').value.trim();
+
+      if (!mobile || !country || !state || !city || !address) {
+        showMessage('Please fill in all fields', 'error');
+        return;
+      }
+
+      if (!/^[0-9]{10}$/.test(mobile)) {
+        showMessage('Please enter a valid 10-digit mobile number', 'error');
+        return;
+      }
+
+      try {
+        await updateDoc(doc(db, 'users', currentUser.uid), {
+          mobile,
+          country,
+          state,
+          city,
+          address,
+          updatedAt: serverTimestamp()
+        });
+
+        if (userData.role === 'restaurant') {
+          await updateDoc(doc(db, 'restaurants', currentUser.uid), {
+            mobile,
+            country,
+            state,
+            city,
+            address,
+            updatedAt: serverTimestamp()
+          });
+        }
+
+        showMessage('Profile updated successfully!', 'success');
+        toggleEdit();
+        await loadUserProfile();
+      } catch (error) {
+        console.error('Error updating profile:', error);
+        showMessage('Error updating profile', 'error');
+      }
+    };
+
+    window.showDeleteModal = () => {
+      document.getElementById('deleteModal').classList.add('active');
+    };
+
+    window.hideDeleteModal = () => {
+      document.getElementById('deleteModal').classList.remove('active');
+    };
+
+    window.deleteAccount = async () => {
+      try {
+        await deleteDoc(doc(db, 'users', currentUser.uid));
+        
+        if (userData.role === 'restaurant') {
+          await deleteDoc(doc(db, 'restaurants', currentUser.uid));
+        }
+        
+        await deleteUser(currentUser);
+        
+        sessionStorage.clear();
+        window.location.replace("../index.html");
+      } catch (error) {
+        console.error('Error deleting account:', error);
+        showMessage('Error deleting account. Please try again.', 'error');
+        hideDeleteModal();
+      }
+    };
+
+    window.goToHome = () => {
+      window.location.href = 'home.html';
+    };
+
+    window.logout = async () => {
+      try {
+        await signOut(auth);
+        sessionStorage.clear();
+        window.location.replace("../index.html");
+      } catch (error) {
+        console.error('Logout error:', error);
+      }
+    };
+
+    const showMessage = (message, type) => {
+      const messageDiv = document.getElementById('message');
+      messageDiv.textContent = message;
+      messageDiv.className = `message ${type}`;
+      
+      setTimeout(() => {
+        messageDiv.className = 'message';
+      }, 3000);
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MealCraft - Home</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f1f2f6;
+      min-height: 100vh;
+      color: #2f3542;
+    }
+
+    .home-container {
+      min-height: 100vh;
+    }
+
+    .home-header {
+      background: linear-gradient(135deg, #ff4757 0%, #ff6b81 100%);
+      color: #ffffff;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .home-header .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .profile-btn {
+      background: rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      border: 2px solid #ffffff;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .profile-btn:hover {
+      background: #ffffff;
+      color: #ff4757;
+    }
+
+    .logout-btn {
+      background: rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      border: 2px solid #ffffff;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .logout-btn:hover {
+      background: #ffffff;
+      color: #ff4757;
+    }
+
+    .home-content {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .welcome-card {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 40px;
+      margin-bottom: 40px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .welcome-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(135deg, #ff4757 0%, #ff6b81 100%);
+    }
+
+    .welcome-card h1 {
+      color: #2f3542;
+      margin-bottom: 10px;
+      font-size: 2rem;
+    }
+
+    .welcome-card p {
+      color: #747d8c;
+      font-size: 1.1rem;
+    }
+
+    .restaurant-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 25px;
+      margin-top: 30px;
+    }
+
+    .restaurant-card {
+      background: #ffffff;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .restaurant-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(255, 71, 87, 0.15);
+    }
+
+    .restaurant-image {
+      height: 180px;
+      background: linear-gradient(135deg, #ff4757 0%, #ff6b81 100%);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      color: #ffffff;
+    }
+
+    .restaurant-info {
+      padding: 20px;
+    }
+
+    .restaurant-info h3 {
+      color: #2f3542;
+      margin-bottom: 8px;
+      font-size: 1.2rem;
+    }
+
+    .restaurant-meta {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .restaurant-rating {
+      background: #2ed573;
+      color: #ffffff;
+      padding: 4px 8px;
+      border-radius: 5px;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .restaurant-location {
+      color: #747d8c;
+      font-size: 0.9rem;
+    }
+
+    .restaurant-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-bottom: 15px;
+    }
+
+    .tag {
+      background: #f1f2f6;
+      padding: 4px 10px;
+      border-radius: 15px;
+      font-size: 0.8rem;
+      color: #747d8c;
+    }
+
+    .restaurant-status {
+      font-size: 0.8rem;
+      color: #2ed573;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: #747d8c;
+    }
+
+    .empty-state .icon {
+      font-size: 4rem;
+      margin-bottom: 20px;
+      opacity: 0.5;
+    }
+
+    .empty-state h3 {
+      color: #2f3542;
+      margin-bottom: 10px;
+    }
+
+    .search-section {
+      margin-bottom: 30px;
+    }
+
+    .search-box {
+      display: flex;
+      gap: 15px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .search-box input {
+      flex: 1;
+      padding: 15px 20px;
+      border: 2px solid #dfe4ea;
+      border-radius: 15px;
+      font-size: 1rem;
+      font-family: 'Poppins', sans-serif;
+      transition: all 0.3s ease;
+    }
+
+    .search-box input:focus {
+      outline: none;
+      border-color: #ff4757;
+      box-shadow: 0 0 0 3px rgba(255, 71, 87, 0.1);
+    }
+
+    .search-box button {
+      padding: 15px 30px;
+      background: #ff4757;
+      color: #ffffff;
+      border: none;
+      border-radius: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .search-box button:hover {
+      background: #ff2e3a;
+      transform: translateY(-2px);
+    }
+
+    .filter-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+    }
+
+    .filter-tab {
+      padding: 10px 20px;
+      background: #ffffff;
+      border: 2px solid #dfe4ea;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+
+    .filter-tab:hover,
+    .filter-tab.active {
+      background: #ff4757;
+      color: #ffffff;
+      border-color: #ff4757;
+    }
+
+    .loading-spinner {
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #ff4757;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 768px) {
+      .home-header {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+        padding: 15px;
+      }
+      
+      .header-actions {
+        width: 100%;
+        justify-content: center;
+      }
+      
+      .search-box {
+        flex-direction: column;
+      }
+      
+      .search-box button {
+        width: 100%;
+      }
+      
+      .filter-tabs {
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="home-container">
+    <header class="home-header">
+      <div class="logo" onclick="goToHome()">🍳 MealCraft</div>
+      <div class="header-actions">
+        <button class="profile-btn" onclick="goToProfile()">
+          <span>👤</span>
+          <span id="userName">My Profile</span>
+        </button>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+      </div>
+    </header>
+
+    <main class="home-content">
+      <div class="welcome-card">
+        <h1 id="welcomeMessage">Welcome to MealCraft!</h1>
+        <p>Discover amazing meals from your favorite restaurants</p>
+      </div>
+
+      <div class="search-section">
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Search restaurants by name or cuisine..." onkeyup="searchRestaurants()">
+          <button onclick="searchRestaurants()">🔍 Search</button>
+        </div>
+      </div>
+
+      <div class="filter-tabs">
+        <button class="filter-tab active" onclick="filterByCuisine('all')">All</button>
+        <button class="filter-tab" onclick="filterByCuisine('pizza')">🍕 Pizza</button>
+        <button class="filter-tab" onclick="filterByCuisine('burger')">🍔 Burger</button>
+        <button class="filter-tab" onclick="filterByCuisine('italian')">🇮🇹 Italian</button>
+        <button class="filter-tab" onclick="filterByCuisine('chinese')">🥡 Chinese</button>
+        <button class="filter-tab" onclick="filterByCuisine('indian')">🍛 Indian</button>
+      </div>
+
+      <div id="restaurantGrid" class="restaurant-grid">
+        <div class="empty-state" id="loadingState">
+          <div class="loading-spinner"></div>
+          <h3>Loading restaurants...</h3>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getFirestore, collection, query, where, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAT4CDao7eHCFU0OO_dee_m6BpjzKv_308",
+      authDomain: "mealcraft-9db35.firebaseapp.com",
+      projectId: "mealcraft-9db35",
+      messagingSenderId: "1052912873454",
+      appId: "1:1052912873454:web:2b794eb8e9524f0ba068ff"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    let currentUser = null;
+    let allRestaurants = [];
+
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        window.location.replace("../index.html");
+        return;
+      }
+      currentUser = user;
+      
+      const userDoc = await getDoc(doc(db, 'users', user.uid));
+      const userData = userDoc.data();
+      
+      document.getElementById('welcomeMessage').textContent = 
+        `Welcome back, ${userData?.username || user.displayName || user.email}!`;
+      document.getElementById('userName').textContent = 
+        userData?.username || user.displayName || 'My Profile';
+      
+      await loadRestaurants();
+    });
+
+    const loadRestaurants = async () => {
+      try {
+        const restaurantsQuery = query(
+          collection(db, 'restaurants'), 
+          where('verified', '==', 'approved')
+        );
+        const restaurantsSnapshot = await getDocs(restaurantsQuery);
+        
+        allRestaurants = [];
+        restaurantsSnapshot.forEach(doc => {
+          allRestaurants.push({ id: doc.id, ...doc.data() });
+        });
+
+        displayRestaurants(allRestaurants);
+      } catch (error) {
+        console.error('Error loading restaurants:', error);
+        document.getElementById('restaurantGrid').innerHTML = `
+          <div class="empty-state">
+            <div class="icon">😢</div>
+            <h3>Error Loading Restaurants</h3>
+            <p>Please try again later</p>
+          </div>
+        `;
+      }
+    };
+
+    const displayRestaurants = (restaurants) => {
+      const grid = document.getElementById('restaurantGrid');
+      document.getElementById('loadingState').style.display = 'none';
+      
+      if (!restaurants || restaurants.length === 0) {
+        grid.innerHTML = `
+          <div class="empty-state">
+            <div class="icon">🏪</div>
+            <h3>No Restaurants Found</h3>
+            <p>Check back later for new restaurants</p>
+          </div>
+        `;
+        return;
+      }
+
+      let html = '';
+      restaurants.forEach(restaurant => {
+        const tags = restaurant.tags || [];
+        const tagsHtml = tags.length > 0 
+          ? `<div class="restaurant-tags">${tags.map(tag => 
+              `<span class="tag">${tag}</span>`
+            ).join('')}</div>`
+          : '';
+
+        html += `
+          <div class="restaurant-card" onclick="viewRestaurant('${restaurant.id}')">
+            <div class="restaurant-image">
+              ${restaurant.restaurantName?.charAt(0) || '🏪'}
+            </div>
+            <div class="restaurant-info">
+              <h3>${restaurant.restaurantName || 'Unnamed Restaurant'}</h3>
+              <div class="restaurant-meta">
+                <span class="restaurant-rating">4.5 ⭐</span>
+                <span class="restaurant-location">${restaurant.city || 'City'}</span>
+              </div>
+              ${tagsHtml}
+              <div class="restaurant-status">
+                <span>🟢 Open</span>
+                <span>•</span>
+                <span>${restaurant.cuisine || 'Multi-cuisine'}</span>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+      
+      grid.innerHTML = html;
+    };
+
+    window.searchRestaurants = () => {
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+      
+      if (!searchTerm) {
+        displayRestaurants(allRestaurants);
+        return;
+      }
+
+      const filtered = allRestaurants.filter(restaurant => {
+        const nameMatch = restaurant.restaurantName?.toLowerCase().includes(searchTerm);
+        const tagsMatch = restaurant.tags?.some(tag => tag.toLowerCase().includes(searchTerm));
+        return nameMatch || tagsMatch;
+      });
+
+      displayRestaurants(filtered);
+    };
+
+    window.filterByCuisine = (cuisine) => {
+      const tabs = document.querySelectorAll('.filter-tab');
+      tabs.forEach(tab => tab.classList.remove('active'));
+      event.target.classList.add('active');
+
+      if (cuisine === 'all') {
+        displayRestaurants(allRestaurants);
+      } else {
+        const filtered = allRestaurants.filter(restaurant => 
+          restaurant.tags?.some(tag => tag.toLowerCase().includes(cuisine))
+        );
+        displayRestaurants(filtered);
+      }
+    };
+
+    window.viewRestaurant = (restaurantId) => {
+      window.location.href = `restaurant.html?id=${restaurantId}`;
+    };
+
+    window.goToHome = () => {
+      window.location.href = 'home.html';
+    };
+
+    window.goToProfile = () => {
+      window.location.href = 'profile.html';
+    };
+
+    window.logout = async () => {
+      try {
+        await signOut(auth);
+        sessionStorage.clear();
+        window.location.replace("../index.html");
+      } catch (error) {
+        console.error('Logout error:', error);
+      }
+    };
+  </script>
+</body>
+</html>

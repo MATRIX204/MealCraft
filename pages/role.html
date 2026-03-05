@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Choose Your Role - MealCraft</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #ff4757 0%, #ff6b81 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #2f3542;
+    }
+
+    .role-container {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .role-card {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 40px;
+      max-width: 500px;
+      width: 100%;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    }
+
+    .role-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .role-header h2 {
+      color: #ff4757;
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+
+    .role-header p {
+      color: #747d8c;
+    }
+
+    .role-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .role-btn {
+      padding: 30px 20px;
+      border: 3px solid #dfe4ea;
+      border-radius: 15px;
+      background: #ffffff;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .role-btn:hover {
+      border-color: #ff4757;
+      transform: translateY(-5px);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    }
+
+    .role-btn.selected {
+      border-color: #ff4757;
+      background: #fff5f5;
+    }
+
+    .role-btn .icon {
+      font-size: 3rem;
+      margin-bottom: 10px;
+    }
+
+    .role-btn h3 {
+      color: #2f3542;
+      margin-bottom: 5px;
+    }
+
+    .role-btn p {
+      color: #747d8c;
+      font-size: 0.85rem;
+    }
+
+    .form-section {
+      border-top: 2px solid #dfe4ea;
+      padding-top: 30px;
+    }
+
+    .form-section h3 {
+      margin-bottom: 20px;
+      color: #2f3542;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+    }
+
+    .full-width {
+      grid-column: span 2;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .input-group {
+      margin-bottom: 20px;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: #2f3542;
+      font-size: 0.9rem;
+    }
+
+    .input-group input,
+    .input-group select {
+      width: 100%;
+      padding: 12px 15px;
+      border: 2px solid #dfe4ea;
+      border-radius: 10px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .input-group input:focus,
+    .input-group select:focus {
+      outline: none;
+      border-color: #ff4757;
+      box-shadow: 0 0 0 3px rgba(255, 71, 87, 0.1);
+    }
+
+    .input-group input::placeholder {
+      color: #747d8c;
+      opacity: 0.6;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #ff4757 0%, #ff6b81 100%);
+      color: #ffffff;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(255, 71, 87, 0.4);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .message {
+      margin-top: 20px;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      display: none;
+    }
+
+    .message.error {
+      display: block;
+      background: #fff5f5;
+      color: #ff4757;
+      border: 1px solid #ff4757;
+    }
+
+    .message.success {
+      display: block;
+      background: #f0fff4;
+      color: #2ed573;
+      border: 1px solid #2ed573;
+    }
+
+    small {
+      color: #747d8c;
+      font-size: 0.8rem;
+    }
+
+    @media (max-width: 768px) {
+      .role-buttons {
+        grid-template-columns: 1fr;
+      }
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+      .full-width {
+        grid-column: span 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="role-container">
+    <div class="role-card">
+      <div class="role-header">
+        <h2>Welcome to MealCraft! 👋</h2>
+        <p>How would you like to use MealCraft?</p>
+      </div>
+
+      <div class="role-buttons" id="roleButtons">
+        <button class="role-btn" onclick="selectRole('customer')" id="customerBtn">
+          <div class="icon">🛒</div>
+          <h3>Customer</h3>
+          <p>Order food from restaurants</p>
+        </button>
+
+        <button class="role-btn" onclick="selectRole('restaurant')" id="restaurantBtn">
+          <div class="icon">🏪</div>
+          <h3>Restaurant Partner</h3>
+          <p>List your restaurant and get orders</p>
+        </button>
+      </div>
+
+      <div class="form-section hidden" id="formSection">
+        <h3 id="formTitle">Complete Your Profile</h3>
+        
+        <div class="form-grid">
+          <div class="input-group full-width">
+            <label for="mobile">Mobile Number</label>
+            <input type="tel" id="mobile" placeholder="Enter your mobile number">
+          </div>
+
+          <div class="input-group">
+            <label for="country">Country</label>
+            <select id="country">
+              <option value="">Select Country</option>
+              <option value="USA">United States</option>
+              <option value="UK">United Kingdom</option>
+              <option value="Canada">Canada</option>
+              <option value="Australia">Australia</option>
+              <option value="India">India</option>
+            </select>
+          </div>
+
+          <div class="input-group">
+            <label for="state">State</label>
+            <input type="text" id="state" placeholder="Enter state">
+          </div>
+
+          <div class="input-group">
+            <label for="city">City</label>
+            <input type="text" id="city" placeholder="Enter city">
+          </div>
+
+          <div class="input-group full-width">
+            <label for="address">Full Address</label>
+            <input type="text" id="address" placeholder="Street address, building, etc.">
+          </div>
+
+          <div class="input-group full-width hidden" id="restaurantNameGroup">
+            <label for="restaurantName">Restaurant Name</label>
+            <input type="text" id="restaurantName" placeholder="Enter restaurant name">
+          </div>
+
+          <div class="input-group full-width hidden" id="websiteGroup">
+            <label for="website">Website (optional)</label>
+            <input type="url" id="website" placeholder="https://example.com">
+          </div>
+
+          <div class="input-group full-width hidden" id="tagsGroup">
+            <label for="tags">Cuisine Tags</label>
+            <input type="text" id="tags" placeholder="e.g., Pizza, Burger, Italian">
+            <small>Separate with commas</small>
+          </div>
+        </div>
+
+        <button class="btn btn-primary" onclick="submitRole()" style="margin-top: 20px;">
+          Continue to MealCraft
+        </button>
+
+        <div id="message" class="message"></div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAT4CDao7eHCFU0OO_dee_m6BpjzKv_308",
+      authDomain: "mealcraft-9db35.firebaseapp.com",
+      projectId: "mealcraft-9db35",
+      messagingSenderId: "1052912873454",
+      appId: "1:1052912873454:web:2b794eb8e9524f0ba068ff"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    let currentUser = null;
+    let selectedRole = null;
+
+    const elements = {
+      roleButtons: document.getElementById('roleButtons'),
+      formSection: document.getElementById('formSection'),
+      formTitle: document.getElementById('formTitle'),
+      customerBtn: document.getElementById('customerBtn'),
+      restaurantBtn: document.getElementById('restaurantBtn'),
+      restaurantNameGroup: document.getElementById('restaurantNameGroup'),
+      websiteGroup: document.getElementById('websiteGroup'),
+      tagsGroup: document.getElementById('tagsGroup'),
+      message: document.getElementById('message'),
+      mobile: document.getElementById('mobile'),
+      country: document.getElementById('country'),
+      state: document.getElementById('state'),
+      city: document.getElementById('city'),
+      address: document.getElementById('address'),
+      restaurantName: document.getElementById('restaurantName'),
+      website: document.getElementById('website'),
+      tags: document.getElementById('tags')
+    };
+
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        window.location.replace("../index.html");
+        return;
+      }
+      currentUser = user;
+    });
+
+    window.selectRole = (role) => {
+      selectedRole = role;
+      
+      elements.roleButtons.classList.add('hidden');
+      elements.formSection.classList.remove('hidden');
+      
+      elements.formTitle.textContent = role === 'customer' 
+        ? 'Complete Your Customer Profile' 
+        : 'Complete Your Restaurant Profile';
+      
+      const isRestaurant = role === 'restaurant';
+      elements.restaurantNameGroup.classList.toggle('hidden', !isRestaurant);
+      elements.websiteGroup.classList.toggle('hidden', !isRestaurant);
+      elements.tagsGroup.classList.toggle('hidden', !isRestaurant);
+      
+      elements.customerBtn.classList.toggle('selected', role === 'customer');
+      elements.restaurantBtn.classList.toggle('selected', role === 'restaurant');
+    };
+
+    window.submitRole = async () => {
+      if (!selectedRole) {
+        showMessage('Please select a role first', 'error');
+        return;
+      }
+
+      const formData = {
+        mobile: elements.mobile.value.trim(),
+        country: elements.country.value,
+        state: elements.state.value.trim(),
+        city: elements.city.value.trim(),
+        address: elements.address.value.trim()
+      };
+
+      for (const [key, value] of Object.entries(formData)) {
+        if (!value) {
+          showMessage(`Please enter your ${key}`, 'error');
+          return;
+        }
+      }
+
+      if (!isValidMobile(formData.mobile)) {
+        showMessage('Please enter a valid 10-digit mobile number', 'error');
+        return;
+      }
+
+      try {
+        const submitBtn = document.querySelector('.btn-primary');
+        submitBtn.textContent = 'Saving...';
+        submitBtn.disabled = true;
+
+        const userData = {
+          email: currentUser.email,
+          username: currentUser.displayName || sessionStorage.getItem('tempUsername') || 'User',
+          role: selectedRole,
+          mobile: formData.mobile,
+          country: formData.country,
+          state: formData.state,
+          city: formData.city,
+          address: formData.address,
+          updatedAt: serverTimestamp()
+        };
+
+        if (selectedRole === 'restaurant') {
+          const restaurantData = {
+            restaurantName: elements.restaurantName.value.trim(),
+            website: elements.website.value.trim(),
+            tags: elements.tags.value.split(',').map(tag => tag.trim()).filter(tag => tag),
+            verified: 'pending',
+            ownerId: currentUser.uid,
+            ownerEmail: currentUser.email,
+            ownerName: currentUser.displayName || 'Restaurant Owner',
+            country: formData.country,
+            state: formData.state,
+            city: formData.city,
+            address: formData.address,
+            mobile: formData.mobile,
+            createdAt: serverTimestamp(),
+            updatedAt: serverTimestamp()
+          };
+
+          if (!restaurantData.restaurantName) {
+            showMessage('Please enter restaurant name', 'error');
+            submitBtn.textContent = 'Continue to MealCraft';
+            submitBtn.disabled = false;
+            return;
+          }
+
+          await setDoc(doc(db, 'restaurants', currentUser.uid), restaurantData);
+          userData.restaurantId = currentUser.uid;
+        }
+
+        await setDoc(doc(db, 'users', currentUser.uid), userData, { merge: true });
+
+        sessionStorage.clear();
+        
+        if (selectedRole === 'restaurant') {
+          window.location.href = 'pending-approval.html';
+        } else {
+          window.location.href = 'home.html';
+        }
+      } catch (error) {
+        console.error('Error saving data:', error);
+        showMessage('Error saving your information. Please try again.', 'error');
+        
+        const submitBtn = document.querySelector('.btn-primary');
+        submitBtn.textContent = 'Continue to MealCraft';
+        submitBtn.disabled = false;
+      }
+    };
+
+    const isValidMobile = (mobile) => {
+      const mobileRegex = /^[0-9]{10}$/;
+      return mobileRegex.test(mobile);
+    };
+
+    const showMessage = (message, type) => {
+      elements.message.textContent = message;
+      elements.message.className = `message ${type}`;
+    };
+  </script>
+</body>
+</html>
