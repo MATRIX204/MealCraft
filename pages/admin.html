@@ -1222,7 +1222,9 @@
             where,
             orderBy,
             onSnapshot,
-            Timestamp 
+            Timestamp,
+            getDoc,  // Add this line
+            increment  // Add this if you want to use increment
         } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
@@ -1884,6 +1886,7 @@
         };
 
         // Fix the confirmAssignDelivery function
+// Fix the confirmAssignDelivery function
 window.confirmAssignDelivery = async () => {
     const orderId = document.getElementById('assignOrderId').value;
     const deliveryBoyId = document.getElementById('assignDeliveryBoySelect').value;
@@ -1894,20 +1897,23 @@ window.confirmAssignDelivery = async () => {
     }
 
     try {
-        // Get the delivery boy document
-        const boyDoc = await getDoc(doc(db, COLLECTIONS.DELIVERY_BOYS, deliveryBoyId));
-        if (!boyDoc.exists()) {
+        // Get the delivery boy document using getDoc
+        const deliveryBoyRef = doc(db, COLLECTIONS.DELIVERY_BOYS, deliveryBoyId);
+        const deliveryBoySnap = await getDoc(deliveryBoyRef);
+        
+        if (!deliveryBoySnap.exists()) {
             showMessage('Delivery boy not found', 'error');
             return;
         }
         
-        const boy = boyDoc.data();
+        const boy = deliveryBoySnap.data();
+        
+        // Generate 5-digit OTP
         const otpCode = Math.floor(10000 + Math.random() * 90000).toString();
 
         // Update the order with delivery boy info
         await updateDoc(doc(db, COLLECTIONS.ORDERS, orderId), {
-            deliveryBoyId: deliveryBoyId,  // Store the document ID
-            deliveryBoyUid: boy.uid || '', // Store Firebase Auth UID if exists
+            deliveryBoyId: deliveryBoyId,
             deliveryBoyName: boy.fullName,
             deliveryBoyPhone: boy.phone,
             deliveryBoyMobile: boy.mobile || boy.phone,
