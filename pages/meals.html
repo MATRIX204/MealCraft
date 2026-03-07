@@ -2,12 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>All Meals - Meal Craft</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Copy styles from home.html for consistency */
         * {
             margin: 0;
             padding: 0;
@@ -23,87 +22,281 @@
             color: #1a1a1a;
         }
 
+        /* Header - Mobile First (matches home page) */
         header {
             background: white;
-            padding: 15px 50px;
+            padding: 10px 15px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: space-between;
             position: sticky;
             top: 0;
             z-index: 100;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            flex-wrap: nowrap;
+        }
+
+        @media (min-width: 768px) {
+            header {
+                padding: 15px 50px;
+            }
         }
 
         .logo-top { 
             display: flex; 
             align-items: center; 
-            gap: 10px; 
+            gap: 6px; 
             font-weight: 900; 
             cursor: pointer;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        @media (min-width: 768px) {
+            .logo-top {
+                font-size: 1rem;
+                gap: 10px;
+            }
         }
         
         .mini-logo-card {
             background: linear-gradient(135deg, #e67e22, #d35400);
-            width: 32px; 
-            height: 32px; 
+            width: 28px; 
+            height: 28px; 
             border-radius: 6px;
             display: flex; 
             justify-content: center; 
             align-items: center;
             box-shadow: 0 4px 10px rgba(211, 84, 0, 0.15);
         }
+
+        @media (min-width: 768px) {
+            .mini-logo-card {
+                width: 32px;
+                height: 32px;
+            }
+        }
         
         .mini-logo-card img { 
-            width: 16px; 
+            width: 14px; 
             filter: brightness(0) invert(1);
+        }
+
+        @media (min-width: 768px) {
+            .mini-logo-card img {
+                width: 16px;
+            }
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 10px;
+            margin: 0 5px;
+        }
+
+        @media (min-width: 768px) {
+            .nav-links {
+                gap: 25px;
+                margin: 0;
+            }
         }
 
         .nav-links a {
             text-decoration: none;
             color: #666;
             font-weight: 600;
-            font-size: 0.9rem;
-            margin: 0 15px;
+            font-size: 0.8rem;
+            transition: color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            white-space: nowrap;
         }
 
+        @media (min-width: 768px) {
+            .nav-links a {
+                font-size: 0.9rem;
+                gap: 6px;
+            }
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active { 
+            color: #f37021;
+        }
+
+        .nav-links a i {
+            font-size: 0.8rem;
+        }
+
+        /* Header Actions (matches home page) */
+        .header-actions { 
+            display: flex; 
+            gap: 6px; 
+            align-items: center; 
+            flex-shrink: 0;
+        }
+
+        @media (min-width: 768px) {
+            .header-actions {
+                gap: 15px;
+            }
+        }
+
+        .cart-btn {
+            background: #f37021;
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.75rem;
+            white-space: nowrap;
+        }
+
+        @media (min-width: 768px) {
+            .cart-btn {
+                padding: 8px 18px;
+                font-size: 0.9rem;
+                gap: 8px;
+            }
+        }
+
+        .cart-btn:hover { 
+            transform: translateY(-2px);
+            background-color: #e6651a;
+        }
+
+        .profile-menu {
+            display: flex;
+            align-items: center;
+        }
+
+        .profile-btn {
+            background: #f5f5f5;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-weight: 600;
+            color: #666;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.2s;
+            font-size: 0.75rem;
+            white-space: nowrap;
+        }
+
+        @media (min-width: 768px) {
+            .profile-btn {
+                padding: 8px 15px;
+                font-size: 0.9rem;
+                gap: 8px;
+            }
+        }
+
+        .profile-btn:hover {
+            background: #f37021;
+            color: white;
+        }
+
+        .profile-btn i {
+            font-size: 0.7rem;
+        }
+
+        /* Main Content */
         .content-wrapper {
             max-width: 1200px;
-            margin: 40px auto;
-            padding: 0 20px;
+            margin: 20px auto;
+            padding: 0 15px;
         }
 
+        @media (min-width: 768px) {
+            .content-wrapper {
+                margin: 40px auto;
+                padding: 0 20px;
+            }
+        }
+
+        /* Page Header */
         .page-header {
-            margin-bottom: 40px;
+            margin-bottom: 25px;
+        }
+
+        @media (min-width: 768px) {
+            .page-header {
+                margin-bottom: 40px;
+            }
         }
 
         .page-header h1 {
-            font-size: 2.5rem;
+            font-size: 1.8rem;
             font-weight: 900;
             color: #1a1a1a;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
+        }
+
+        @media (min-width: 768px) {
+            .page-header h1 {
+                font-size: 2.5rem;
+                margin-bottom: 10px;
+            }
         }
 
         .page-header p {
             color: #666;
-            font-size: 1.1rem;
+            font-size: 0.9rem;
         }
 
+        @media (min-width: 768px) {
+            .page-header p {
+                font-size: 1.1rem;
+            }
+        }
+
+        /* Filter Bar - Mobile First */
         .filter-bar {
             display: flex;
-            gap: 15px;
-            margin-bottom: 30px;
+            gap: 8px;
+            margin-bottom: 25px;
             flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        @media (min-width: 768px) {
+            .filter-bar {
+                gap: 15px;
+                margin-bottom: 30px;
+                justify-content: flex-start;
+            }
         }
 
         .filter-tab {
-            padding: 8px 24px;
+            padding: 6px 16px;
             border: 2px solid #eee;
             border-radius: 30px;
             background: white;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
+            font-size: 0.8rem;
+            flex: 1;
+            max-width: 100px;
+        }
+
+        @media (min-width: 768px) {
+            .filter-tab {
+                padding: 8px 24px;
+                font-size: 0.9rem;
+                flex: none;
+                max-width: none;
+            }
         }
 
         .filter-tab:hover,
@@ -113,15 +306,31 @@
             color: white;
         }
 
+        /* Meals Grid - Mobile First */
         .meals-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 25px;
+            grid-template-columns: 1fr;
+            gap: 15px;
         }
 
+        @media (min-width: 480px) {
+            .meals-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .meals-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 25px;
+            }
+        }
+
+        /* Meal Card */
         .meal-card {
             background: white;
-            border-radius: 18px;
+            border-radius: 16px;
             overflow: hidden;
             transition: all 0.3s;
             cursor: pointer;
@@ -129,75 +338,139 @@
         }
 
         .meal-card:hover {
-            transform: translateY(-8px);
+            transform: translateY(-5px);
             box-shadow: 0 15px 30px rgba(0,0,0,0.1);
         }
 
+        .meal-card:active {
+            transform: translateY(-2px);
+        }
+
         .meal-image {
-            height: 150px;
+            height: 120px;
             background: linear-gradient(135deg, #e67e22, #d35400);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2.5rem;
+            font-size: 2rem;
             color: white;
             position: relative;
         }
 
+        @media (min-width: 768px) {
+            .meal-image {
+                height: 150px;
+                font-size: 2.5rem;
+            }
+        }
+
         .meal-type {
             position: absolute;
-            top: 15px;
-            right: 15px;
-            padding: 4px 10px;
+            top: 10px;
+            right: 10px;
+            padding: 3px 8px;
             border-radius: 20px;
-            font-size: 0.7rem;
+            font-size: 0.6rem;
             font-weight: 600;
             background: rgba(255,255,255,0.2);
             color: white;
         }
 
+        @media (min-width: 768px) {
+            .meal-type {
+                top: 15px;
+                right: 15px;
+                padding: 4px 10px;
+                font-size: 0.7rem;
+            }
+        }
+
         .meal-content {
-            padding: 20px;
+            padding: 15px;
+        }
+
+        @media (min-width: 768px) {
+            .meal-content {
+                padding: 20px;
+            }
         }
 
         .meal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 8px;
+            margin-bottom: 5px;
         }
 
         .meal-header h3 {
-            font-size: 1.2rem;
+            font-size: 1rem;
             font-weight: 700;
+        }
+
+        @media (min-width: 768px) {
+            .meal-header h3 {
+                font-size: 1.2rem;
+            }
         }
 
         .meal-price {
             color: #f37021;
             font-weight: 700;
-            font-size: 1.2rem;
+            font-size: 1rem;
+        }
+
+        @media (min-width: 768px) {
+            .meal-price {
+                font-size: 1.2rem;
+            }
         }
 
         .meal-desc {
             color: #666;
-            font-size: 0.9rem;
-            margin-bottom: 10px;
+            font-size: 0.8rem;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
 
+        @media (min-width: 768px) {
+            .meal-desc {
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Loading State */
         .loading-spinner {
             text-align: center;
-            padding: 60px;
+            padding: 40px 20px;
             grid-column: 1 / -1;
         }
 
+        @media (min-width: 768px) {
+            .loading-spinner {
+                padding: 60px;
+            }
+        }
+
         .spinner {
-            width: 50px;
-            height: 50px;
-            border: 4px solid #f5f5f5;
-            border-top: 4px solid #f37021;
+            width: 35px;
+            height: 35px;
+            border: 3px solid #f5f5f5;
+            border-top: 3px solid #f37021;
             border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
+            margin: 0 auto 15px;
+        }
+
+        @media (min-width: 768px) {
+            .spinner {
+                width: 50px;
+                height: 50px;
+                border-width: 4px;
+                margin: 0 auto 20px;
+            }
         }
 
         @keyframes spin {
@@ -205,22 +478,95 @@
             100% { transform: rotate(360deg); }
         }
 
+        /* Empty State */
         .empty-state {
             text-align: center;
-            padding: 60px;
+            padding: 40px 20px;
             color: #999;
             grid-column: 1 / -1;
         }
 
-        @media (max-width: 768px) {
-            .meals-grid {
-                grid-template-columns: 1fr;
+        @media (min-width: 768px) {
+            .empty-state {
+                padding: 60px;
             }
-            
-            header {
-                flex-direction: column;
-                gap: 15px;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            opacity: 0.3;
+        }
+
+        @media (min-width: 768px) {
+            .empty-state i {
+                font-size: 4rem;
+                margin-bottom: 20px;
             }
+        }
+
+        .empty-state h3 {
+            color: #666;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+
+        .empty-state p {
+            font-size: 0.9rem;
+        }
+
+        /* Message Toast */
+        .message {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            left: 20px;
+            padding: 12px 20px;
+            border-radius: 10px;
+            background: white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            display: none;
+            z-index: 1000;
+            animation: slideIn 0.3s ease;
+            border-left: 4px solid;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        @media (min-width: 768px) {
+            .message {
+                top: 30px;
+                right: 30px;
+                left: auto;
+                padding: 15px 25px;
+                font-size: 1rem;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .message.success {
+            border-left-color: #2ecc71;
+            color: #27ae60;
+        }
+
+        .message.error {
+            border-left-color: #e74c3c;
+            color: #c0392b;
+        }
+
+        .message.info {
+            border-left-color: #f39c12;
+            color: #e67e22;
         }
     </style>
 </head>
@@ -233,10 +579,21 @@
             <strong>Meal Craft</strong>
         </div>
         <nav class="nav-links">
-            <a href="home.html">Home</a>
-            <a href="profile.html">Profile</a>
-            <a href="cart.html">Cart</a>
+            <a href="home.html"><i class="fas fa-home"></i></a>
+            <a href="ingredients.html"><i class="fas fa-carrot"></i></a>
+            <a href="profile.html"><i class="fas fa-user"></i></a>
         </nav>
+        <div class="header-actions">
+            <button class="cart-btn" onclick="goToCart()">
+                <i class="fas fa-shopping-cart"></i> <span id="cartCount">0</span>
+            </button>
+            <div class="profile-menu">
+                <button class="profile-btn" id="profileBtn" onclick="handleProfileClick()">
+                    <i class="fas fa-user"></i>
+                    <span id="userName">Guest</span>
+                </button>
+            </div>
+        </div>
     </header>
 
     <main class="content-wrapper">
@@ -246,9 +603,9 @@
         </div>
 
         <div class="filter-bar">
-            <button class="filter-tab active" onclick="filterMeals('all')">All</button>
-            <button class="filter-tab" onclick="filterMeals('veg')">🌱 Veg</button>
-            <button class="filter-tab" onclick="filterMeals('nonveg')">🍗 Non-Veg</button>
+            <button class="filter-tab active" onclick="filterMeals('all', event)">All</button>
+            <button class="filter-tab" onclick="filterMeals('veg', event)">🌱 Veg</button>
+            <button class="filter-tab" onclick="filterMeals('nonveg', event)">🍗 Non-Veg</button>
         </div>
 
         <div id="mealsGrid" class="meals-grid">
@@ -259,9 +616,13 @@
         </div>
     </main>
 
+    <!-- Message Toast -->
+    <div id="message" class="message"></div>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyAT4CDao7eHCFU0OO_dee_m6BpjzKv_308",
@@ -273,8 +634,44 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+        const auth = getAuth(app);
 
+        let currentUser = null;
         let allMeals = [];
+
+        // Check authentication
+        onAuthStateChanged(auth, (user) => {
+            currentUser = user;
+            updateUserDisplay();
+            updateCartCount();
+        });
+
+        // Update user display
+        const updateUserDisplay = () => {
+            const userNameSpan = document.getElementById('userName');
+            if (currentUser) {
+                userNameSpan.textContent = currentUser.displayName?.split(' ')[0] || 'Profile';
+            } else {
+                userNameSpan.textContent = 'Guest';
+            }
+        };
+
+        // Update cart count
+        const updateCartCount = () => {
+            const cartCountSpan = document.getElementById('cartCount');
+            try {
+                if (!currentUser) {
+                    cartCountSpan.textContent = '0';
+                    return;
+                }
+                const allCarts = JSON.parse(localStorage.getItem('carts')) || {};
+                const userCart = allCarts[currentUser.uid] || [];
+                cartCountSpan.textContent = userCart.length;
+            } catch (error) {
+                console.error('Error updating cart count:', error);
+                cartCountSpan.textContent = '0';
+            }
+        };
 
         // Load meals
         const loadMeals = async () => {
@@ -287,6 +684,7 @@
                 displayMeals(allMeals);
             } catch (error) {
                 console.error('Error loading meals:', error);
+                showMessage('Error loading meals', 'error');
             }
         };
 
@@ -295,17 +693,27 @@
             const grid = document.getElementById('mealsGrid');
             
             if (meals.length === 0) {
-                grid.innerHTML = '<div class="empty-state">No meals available</div>';
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-utensils"></i>
+                        <h3>No Meals Available</h3>
+                        <p>Check back later for delicious meals!</p>
+                    </div>
+                `;
                 return;
             }
 
             let html = '';
             meals.forEach(meal => {
+                const icon = meal.category === 'Pizza' ? 'fa-pizza-slice' : 
+                            meal.category === 'Burger' ? 'fa-hamburger' : 
+                            meal.category === 'Pasta' ? 'fa-utensils' : 'fa-utensils';
+                
                 html += `
                     <div class="meal-card" onclick="viewMeal('${meal.id}')">
                         <div class="meal-image">
-                            <i class="fas ${meal.category === 'Pizza' ? 'fa-pizza-slice' : meal.category === 'Burger' ? 'fa-hamburger' : 'fa-utensils'}"></i>
-                            <span class="meal-type">${meal.type === 'veg' ? '🌱 VEG' : '🍗 NON-VEG'}</span>
+                            <i class="fas ${icon}"></i>
+                            <span class="meal-type">${meal.type === 'veg' ? '🌱' : '🍗'}</span>
                         </div>
                         <div class="meal-content">
                             <div class="meal-header">
@@ -322,7 +730,7 @@
         };
 
         // Filter meals
-        window.filterMeals = (type) => {
+        window.filterMeals = (type, event) => {
             const tabs = document.querySelectorAll('.filter-tab');
             tabs.forEach(tab => tab.classList.remove('active'));
             event.target.classList.add('active');
@@ -337,16 +745,60 @@
 
         // View meal
         window.viewMeal = (mealId) => {
+            if (!currentUser) {
+                showLoginPrompt();
+                return;
+            }
             window.location.href = `craft_meal.html?id=${mealId}`;
         };
 
-        // Go to home
+        // Navigation functions
         window.goToHome = () => {
             window.location.href = 'home.html';
         };
 
+        window.goToCart = () => {
+            if (!currentUser) {
+                showLoginPrompt();
+                return;
+            }
+            window.location.href = 'cart.html';
+        };
+
+        window.handleProfileClick = () => {
+            if (!currentUser) {
+                showLoginPrompt();
+            } else {
+                window.location.href = 'profile.html';
+            }
+        };
+
+        // Show login prompt
+        window.showLoginPrompt = () => {
+            showMessage('Please login to customize meals', 'info');
+            setTimeout(() => {
+                window.location.href = '../login.html';
+            }, 1500);
+        };
+
+        // Show message
+        const showMessage = (message, type) => {
+            const msgDiv = document.getElementById('message');
+            const icon = type === 'success' ? 'fa-check-circle' : 
+                        type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle';
+            
+            msgDiv.innerHTML = `<i class="fas ${icon}"></i> ${message}`;
+            msgDiv.className = `message ${type}`;
+            msgDiv.style.display = 'block';
+            
+            setTimeout(() => {
+                msgDiv.style.display = 'none';
+            }, 3000);
+        };
+
         // Load on page load
         loadMeals();
+        updateCartCount();
     </script>
 </body>
 </html>

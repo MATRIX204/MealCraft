@@ -126,10 +126,21 @@ confirmInput.addEventListener('input', () => {
     }
 });
 
-// ===== AUTH STATE CHECK =====
+// ===== AUTH STATE CHECK - MODIFIED =====
 auth.onAuthStateChanged((user) => {
     if (user) {
-        window.location.href = 'pages/home.html';
+        // Check if this is a new signup (we'll set a flag in session storage)
+        const isNewSignup = sessionStorage.getItem('isNewSignup');
+        
+        if (isNewSignup === 'true') {
+            // Clear the flag and stay on role page
+            sessionStorage.removeItem('isNewSignup');
+            console.log("New user, staying on role page");
+        } else {
+            // Existing user - check if profile is completed
+            // This will be handled by role.html redirect
+            console.log("Existing user, let role page handle redirect");
+        }
     }
 });
 
@@ -151,6 +162,9 @@ googleBtn.addEventListener('click', async () => {
         const result = await signInWithPopup(auth, provider);
         const user = result.user;
 
+        // Set flag for new signup
+        sessionStorage.setItem('isNewSignup', 'true');
+
         await setDoc(doc(db, 'users', user.uid), {
             email: user.email,
             username: user.displayName || user.email.split('@')[0],
@@ -164,7 +178,7 @@ googleBtn.addEventListener('click', async () => {
         showMessage('Account created successfully! Redirecting...', 'success');
         
         setTimeout(() => {
-            window.location.href = 'pages/role.html';
+            window.location.href = 'pages/role.html'; // Always go to role page
         }, 1500);
         
     } catch (error) {
@@ -241,6 +255,9 @@ authForm.addEventListener('submit', async (e) => {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
         
+        // Set flag for new signup
+        sessionStorage.setItem('isNewSignup', 'true');
+        
         // Update profile with display name
         await updateProfile(user, {
             displayName: fullName
@@ -260,7 +277,7 @@ authForm.addEventListener('submit', async (e) => {
         showMessage('Account created successfully! Redirecting...', 'success');
         
         setTimeout(() => {
-            window.location.href = 'pages/role.html';
+            window.location.href = 'pages/role.html'; // Always go to role page
         }, 1500);
         
     } catch (error) {
