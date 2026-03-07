@@ -238,20 +238,19 @@
             color: #f37021;
         }
 
-        .otp-section {
-            background: #fff3e0;
-            padding: 15px;
-            border-radius: 12px;
-            margin: 15px 0;
-            text-align: center;
+        .delivery-fee-badge {
+            background: #e0f2fe;
+            color: #0369a1;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-top: 5px;
         }
 
-        .otp-code {
-            font-size: 2.5rem;
-            font-weight: 800;
-            letter-spacing: 10px;
-            color: #f37021;
-            font-family: monospace;
+        .delivery-fee-badge i {
+            margin-right: 4px;
         }
 
         .action-buttons {
@@ -470,6 +469,26 @@
             color: #0050b3;
         }
 
+        .earning-highlight {
+            background: #f0fdf4;
+            border: 1px solid #86efac;
+            border-radius: 12px;
+            padding: 15px;
+            margin: 10px 0;
+            text-align: center;
+        }
+
+        .earning-highlight .amount {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #10b981;
+        }
+
+        .earning-highlight .label {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
         @media (max-width: 900px) {
             .header {
                 flex-direction: column;
@@ -521,17 +540,17 @@
             <div class="stat-card">
                 <h3>My Deliveries</h3>
                 <div class="stat-number" id="myDeliveriesCount">0</div>
-                <div class="stat-sub">Assigned to you</div>
+                <div class="stat-sub">Active deliveries</div>
             </div>
             <div class="stat-card">
-                <h3>Today's Deliveries</h3>
-                <div class="stat-number" id="todayCount">0</div>
-                <div class="stat-sub">Completed today</div>
+                <h3>Today's Earnings</h3>
+                <div class="stat-number" id="todayEarnings">₹0</div>
+                <div class="stat-sub">Delivery fees only</div>
             </div>
             <div class="stat-card">
                 <h3>Total Earnings</h3>
                 <div class="stat-number" id="totalEarnings">₹0</div>
-                <div class="stat-sub">Lifetime (COD)</div>
+                <div class="stat-sub">Lifetime delivery fees</div>
             </div>
         </div>
 
@@ -563,6 +582,10 @@
             <div class="info-box">
                 <p><i class="fas fa-info-circle"></i> After confirming cash collection, you'll be asked to enter OTP to complete delivery.</p>
             </div>
+            <div class="earning-highlight">
+                <div class="label">Your Earnings (Delivery Fee)</div>
+                <div class="amount" id="deliveryFeeAmount">₹40</div>
+            </div>
             <div class="modal-actions">
                 <button class="btn btn-secondary" onclick="closeCashModal()">Cancel</button>
                 <button class="btn btn-success" onclick="cashCollected()">Yes, Cash Collected</button>
@@ -574,8 +597,12 @@
     <div class="modal" id="otpModal">
         <div class="modal-content">
             <h3><i class="fas fa-key"></i> Enter OTP</h3>
-            <p style="color: #666; margin-bottom: 15px;">Ask customer for the 5-digit OTP</p>
+            <p style="color: #666; margin-bottom: 15px;">Ask customer for the 5-digit OTP to complete delivery</p>
             <input type="text" id="otpInput" maxlength="5" placeholder="00000" pattern="[0-9]{5}" autocomplete="off">
+            <div class="earning-highlight">
+                <div class="label">You will earn</div>
+                <div class="amount" id="modalDeliveryFee">₹40</div>
+            </div>
             <div class="modal-actions">
                 <button class="btn btn-secondary" onclick="closeOTPModal()">Cancel</button>
                 <button class="btn btn-success" onclick="verifyOTP()">Verify & Complete Delivery</button>
@@ -599,7 +626,7 @@
             onSnapshot, 
             Timestamp, 
             getDoc,
-            and 
+            increment
         } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
@@ -613,6 +640,9 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
+        // Default delivery fee
+        const DELIVERY_FEE = 40;
+
         // Get delivery info from session storage
         const deliveryId = sessionStorage.getItem('deliveryId');
         const deliveryName = sessionStorage.getItem('deliveryName');
@@ -620,8 +650,6 @@
         const deliveryVehicle = sessionStorage.getItem('deliveryVehicle');
 
         console.log('Delivery ID from session:', deliveryId);
-        console.log('Delivery Name:', deliveryName);
-        console.log('Delivery Vehicle:', deliveryVehicle);
 
         if (!deliveryId) {
             console.log('No delivery ID found, redirecting to login');
@@ -638,6 +666,7 @@
         let currentView = 'available';
         let selectedOrderId = null;
         let currentCashOrderId = null;
+        let currentDeliveryFee = DELIVERY_FEE;
 
         // Setup real-time order listeners
         const setupOrderListeners = () => {
@@ -655,13 +684,8 @@
                 
                 // Orders assigned to this delivery boy (by admin)
                 assignedOrders = allOrders.filter(o => {
-                    // Check if assigned to this delivery boy
                     if (!o.deliveryBoyId) return false;
-                    
-                    const orderDeliveryId = String(o.deliveryBoyId).trim();
-                    const currentDeliveryId = String(deliveryId).trim();
-                    
-                    return orderDeliveryId === currentDeliveryId;
+                    return String(o.deliveryBoyId).trim() === String(deliveryId).trim();
                 });
                 
                 // Orders that this delivery boy has accepted (out-for-delivery)
@@ -680,6 +704,14 @@
             }, (error) => {
                 console.error('Error in orders listener:', error);
             });
+
+            // Also listen to delivery boy's document to get updated earnings
+            onSnapshot(doc(db, 'deliveryBoys', deliveryId), (doc) => {
+                if (doc.exists()) {
+                    const data = doc.data();
+                    // Update total earnings display if needed
+                }
+            });
         };
 
         // Update statistics
@@ -693,23 +725,27 @@
             document.getElementById('availableCount').textContent = available;
             document.getElementById('myDeliveriesCount').textContent = myOrders.length;
             
+            // Today's earnings (delivery fees only)
             const today = new Date();
             today.setHours(0, 0, 0, 0);
             
-            const todayDeliveries = myOrders.filter(o => {
-                if (o.status !== 'delivered' || !o.deliveredAt?.toDate) return false;
-                const deliveredDate = o.deliveredAt.toDate();
-                deliveredDate.setHours(0, 0, 0, 0);
-                return deliveredDate.getTime() === today.getTime();
-            }).length;
+            const todayEarnings = myOrders
+                .filter(o => {
+                    if (o.status !== 'delivered' || !o.deliveredAt?.toDate) return false;
+                    const deliveredDate = o.deliveredAt.toDate();
+                    deliveredDate.setHours(0, 0, 0, 0);
+                    return deliveredDate.getTime() === today.getTime();
+                })
+                .reduce((sum, o) => sum + (o.deliveryFee || DELIVERY_FEE), 0);
             
-            document.getElementById('todayCount').textContent = todayDeliveries;
+            document.getElementById('todayEarnings').textContent = `₹${todayEarnings}`;
             
-            const earnings = myOrders
-                .filter(o => o.status === 'delivered' && o.paymentMethod === 'Cash on Delivery')
-                .reduce((sum, o) => sum + (o.total || 0), 0);
+            // Total earnings (all time)
+            const totalEarnings = myOrders
+                .filter(o => o.status === 'delivered')
+                .reduce((sum, o) => sum + (o.deliveryFee || DELIVERY_FEE), 0);
             
-            document.getElementById('totalEarnings').textContent = `₹${earnings}`;
+            document.getElementById('totalEarnings').textContent = `₹${totalEarnings}`;
         };
 
         // Show available orders (for delivery boys to accept)
@@ -734,15 +770,10 @@
         const displayAvailableOrders = () => {
             const grid = document.getElementById('ordersGrid');
             
-            // Show both:
-            // 1. Orders that are out-for-delivery and not assigned (available for anyone to take)
-            // 2. Orders assigned by admin to this delivery boy (need to be accepted)
-            
             const unassignedOrders = allOrders.filter(o => 
                 o.status === 'out-for-delivery' && !o.deliveryBoyId
             );
             
-            // Orders assigned by admin to this delivery boy that are still pending
             const pendingAssignedOrders = assignedOrders.filter(o => 
                 o.status === 'out-for-delivery' || o.status === 'pending' || o.status === 'preparing'
             );
@@ -766,6 +797,7 @@
                 
                 pendingAssignedOrders.forEach(order => {
                     const statusClass = `status-${order.status || 'pending'}`;
+                    const deliveryFee = order.deliveryFee || DELIVERY_FEE;
                     
                     html += `
                         <div class="order-card assigned">
@@ -806,7 +838,11 @@
 
                             <div class="payment-badge ${order.paymentMethod === 'Cash on Delivery' ? 'cod' : ''}">
                                 <i class="fas ${order.paymentMethod === 'Cash on Delivery' ? 'fa-money-bill' : 'fa-credit-card'}"></i>
-                                ${order.paymentMethod} • ${order.paymentStatus}
+                                ${order.paymentMethod}
+                            </div>
+
+                            <div class="delivery-fee-badge">
+                                <i class="fas fa-motorcycle"></i> You earn: ₹${deliveryFee}
                             </div>
 
                             <button class="btn btn-accept" onclick="acceptOrder('${order.id}')" style="width:100%; margin-top:15px;">
@@ -825,6 +861,7 @@
                 
                 unassignedOrders.forEach(order => {
                     const statusClass = `status-${order.status || 'pending'}`;
+                    const deliveryFee = order.deliveryFee || DELIVERY_FEE;
 
                     html += `
                         <div class="order-card">
@@ -865,7 +902,11 @@
 
                             <div class="payment-badge ${order.paymentMethod === 'Cash on Delivery' ? 'cod' : ''}">
                                 <i class="fas ${order.paymentMethod === 'Cash on Delivery' ? 'fa-money-bill' : 'fa-credit-card'}"></i>
-                                ${order.paymentMethod} • ${order.paymentStatus}
+                                ${order.paymentMethod}
+                            </div>
+
+                            <div class="delivery-fee-badge">
+                                <i class="fas fa-motorcycle"></i> You earn: ₹${deliveryFee}
                             </div>
 
                             <button class="btn btn-primary" onclick="takeOrder('${order.id}')" style="width:100%; margin-top:15px;">
@@ -899,6 +940,7 @@
             let html = '';
             myOrders.forEach(order => {
                 const statusClass = `status-${order.status || 'pending'}`;
+                const deliveryFee = order.deliveryFee || DELIVERY_FEE;
                 
                 // Check if cash has been collected for COD orders
                 const cashCollected = order.cashCollected || false;
@@ -910,14 +952,14 @@
                     if (order.paymentMethod === 'Cash on Delivery' && !cashCollected) {
                         // Show cash collection button first
                         actionButton = `
-                            <button class="btn btn-cash" onclick="collectCash('${order.id}', ${order.total})" style="width:100%;">
+                            <button class="btn btn-cash" onclick="collectCash('${order.id}', ${order.total}, ${deliveryFee})" style="width:100%;">
                                 <i class="fas fa-money-bill"></i> Collect Cash (₹${order.total})
                             </button>
                         `;
                     } else {
-                        // Show OTP verification button (for both COD after cash collection, and online payments)
+                        // Show OTP verification button
                         actionButton = `
-                            <button class="btn btn-otp" onclick="showOTPModal('${order.id}')" style="width:100%;">
+                            <button class="btn btn-otp" onclick="showOTPModal('${order.id}', ${deliveryFee})" style="width:100%;">
                                 <i class="fas fa-key"></i> Enter OTP to Complete Delivery
                             </button>
                         `;
@@ -925,7 +967,7 @@
                 } else if (order.status === 'delivered') {
                     actionButton = `
                         <button class="btn btn-secondary" disabled style="width:100%;">
-                            <i class="fas fa-check-circle"></i> Delivered on ${order.deliveredAt?.toDate ? new Date(order.deliveredAt.toDate()).toLocaleDateString() : ''}
+                            <i class="fas fa-check-circle"></i> Delivered • Earned ₹${deliveryFee}
                         </button>
                     `;
                 }
@@ -967,17 +1009,14 @@
                             ${order.items?.length > 2 ? `<p>+${order.items.length - 2} more items</p>` : ''}
                         </div>
 
-                        ${order.status === 'out-for-delivery' ? `
-                            <div class="otp-section">
-                                <div class="otp-code">${order.otpCode || 'N/A'}</div>
-                                <p style="color: #666; font-size: 0.85rem;">Share this code with customer</p>
-                            </div>
-                        ` : ''}
-
                         <div class="payment-badge ${order.paymentMethod === 'Cash on Delivery' ? 'cod' : ''}">
                             <i class="fas ${order.paymentMethod === 'Cash on Delivery' ? 'fa-money-bill' : 'fa-credit-card'}"></i>
-                            ${order.paymentMethod} • ${order.paymentStatus}
+                            ${order.paymentMethod}
                             ${order.paymentMethod === 'Cash on Delivery' && cashCollected ? ' ✓ Cash Collected' : ''}
+                        </div>
+
+                        <div class="delivery-fee-badge">
+                            <i class="fas fa-motorcycle"></i> Your earnings: ₹${deliveryFee}
                         </div>
 
                         <div class="action-buttons">
@@ -995,7 +1034,7 @@
             if (!confirm('Accept this order and start delivery?')) return;
             
             try {
-                // Generate 5-digit OTP
+                // Generate 5-digit OTP (stored in database, not shown to delivery boy)
                 const otpCode = Math.floor(10000 + Math.random() * 90000).toString();
                 
                 await updateDoc(doc(db, 'orders', orderId), {
@@ -1005,7 +1044,7 @@
                     updatedAt: Timestamp.now()
                 });
                 
-                showMessage(`✅ Order accepted! OTP: ${otpCode}`, 'success');
+                showMessage('✅ Order accepted! Ask customer for OTP to complete delivery.', 'success');
                 showMyOrders();
             } catch (error) {
                 console.error('Error accepting order:', error);
@@ -1018,7 +1057,7 @@
             if (!confirm('Take this order for delivery?')) return;
             
             try {
-                // Generate 5-digit OTP
+                // Generate 5-digit OTP (stored in database, not shown to delivery boy)
                 const otpCode = Math.floor(10000 + Math.random() * 90000).toString();
                 
                 await updateDoc(doc(db, 'orders', orderId), {
@@ -1031,7 +1070,7 @@
                     updatedAt: Timestamp.now()
                 });
                 
-                showMessage(`✅ Order taken! OTP: ${otpCode}`, 'success');
+                showMessage('✅ Order taken! Ask customer for OTP to complete delivery.', 'success');
                 showMyOrders();
             } catch (error) {
                 console.error('Error taking order:', error);
@@ -1040,9 +1079,11 @@
         };
 
         // Collect cash modal
-        window.collectCash = (orderId, amount) => {
+        window.collectCash = (orderId, totalAmount, deliveryFee) => {
             currentCashOrderId = orderId;
-            document.getElementById('cashAmount').textContent = amount;
+            currentDeliveryFee = deliveryFee;
+            document.getElementById('cashAmount').textContent = totalAmount;
+            document.getElementById('deliveryFeeAmount').textContent = `₹${deliveryFee}`;
             document.getElementById('cashModal').classList.add('active');
         };
 
@@ -1066,7 +1107,7 @@
                 closeCashModal();
                 
                 // Automatically show OTP modal
-                showOTPModal(currentCashOrderId);
+                showOTPModal(currentCashOrderId, currentDeliveryFee);
             } catch (error) {
                 console.error('Error recording cash collection:', error);
                 showMessage('Error recording cash collection', 'error');
@@ -1074,8 +1115,10 @@
         };
 
         // OTP Modal
-        window.showOTPModal = (orderId) => {
+        window.showOTPModal = (orderId, deliveryFee) => {
             selectedOrderId = orderId;
+            currentDeliveryFee = deliveryFee;
+            document.getElementById('modalDeliveryFee').textContent = `₹${deliveryFee}`;
             document.getElementById('otpModal').classList.add('active');
             document.getElementById('otpInput').value = '';
             document.getElementById('otpInput').focus();
@@ -1086,7 +1129,7 @@
             selectedOrderId = null;
         };
 
-        // Verify OTP and complete delivery (automatically sets status to delivered)
+        // Verify OTP and complete delivery
         window.verifyOTP = async () => {
             const enteredOTP = document.getElementById('otpInput').value;
             
@@ -1105,12 +1148,22 @@
                 return;
             }
             
-            if (order.otpCode !== enteredOTP) {
-                showMessage('❌ Invalid OTP code', 'error');
-                return;
-            }
-            
             try {
+                // Get the order to check OTP
+                const orderDoc = await getDoc(doc(db, 'orders', selectedOrderId));
+                if (!orderDoc.exists()) {
+                    showMessage('Order not found', 'error');
+                    closeOTPModal();
+                    return;
+                }
+                
+                const orderData = orderDoc.data();
+                
+                if (orderData.otpCode !== enteredOTP) {
+                    showMessage('❌ Invalid OTP code', 'error');
+                    return;
+                }
+                
                 const updates = {
                     status: 'delivered',
                     deliveredAt: Timestamp.now(),
@@ -1124,18 +1177,15 @@
                 
                 await updateDoc(doc(db, 'orders', selectedOrderId), updates);
                 
-                // Update delivery boy stats
+                // Update delivery boy stats with delivery fee
                 const deliveryRef = doc(db, 'deliveryBoys', deliveryId);
-                const deliveryDoc = await getDoc(deliveryRef);
-                if (deliveryDoc.exists()) {
-                    const currentDeliveries = deliveryDoc.data().totalDeliveries || 0;
-                    await updateDoc(deliveryRef, {
-                        totalDeliveries: currentDeliveries + 1,
-                        lastDelivery: Timestamp.now()
-                    });
-                }
+                await updateDoc(deliveryRef, {
+                    totalDeliveries: increment(1),
+                    totalEarnings: increment(order.deliveryFee || DELIVERY_FEE),
+                    lastDelivery: Timestamp.now()
+                });
                 
-                showMessage('✅ Order delivered successfully!', 'success');
+                showMessage(`✅ Order delivered! You earned ₹${order.deliveryFee || DELIVERY_FEE}`, 'success');
                 closeOTPModal();
                 showMyOrders();
             } catch (error) {
