@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>Delivery Dashboard - MealCraft</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -19,22 +19,43 @@
             color: #0f172a;
         }
 
+        /* Header Styles */
         .header {
             background: #0f172a;
             color: white;
-            padding: 20px 40px;
+            padding: 15px 20px;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            flex-direction: column;
+            gap: 15px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        @media (min-width: 768px) {
+            .header {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                padding: 20px 40px;
+            }
         }
 
         .logo {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-weight: 700;
             display: flex;
             align-items: center;
             gap: 10px;
+            justify-content: center;
+        }
+
+        @media (min-width: 768px) {
+            .logo {
+                font-size: 1.5rem;
+                justify-content: flex-start;
+            }
         }
 
         .logo i {
@@ -43,8 +64,18 @@
 
         .header-right {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 20px;
+            gap: 15px;
+            width: 100%;
+        }
+
+        @media (min-width: 768px) {
+            .header-right {
+                flex-direction: row;
+                justify-content: flex-end;
+                width: auto;
+            }
         }
 
         .delivery-info {
@@ -54,6 +85,16 @@
             background: rgba(255,255,255,0.1);
             padding: 8px 16px;
             border-radius: 30px;
+            width: 100%;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        @media (min-width: 768px) {
+            .delivery-info {
+                width: auto;
+                justify-content: flex-start;
+            }
         }
 
         .delivery-info i {
@@ -64,14 +105,24 @@
             background: #ef4444;
             color: white;
             border: none;
-            padding: 10px 24px;
+            padding: 10px 20px;
             border-radius: 8px;
             font-weight: 600;
             cursor: pointer;
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 8px;
             transition: all 0.3s;
+            width: 100%;
+            max-width: 200px;
+        }
+
+        @media (min-width: 768px) {
+            .logout-btn {
+                width: auto;
+                padding: 10px 24px;
+            }
         }
 
         .logout-btn:hover {
@@ -79,64 +130,222 @@
             transform: translateY(-2px);
         }
 
-        .content {
-            max-width: 1300px;
-            margin: 40px auto;
-            padding: 0 20px;
+        .logout-btn:active {
+            transform: translateY(0);
         }
 
+        /* Main Content */
+        .content {
+            max-width: 1300px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+        @media (min-width: 768px) {
+            .content {
+                margin: 40px auto;
+                padding: 0 20px;
+            }
+        }
+
+        /* Stats Grid - Mobile First */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 25px;
-            margin-bottom: 40px;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        @media (min-width: 480px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .stats-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 25px;
+                margin-bottom: 40px;
+            }
         }
 
         .stat-card {
             background: white;
-            padding: 25px;
+            padding: 20px;
             border-radius: 16px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
             border-left: 4px solid #ef4444;
         }
 
+        @media (min-width: 768px) {
+            .stat-card {
+                padding: 25px;
+            }
+        }
+
         .stat-card h3 {
             color: #64748b;
-            font-size: 0.9rem;
-            margin-bottom: 10px;
+            font-size: 0.8rem;
+            margin-bottom: 8px;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        @media (min-width: 768px) {
+            .stat-card h3 {
+                font-size: 0.9rem;
+                margin-bottom: 10px;
+            }
         }
 
         .stat-number {
-            font-size: 2.2rem;
+            font-size: 1.8rem;
             font-weight: 700;
             color: #0f172a;
             margin-bottom: 5px;
         }
 
+        @media (min-width: 768px) {
+            .stat-number {
+                font-size: 2.2rem;
+            }
+        }
+
         .stat-sub {
             color: #94a3b8;
-            font-size: 0.85rem;
+            font-size: 0.75rem;
         }
 
+        @media (min-width: 768px) {
+            .stat-sub {
+                font-size: 0.85rem;
+            }
+        }
+
+        /* Tab Buttons */
+        .tab-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        @media (min-width: 480px) {
+            .tab-buttons {
+                flex-direction: row;
+                gap: 15px;
+                margin-bottom: 30px;
+            }
+        }
+
+        .tab-btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            font-size: 0.9rem;
+        }
+
+        @media (min-width: 480px) {
+            .tab-btn {
+                width: auto;
+                padding: 12px 24px;
+                font-size: 1rem;
+            }
+        }
+
+        .tab-btn.btn-primary {
+            background: #f37021;
+            color: white;
+        }
+
+        .tab-btn.btn-secondary {
+            background: #64748b;
+            color: white;
+        }
+
+        .tab-btn.btn-primary:hover,
+        .tab-btn.btn-secondary:hover {
+            transform: translateY(-2px);
+        }
+
+        .tab-btn.btn-primary:active,
+        .tab-btn.btn-secondary:active {
+            transform: translateY(0);
+        }
+
+        /* Section Title */
+        .section-title {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.2rem;
+        }
+
+        @media (min-width: 768px) {
+            .section-title {
+                margin-bottom: 25px;
+                font-size: 1.5rem;
+            }
+        }
+
+        .section-title i {
+            color: #ef4444;
+        }
+
+        /* Orders Grid */
         .orders-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-            gap: 25px;
+            grid-template-columns: 1fr;
+            gap: 15px;
         }
 
+        @media (min-width: 640px) {
+            .orders-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .orders-grid {
+                grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+                gap: 25px;
+            }
+        }
+
+        /* Order Card */
         .order-card {
             background: white;
             border-radius: 16px;
-            padding: 25px;
+            padding: 20px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
             border-left: 4px solid #ef4444;
             transition: all 0.3s;
         }
 
+        @media (min-width: 768px) {
+            .order-card {
+                padding: 25px;
+            }
+        }
+
         .order-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .order-card:active {
+            transform: translateY(-2px);
         }
 
         .order-card.assigned {
@@ -145,21 +354,44 @@
 
         .order-header {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            flex-direction: column;
+            gap: 10px;
             margin-bottom: 15px;
         }
 
+        @media (min-width: 480px) {
+            .order-header {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+        }
+
         .order-header h3 {
-            font-size: 1.2rem;
+            font-size: 1rem;
             font-weight: 700;
+            word-break: break-word;
+        }
+
+        @media (min-width: 768px) {
+            .order-header h3 {
+                font-size: 1.2rem;
+            }
         }
 
         .order-status {
             padding: 4px 12px;
             border-radius: 20px;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: 600;
+            display: inline-block;
+            width: fit-content;
+        }
+
+        @media (min-width: 768px) {
+            .order-status {
+                font-size: 0.75rem;
+            }
         }
 
         .status-pending {
@@ -196,18 +428,41 @@
 
         .detail-row {
             display: flex;
-            margin-bottom: 10px;
-            font-size: 0.95rem;
+            flex-direction: column;
+            gap: 5px;
+            margin-bottom: 12px;
+        }
+
+        @media (min-width: 480px) {
+            .detail-row {
+                flex-direction: row;
+                margin-bottom: 10px;
+            }
         }
 
         .detail-label {
-            width: 80px;
             color: #64748b;
+            font-size: 0.85rem;
+            min-width: 80px;
+        }
+
+        @media (min-width: 768px) {
+            .detail-label {
+                font-size: 0.95rem;
+            }
         }
 
         .detail-value {
             color: #0f172a;
             font-weight: 500;
+            font-size: 0.9rem;
+            word-break: break-word;
+        }
+
+        @media (min-width: 768px) {
+            .detail-value {
+                font-size: 0.95rem;
+            }
         }
 
         .items-preview {
@@ -215,13 +470,21 @@
             padding: 12px;
             border-radius: 8px;
             margin: 10px 0;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
+        }
+
+        @media (min-width: 768px) {
+            .items-preview {
+                font-size: 0.9rem;
+            }
         }
 
         .items-preview p {
             margin: 5px 0;
             display: flex;
             justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 5px;
         }
 
         .payment-badge {
@@ -229,8 +492,15 @@
             padding: 4px 12px;
             background: #f1f5f9;
             border-radius: 20px;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             margin-top: 5px;
+            word-break: break-word;
+        }
+
+        @media (min-width: 768px) {
+            .payment-badge {
+                font-size: 0.8rem;
+            }
         }
 
         .payment-badge.cod {
@@ -243,10 +513,16 @@
             color: #0369a1;
             padding: 4px 12px;
             border-radius: 20px;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: 600;
             display: inline-block;
             margin-top: 5px;
+        }
+
+        @media (min-width: 768px) {
+            .delivery-fee-badge {
+                font-size: 0.8rem;
+            }
         }
 
         .delivery-fee-badge i {
@@ -255,12 +531,19 @@
 
         .action-buttons {
             display: flex;
+            flex-direction: column;
             gap: 10px;
             margin-top: 15px;
         }
 
+        @media (min-width: 480px) {
+            .action-buttons {
+                flex-direction: row;
+            }
+        }
+
         .btn {
-            padding: 12px 20px;
+            padding: 12px 16px;
             border: none;
             border-radius: 8px;
             font-weight: 600;
@@ -271,6 +554,19 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
+            font-size: 0.9rem;
+            width: 100%;
+        }
+
+        @media (min-width: 480px) {
+            .btn {
+                padding: 12px 20px;
+                font-size: 1rem;
+            }
+        }
+
+        .btn:active {
+            transform: translateY(0);
         }
 
         .btn-primary {
@@ -278,7 +574,7 @@
             color: white;
         }
 
-        .btn-primary:hover {
+        .btn-primary:hover:not(:active) {
             background: #e6651a;
             transform: translateY(-2px);
         }
@@ -288,7 +584,7 @@
             color: white;
         }
 
-        .btn-success:hover {
+        .btn-success:hover:not(:active) {
             background: #0f9d6a;
             transform: translateY(-2px);
         }
@@ -298,7 +594,7 @@
             color: white;
         }
 
-        .btn-warning:hover {
+        .btn-warning:hover:not(:active) {
             background: #d97706;
             transform: translateY(-2px);
         }
@@ -308,7 +604,7 @@
             color: white;
         }
 
-        .btn-secondary:hover {
+        .btn-secondary:hover:not(:active) {
             background: #4b5563;
             transform: translateY(-2px);
         }
@@ -318,7 +614,7 @@
             color: white;
         }
 
-        .btn-accept:hover {
+        .btn-accept:hover:not(:active) {
             background: #2563eb;
             transform: translateY(-2px);
         }
@@ -328,7 +624,7 @@
             color: white;
         }
 
-        .btn-cash:hover {
+        .btn-cash:hover:not(:active) {
             background: #7c3aed;
             transform: translateY(-2px);
         }
@@ -338,34 +634,68 @@
             color: white;
         }
 
-        .btn-otp:hover {
+        .btn-otp:hover:not(:active) {
             background: #0f9d6a;
             transform: translateY(-2px);
         }
 
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Empty State */
         .empty-state {
             text-align: center;
-            padding: 60px;
+            padding: 40px 20px;
             color: #94a3b8;
             grid-column: 1 / -1;
         }
 
+        @media (min-width: 768px) {
+            .empty-state {
+                padding: 60px;
+            }
+        }
+
         .empty-state i {
-            font-size: 4rem;
-            margin-bottom: 20px;
+            font-size: 3rem;
+            margin-bottom: 15px;
             opacity: 0.3;
+        }
+
+        @media (min-width: 768px) {
+            .empty-state i {
+                font-size: 4rem;
+                margin-bottom: 20px;
+            }
         }
 
         .empty-state h3 {
             color: #475569;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
         }
 
+        @media (min-width: 768px) {
+            .empty-state h3 {
+                font-size: 1.3rem;
+                margin-bottom: 10px;
+            }
+        }
+
+        .empty-state p {
+            font-size: 0.9rem;
+        }
+
+        /* Message Toast */
         .message {
             position: fixed;
-            top: 30px;
-            right: 30px;
-            padding: 15px 25px;
+            top: 20px;
+            right: 20px;
+            left: 20px;
+            padding: 15px 20px;
             border-radius: 10px;
             background: white;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
@@ -374,6 +704,17 @@
             animation: slideIn 0.3s ease;
             border-left: 4px solid;
             font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        @media (min-width: 768px) {
+            .message {
+                top: 30px;
+                right: 30px;
+                left: auto;
+                padding: 15px 25px;
+                font-size: 1rem;
+            }
         }
 
         @keyframes slideIn {
@@ -402,6 +743,7 @@
             color: #92400e;
         }
 
+        /* Modal Styles */
         .modal {
             display: none;
             position: fixed;
@@ -413,6 +755,7 @@
             z-index: 2000;
             align-items: center;
             justify-content: center;
+            padding: 15px;
         }
 
         .modal.active {
@@ -422,27 +765,49 @@
         .modal-content {
             background: white;
             border-radius: 24px;
-            padding: 40px;
+            padding: 30px 20px;
             max-width: 400px;
-            width: 90%;
+            width: 100%;
             text-align: center;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        @media (min-width: 768px) {
+            .modal-content {
+                padding: 40px;
+            }
         }
 
         .modal-content h3 {
             color: #f37021;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        @media (min-width: 768px) {
+            .modal-content h3 {
+                font-size: 1.5rem;
+                margin-bottom: 20px;
+            }
         }
 
         .modal-content input {
             width: 100%;
             padding: 15px;
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             text-align: center;
             letter-spacing: 5px;
             border: 2px solid #e2e8f0;
             border-radius: 12px;
             margin-bottom: 20px;
             font-family: monospace;
+        }
+
+        @media (min-width: 768px) {
+            .modal-content input {
+                font-size: 1.5rem;
+            }
         }
 
         .modal-content input:focus {
@@ -452,16 +817,31 @@
 
         .modal-actions {
             display: flex;
-            gap: 15px;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        @media (min-width: 480px) {
+            .modal-actions {
+                flex-direction: row;
+            }
         }
 
         .info-box {
             background: #e6f7ff;
             border-left: 4px solid #1890ff;
-            padding: 15px;
+            padding: 12px;
             margin: 15px 0;
             border-radius: 8px;
             text-align: left;
+            font-size: 0.9rem;
+        }
+
+        @media (min-width: 768px) {
+            .info-box {
+                padding: 15px;
+                font-size: 1rem;
+            }
         }
 
         .info-box p {
@@ -473,42 +853,70 @@
             background: #f0fdf4;
             border: 1px solid #86efac;
             border-radius: 12px;
-            padding: 15px;
+            padding: 12px;
             margin: 10px 0;
             text-align: center;
         }
 
+        @media (min-width: 768px) {
+            .earning-highlight {
+                padding: 15px;
+                margin: 10px 0;
+            }
+        }
+
         .earning-highlight .amount {
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: 700;
             color: #10b981;
         }
 
+        @media (min-width: 768px) {
+            .earning-highlight .amount {
+                font-size: 2rem;
+            }
+        }
+
         .earning-highlight .label {
             color: #64748b;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
-        @media (max-width: 900px) {
-            .header {
-                flex-direction: column;
-                gap: 15px;
-                text-align: center;
-            }
-            
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
+        /* Section Headers */
+        .section-header {
+            grid-column: 1 / -1;
+            margin: 10px 0 15px;
+        }
+
+        @media (min-width: 768px) {
+            .section-header {
+                margin: 20px 0 15px;
             }
         }
 
-        @media (max-width: 600px) {
-            .stats-grid {
-                grid-template-columns: 1fr;
+        .section-header h3 {
+            color: #3b82f6;
+            font-size: 1.1rem;
+        }
+
+        @media (min-width: 768px) {
+            .section-header h3 {
+                font-size: 1.2rem;
             }
-            
-            .action-buttons {
-                flex-direction: column;
-            }
+        }
+
+        .section-header.orange h3 {
+            color: #f37021;
+        }
+
+        /* Touch-friendly improvements */
+        button, .btn {
+            min-height: 44px;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        input, select, textarea {
+            font-size: 16px; /* Prevents zoom on mobile */
         }
     </style>
 </head>
@@ -554,15 +962,13 @@
             </div>
         </div>
 
-        <div style="margin-bottom: 30px;">
-            <div style="display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
-                <button class="btn btn-primary" onclick="showAvailableOrders()" id="showAvailableBtn">📦 Available Orders</button>
-                <button class="btn btn-secondary" onclick="showMyOrders()" id="showMyBtn">🚚 My Deliveries</button>
-            </div>
+        <div class="tab-buttons">
+            <button class="tab-btn btn-primary" onclick="showAvailableOrders()" id="showAvailableBtn">📦 Available Orders</button>
+            <button class="tab-btn btn-secondary" onclick="showMyOrders()" id="showMyBtn">🚚 My Deliveries</button>
         </div>
 
-        <h2 style="margin-bottom: 25px; display: flex; align-items: center; gap: 10px;" id="sectionTitle">
-            <i class="fas fa-clipboard-list" style="color: #ef4444;"></i>
+        <h2 class="section-title" id="sectionTitle">
+            <i class="fas fa-clipboard-list"></i>
             Available Orders
         </h2>
         
@@ -570,6 +976,7 @@
             <div class="empty-state">
                 <i class="fas fa-motorcycle"></i>
                 <h3>Loading orders...</h3>
+                <p>Please wait while we fetch your deliveries</p>
             </div>
         </div>
     </main>
@@ -578,7 +985,7 @@
     <div class="modal" id="cashModal">
         <div class="modal-content">
             <h3><i class="fas fa-money-bill"></i> Cash Collected</h3>
-            <p style="color: #666; margin-bottom: 20px;">Have you collected ₹<span id="cashAmount">0</span> from customer?</p>
+            <p style="color: #666; margin-bottom: 15px;">Have you collected ₹<span id="cashAmount">0</span> from customer?</p>
             <div class="info-box">
                 <p><i class="fas fa-info-circle"></i> After confirming cash collection, you'll be asked to enter OTP to complete delivery.</p>
             </div>
@@ -598,14 +1005,14 @@
         <div class="modal-content">
             <h3><i class="fas fa-key"></i> Enter OTP</h3>
             <p style="color: #666; margin-bottom: 15px;">Ask customer for the 5-digit OTP to complete delivery</p>
-            <input type="text" id="otpInput" maxlength="5" placeholder="00000" pattern="[0-9]{5}" autocomplete="off">
+            <input type="text" id="otpInput" maxlength="5" placeholder="00000" pattern="[0-9]{5}" inputmode="numeric" autocomplete="off">
             <div class="earning-highlight">
                 <div class="label">You will earn</div>
                 <div class="amount" id="modalDeliveryFee">₹40</div>
             </div>
             <div class="modal-actions">
                 <button class="btn btn-secondary" onclick="closeOTPModal()">Cancel</button>
-                <button class="btn btn-success" onclick="verifyOTP()">Verify & Complete Delivery</button>
+                <button class="btn btn-success" onclick="verifyOTP()">Verify & Complete</button>
             </div>
         </div>
     </div>
@@ -662,7 +1069,7 @@
 
         let allOrders = [];
         let myOrders = [];
-        let assignedOrders = []; // Orders assigned by admin but not yet accepted
+        let assignedOrders = [];
         let currentView = 'available';
         let selectedOrderId = null;
         let currentCashOrderId = null;
@@ -672,7 +1079,6 @@
         const setupOrderListeners = () => {
             console.log('Setting up order listeners for delivery boy:', deliveryId);
             
-            // Listen to all orders
             onSnapshot(collection(db, 'orders'), (snapshot) => {
                 console.log('Orders snapshot received, total orders:', snapshot.size);
                 
@@ -682,13 +1088,11 @@
                     allOrders.push(orderData);
                 });
                 
-                // Orders assigned to this delivery boy (by admin)
                 assignedOrders = allOrders.filter(o => {
                     if (!o.deliveryBoyId) return false;
                     return String(o.deliveryBoyId).trim() === String(deliveryId).trim();
                 });
                 
-                // Orders that this delivery boy has accepted (out-for-delivery)
                 myOrders = assignedOrders.filter(o => o.status === 'out-for-delivery' || o.status === 'delivered');
                 
                 console.log('Assigned orders count:', assignedOrders.length);
@@ -703,29 +1107,19 @@
                 }
             }, (error) => {
                 console.error('Error in orders listener:', error);
-            });
-
-            // Also listen to delivery boy's document to get updated earnings
-            onSnapshot(doc(db, 'deliveryBoys', deliveryId), (doc) => {
-                if (doc.exists()) {
-                    const data = doc.data();
-                    // Update total earnings display if needed
-                }
+                showMessage('Error loading orders', 'error');
             });
         };
 
         // Update statistics
         const updateStats = () => {
-            // Available orders: out-for-delivery and not assigned to anyone
             const available = allOrders.filter(o => 
-                o.status === 'out-for-delivery' && 
-                !o.deliveryBoyId
+                o.status === 'out-for-delivery' && !o.deliveryBoyId
             ).length;
             
             document.getElementById('availableCount').textContent = available;
             document.getElementById('myDeliveriesCount').textContent = myOrders.length;
             
-            // Today's earnings (delivery fees only)
             const today = new Date();
             today.setHours(0, 0, 0, 0);
             
@@ -740,7 +1134,6 @@
             
             document.getElementById('todayEarnings').textContent = `₹${todayEarnings}`;
             
-            // Total earnings (all time)
             const totalEarnings = myOrders
                 .filter(o => o.status === 'delivered')
                 .reduce((sum, o) => sum + (o.deliveryFee || DELIVERY_FEE), 0);
@@ -748,25 +1141,25 @@
             document.getElementById('totalEarnings').textContent = `₹${totalEarnings}`;
         };
 
-        // Show available orders (for delivery boys to accept)
+        // Show available orders
         window.showAvailableOrders = () => {
             currentView = 'available';
-            document.getElementById('sectionTitle').innerHTML = '<i class="fas fa-clipboard-list" style="color: #ef4444;"></i> Available Orders';
-            document.getElementById('showAvailableBtn').className = 'btn btn-primary';
-            document.getElementById('showMyBtn').className = 'btn btn-secondary';
+            document.getElementById('sectionTitle').innerHTML = '<i class="fas fa-clipboard-list"></i> Available Orders';
+            document.getElementById('showAvailableBtn').className = 'tab-btn btn-primary';
+            document.getElementById('showMyBtn').className = 'tab-btn btn-secondary';
             displayAvailableOrders();
         };
 
-        // Show my orders (accepted deliveries)
+        // Show my orders
         window.showMyOrders = () => {
             currentView = 'my';
-            document.getElementById('sectionTitle').innerHTML = '<i class="fas fa-motorcycle" style="color: #ef4444;"></i> My Deliveries';
-            document.getElementById('showAvailableBtn').className = 'btn btn-secondary';
-            document.getElementById('showMyBtn').className = 'btn btn-primary';
+            document.getElementById('sectionTitle').innerHTML = '<i class="fas fa-motorcycle"></i> My Deliveries';
+            document.getElementById('showAvailableBtn').className = 'tab-btn btn-secondary';
+            document.getElementById('showMyBtn').className = 'tab-btn btn-primary';
             displayMyOrders();
         };
 
-        // Display available orders (for delivery boys to accept)
+        // Display available orders
         const displayAvailableOrders = () => {
             const grid = document.getElementById('ordersGrid');
             
@@ -791,9 +1184,8 @@
 
             let html = '';
 
-            // First show admin-assigned orders that need acceptance
             if (pendingAssignedOrders.length > 0) {
-                html += '<div style="grid-column: 1 / -1; margin-bottom: 10px;"><h3 style="color: #3b82f6;">📋 Orders Assigned to You (Click Accept to Start)</h3></div>';
+                html += '<div class="section-header"><h3>📋 Orders Assigned to You</h3></div>';
                 
                 pendingAssignedOrders.forEach(order => {
                     const statusClass = `status-${order.status || 'pending'}`;
@@ -845,18 +1237,17 @@
                                 <i class="fas fa-motorcycle"></i> You earn: ₹${deliveryFee}
                             </div>
 
-                            <button class="btn btn-accept" onclick="acceptOrder('${order.id}')" style="width:100%; margin-top:15px;">
-                                <i class="fas fa-check-circle"></i> Accept Order & Start Delivery
+                            <button class="btn btn-accept" onclick="acceptOrder('${order.id}')">
+                                <i class="fas fa-check-circle"></i> Accept & Start
                             </button>
                         </div>
                     `;
                 });
             }
 
-            // Then show unassigned orders available for anyone to take
             if (unassignedOrders.length > 0) {
                 if (pendingAssignedOrders.length > 0) {
-                    html += '<div style="grid-column: 1 / -1; margin: 20px 0 10px;"><h3 style="color: #f37021;">📦 Available for Anyone</h3></div>';
+                    html += '<div class="section-header orange"><h3>📦 Available for Anyone</h3></div>';
                 }
                 
                 unassignedOrders.forEach(order => {
@@ -909,7 +1300,7 @@
                                 <i class="fas fa-motorcycle"></i> You earn: ₹${deliveryFee}
                             </div>
 
-                            <button class="btn btn-primary" onclick="takeOrder('${order.id}')" style="width:100%; margin-top:15px;">
+                            <button class="btn btn-primary" onclick="takeOrder('${order.id}')">
                                 <i class="fas fa-motorcycle"></i> Take Order
                             </button>
                         </div>
@@ -920,11 +1311,9 @@
             grid.innerHTML = html;
         };
 
-        // Display my accepted orders
+        // Display my orders
         const displayMyOrders = () => {
             const grid = document.getElementById('ordersGrid');
-            
-            console.log('Displaying my orders. Current myOrders array:', myOrders);
 
             if (myOrders.length === 0) {
                 grid.innerHTML = `
@@ -941,33 +1330,28 @@
             myOrders.forEach(order => {
                 const statusClass = `status-${order.status || 'pending'}`;
                 const deliveryFee = order.deliveryFee || DELIVERY_FEE;
-                
-                // Check if cash has been collected for COD orders
                 const cashCollected = order.cashCollected || false;
                 
-                // Determine which button to show
                 let actionButton = '';
                 
                 if (order.status === 'out-for-delivery') {
                     if (order.paymentMethod === 'Cash on Delivery' && !cashCollected) {
-                        // Show cash collection button first
                         actionButton = `
-                            <button class="btn btn-cash" onclick="collectCash('${order.id}', ${order.total}, ${deliveryFee})" style="width:100%;">
+                            <button class="btn btn-cash" onclick="collectCash('${order.id}', ${order.total}, ${deliveryFee})">
                                 <i class="fas fa-money-bill"></i> Collect Cash (₹${order.total})
                             </button>
                         `;
                     } else {
-                        // Show OTP verification button
                         actionButton = `
-                            <button class="btn btn-otp" onclick="showOTPModal('${order.id}', ${deliveryFee})" style="width:100%;">
-                                <i class="fas fa-key"></i> Enter OTP to Complete Delivery
+                            <button class="btn btn-otp" onclick="showOTPModal('${order.id}', ${deliveryFee})">
+                                <i class="fas fa-key"></i> Enter OTP
                             </button>
                         `;
                     }
                 } else if (order.status === 'delivered') {
                     actionButton = `
-                        <button class="btn btn-secondary" disabled style="width:100%;">
-                            <i class="fas fa-check-circle"></i> Delivered • Earned ₹${deliveryFee}
+                        <button class="btn btn-secondary" disabled>
+                            <i class="fas fa-check-circle"></i> Delivered • +₹${deliveryFee}
                         </button>
                     `;
                 }
@@ -1012,11 +1396,11 @@
                         <div class="payment-badge ${order.paymentMethod === 'Cash on Delivery' ? 'cod' : ''}">
                             <i class="fas ${order.paymentMethod === 'Cash on Delivery' ? 'fa-money-bill' : 'fa-credit-card'}"></i>
                             ${order.paymentMethod}
-                            ${order.paymentMethod === 'Cash on Delivery' && cashCollected ? ' ✓ Cash Collected' : ''}
+                            ${order.paymentMethod === 'Cash on Delivery' && cashCollected ? ' ✓ Collected' : ''}
                         </div>
 
                         <div class="delivery-fee-badge">
-                            <i class="fas fa-motorcycle"></i> Your earnings: ₹${deliveryFee}
+                            <i class="fas fa-motorcycle"></i> Earnings: ₹${deliveryFee}
                         </div>
 
                         <div class="action-buttons">
@@ -1029,12 +1413,11 @@
             grid.innerHTML = html;
         };
 
-        // Accept an order assigned by admin
+        // Accept order
         window.acceptOrder = async (orderId) => {
             if (!confirm('Accept this order and start delivery?')) return;
             
             try {
-                // Generate 5-digit OTP (stored in database, not shown to delivery boy)
                 const otpCode = Math.floor(10000 + Math.random() * 90000).toString();
                 
                 await updateDoc(doc(db, 'orders', orderId), {
@@ -1044,20 +1427,19 @@
                     updatedAt: Timestamp.now()
                 });
                 
-                showMessage('✅ Order accepted! Ask customer for OTP to complete delivery.', 'success');
+                showMessage('✅ Order accepted! Ask customer for OTP.', 'success');
                 showMyOrders();
             } catch (error) {
                 console.error('Error accepting order:', error);
-                showMessage('Error accepting order: ' + error.message, 'error');
+                showMessage('Error: ' + error.message, 'error');
             }
         };
 
-        // Take an unassigned order
+        // Take order
         window.takeOrder = async (orderId) => {
             if (!confirm('Take this order for delivery?')) return;
             
             try {
-                // Generate 5-digit OTP (stored in database, not shown to delivery boy)
                 const otpCode = Math.floor(10000 + Math.random() * 90000).toString();
                 
                 await updateDoc(doc(db, 'orders', orderId), {
@@ -1070,15 +1452,15 @@
                     updatedAt: Timestamp.now()
                 });
                 
-                showMessage('✅ Order taken! Ask customer for OTP to complete delivery.', 'success');
+                showMessage('✅ Order taken! Ask customer for OTP.', 'success');
                 showMyOrders();
             } catch (error) {
                 console.error('Error taking order:', error);
-                showMessage('Error taking order: ' + error.message, 'error');
+                showMessage('Error: ' + error.message, 'error');
             }
         };
 
-        // Collect cash modal
+        // Cash collection
         window.collectCash = (orderId, totalAmount, deliveryFee) => {
             currentCashOrderId = orderId;
             currentDeliveryFee = deliveryFee;
@@ -1096,20 +1478,17 @@
             if (!currentCashOrderId) return;
             
             try {
-                // Mark cash as collected in the order
                 await updateDoc(doc(db, 'orders', currentCashOrderId), {
                     cashCollected: true,
                     cashCollectedAt: Timestamp.now(),
                     updatedAt: Timestamp.now()
                 });
                 
-                showMessage('✅ Cash collected! Now enter OTP to complete delivery', 'success');
+                showMessage('✅ Cash collected! Now enter OTP', 'success');
                 closeCashModal();
-                
-                // Automatically show OTP modal
                 showOTPModal(currentCashOrderId, currentDeliveryFee);
             } catch (error) {
-                console.error('Error recording cash collection:', error);
+                console.error('Error:', error);
                 showMessage('Error recording cash collection', 'error');
             }
         };
@@ -1129,19 +1508,18 @@
             selectedOrderId = null;
         };
 
-        // Verify OTP and complete delivery
+        // Verify OTP
         window.verifyOTP = async () => {
             const enteredOTP = document.getElementById('otpInput').value;
             
             if (!selectedOrderId) return;
             
             if (!enteredOTP || enteredOTP.length !== 5) {
-                showMessage('Please enter a valid 5-digit OTP', 'error');
+                showMessage('Please enter valid 5-digit OTP', 'error');
                 return;
             }
             
             const order = myOrders.find(o => o.id === selectedOrderId);
-            
             if (!order) {
                 showMessage('Order not found', 'error');
                 closeOTPModal();
@@ -1149,7 +1527,6 @@
             }
             
             try {
-                // Get the order to check OTP
                 const orderDoc = await getDoc(doc(db, 'orders', selectedOrderId));
                 if (!orderDoc.exists()) {
                     showMessage('Order not found', 'error');
@@ -1170,14 +1547,12 @@
                     updatedAt: Timestamp.now()
                 };
                 
-                // If COD and cash was collected, mark payment as paid
                 if (order.paymentMethod === 'Cash on Delivery') {
                     updates.paymentStatus = 'paid';
                 }
                 
                 await updateDoc(doc(db, 'orders', selectedOrderId), updates);
                 
-                // Update delivery boy stats with delivery fee
                 const deliveryRef = doc(db, 'deliveryBoys', deliveryId);
                 await updateDoc(deliveryRef, {
                     totalDeliveries: increment(1),
@@ -1185,11 +1560,11 @@
                     lastDelivery: Timestamp.now()
                 });
                 
-                showMessage(`✅ Order delivered! You earned ₹${order.deliveryFee || DELIVERY_FEE}`, 'success');
+                showMessage(`✅ Delivered! You earned ₹${order.deliveryFee || DELIVERY_FEE}`, 'success');
                 closeOTPModal();
                 showMyOrders();
             } catch (error) {
-                console.error('Error verifying OTP:', error);
+                console.error('Error:', error);
                 showMessage('Error completing delivery', 'error');
             }
         };
@@ -1216,18 +1591,14 @@
         };
 
         // Initialize
-        console.log('Initializing delivery dashboard...');
         setupOrderListeners();
         showAvailableOrders();
 
-        // Enter key for OTP
+        // Event listeners
         document.getElementById('otpInput')?.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                verifyOTP();
-            }
+            if (e.key === 'Enter') verifyOTP();
         });
 
-        // Click outside to close modals
         window.onclick = (event) => {
             if (event.target.classList.contains('modal')) {
                 event.target.classList.remove('active');
