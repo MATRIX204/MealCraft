@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Ingredients - Meal Craft</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Copy styles from meals.html with modifications */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: #F9F7F5;
+            background-image: 
+                radial-gradient(circle at 0% 0%, rgba(255, 140, 50, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 100% 100%, rgba(255, 140, 50, 0.1) 0%, transparent 40%);
+            color: #1a1a1a;
+        }
+
+        header {
+            background: white;
+            padding: 15px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .logo-top { 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            font-weight: 900; 
+            cursor: pointer;
+        }
+        
+        .mini-logo-card {
+            background: linear-gradient(135deg, #e67e22, #d35400);
+            width: 32px; 
+            height: 32px; 
+            border-radius: 6px;
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(211, 84, 0, 0.15);
+        }
+        
+        .mini-logo-card img { 
+            width: 16px; 
+            filter: brightness(0) invert(1);
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #666;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin: 0 15px;
+        }
+
+        .content-wrapper {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .page-header {
+            margin-bottom: 40px;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #1a1a1a;
+            margin-bottom: 10px;
+        }
+
+        .page-header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .ingredients-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .ingredient-card {
+            background: white;
+            border-radius: 18px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s;
+            border: 1px solid #eee;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+        }
+
+        .ingredient-card:hover {
+            transform: translateY(-5px);
+            border-color: #f37021;
+            box-shadow: 0 10px 20px rgba(243, 112, 33, 0.1);
+        }
+
+        .ingredient-icon {
+            width: 80px;
+            height: 80px;
+            background: #fff3e0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: #f37021;
+            font-size: 2.2rem;
+        }
+
+        .ingredient-card h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .ingredient-price {
+            color: #f37021;
+            font-weight: 700;
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+
+        .ingredient-category {
+            color: #999;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .loading-spinner {
+            text-align: center;
+            padding: 60px;
+            grid-column: 1 / -1;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #f5f5f5;
+            border-top: 4px solid #f37021;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px;
+            color: #999;
+            grid-column: 1 / -1;
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-top" onclick="goToHome()">
+            <div class="mini-logo-card">
+                <img src="https://img.icons8.com/ios-filled/50/ffffff/cutlery.png" alt="Logo">
+            </div>
+            <strong>Meal Craft</strong>
+        </div>
+        <nav class="nav-links">
+            <a href="home.html">Home</a>
+            <a href="meals.html">Meals</a>
+            <a href="profile.html">Profile</a>
+        </nav>
+    </header>
+
+    <main class="content-wrapper">
+        <div class="page-header">
+            <h1>All Ingredients</h1>
+            <p>Fresh ingredients for your perfect meal</p>
+        </div>
+
+        <div id="ingredientsGrid" class="ingredients-grid">
+            <div class="loading-spinner">
+                <div class="spinner"></div>
+                <p>Loading ingredients...</p>
+            </div>
+        </div>
+    </main>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAT4CDao7eHCFU0OO_dee_m6BpjzKv_308",
+            authDomain: "mealcraft-9db35.firebaseapp.com",
+            projectId: "mealcraft-9db35",
+            messagingSenderId: "1052912873454",
+            appId: "1:1052912873454:web:2b794eb8e9524f0ba068ff"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Load ingredients
+        const loadIngredients = async () => {
+            try {
+                const snapshot = await getDocs(collection(db, 'ingredients'));
+                const grid = document.getElementById('ingredientsGrid');
+                
+                if (snapshot.empty) {
+                    grid.innerHTML = '<div class="empty-state">No ingredients available</div>';
+                    return;
+                }
+
+                let html = '';
+                snapshot.forEach(doc => {
+                    const ing = doc.data();
+                    const icon = ing.category === 'Cheese' ? 'fa-cheese' : 
+                                ing.category === 'Vegetable' ? 'fa-carrot' :
+                                ing.category === 'Meat' ? 'fa-drumstick-bite' : 'fa-pepper-hot';
+                    
+                    html += `
+                        <div class="ingredient-card">
+                            <div class="ingredient-icon">
+                                <i class="fas ${icon}"></i>
+                            </div>
+                            <h3>${ing.name}</h3>
+                            <div class="ingredient-price">₹${ing.price}</div>
+                            <div class="ingredient-category">${ing.category}</div>
+                        </div>
+                    `;
+                });
+                
+                grid.innerHTML = html;
+            } catch (error) {
+                console.error('Error loading ingredients:', error);
+            }
+        };
+
+        // Go to home
+        window.goToHome = () => {
+            window.location.href = 'home.html';
+        };
+
+        // Load on page load
+        loadIngredients();
+    </script>
+</body>
+</html>

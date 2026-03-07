@@ -1,1333 +1,2513 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Panel - MealCraft</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: #f1f2f6;
-      min-height: 100vh;
-      color: #2f3542;
-    }
-
-    .admin-container {
-      min-height: 100vh;
-    }
-
-    .admin-header {
-      background: #2f3542;
-      color: #ffffff;
-      padding: 20px 40px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-
-    .admin-header .logo {
-      font-size: 1.8rem;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .header-actions {
-      display: flex;
-      gap: 20px;
-      align-items: center;
-    }
-
-    .admin-info {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      background: rgba(255,255,255,0.1);
-      padding: 8px 15px;
-      border-radius: 30px;
-    }
-
-    .admin-avatar {
-      width: 35px;
-      height: 35px;
-      background: #ff4757;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 600;
-    }
-
-    .logout-btn {
-      background: rgba(255, 255, 255, 0.2);
-      color: #ffffff;
-      border: 2px solid #ffffff;
-      padding: 10px 20px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: 500;
-      transition: all 0.3s ease;
-    }
-
-    .logout-btn:hover {
-      background: #ffffff;
-      color: #ff4757;
-    }
-
-    .admin-content {
-      max-width: 1400px;
-      margin: 40px auto;
-      padding: 0 20px;
-    }
-
-    .admin-stats {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 25px;
-      margin-bottom: 40px;
-    }
-
-    .stat-card {
-      background: #ffffff;
-      padding: 30px;
-      border-radius: 20px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.05);
-      transition: transform 0.3s ease;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .stat-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-    }
-
-    .stat-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 4px;
-      height: 100%;
-      background: linear-gradient(135deg, #ff4757 0%, #ff6b81 100%);
-    }
-
-    .stat-card h3 {
-      color: #747d8c;
-      font-size: 1rem;
-      margin-bottom: 15px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    .stat-card .number {
-      color: #2f3542;
-      font-size: 2.5rem;
-      font-weight: 700;
-      margin-bottom: 5px;
-    }
-
-    .stat-card .sub-text {
-      color: #747d8c;
-      font-size: 0.9rem;
-    }
-
-    .admin-tabs {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 30px;
-      background: #ffffff;
-      padding: 10px;
-      border-radius: 15px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    }
-
-    .tab-btn {
-      padding: 12px 25px;
-      border: none;
-      background: transparent;
-      color: #747d8c;
-      font-weight: 500;
-      cursor: pointer;
-      border-radius: 10px;
-      transition: all 0.3s ease;
-      font-family: 'Poppins', sans-serif;
-      font-size: 1rem;
-    }
-
-    .tab-btn:hover {
-      background: #f1f2f6;
-      color: #ff4757;
-    }
-
-    .tab-btn.active {
-      background: #ff4757;
-      color: #ffffff;
-    }
-
-    .admin-section {
-      background: #ffffff;
-      border-radius: 20px;
-      padding: 30px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.05);
-    }
-
-    .section-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 25px;
-      flex-wrap: wrap;
-      gap: 15px;
-    }
-
-    .section-header h2 {
-      color: #2f3542;
-      font-size: 1.5rem;
-    }
-
-    .filter-select {
-      padding: 10px 20px;
-      border: 2px solid #dfe4ea;
-      border-radius: 10px;
-      font-family: 'Poppins', sans-serif;
-      color: #2f3542;
-      cursor: pointer;
-      min-width: 200px;
-    }
-
-    .filter-select:focus {
-      outline: none;
-      border-color: #ff4757;
-    }
-
-    .restaurant-grid,
-    .users-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-      gap: 25px;
-    }
-
-    .restaurant-card,
-    .user-card {
-      background: #f8f9fa;
-      border-radius: 15px;
-      padding: 25px;
-      transition: all 0.3s ease;
-      border: 2px solid transparent;
-    }
-
-    .restaurant-card:hover,
-    .user-card:hover {
-      border-color: #ff4757;
-      box-shadow: 0 5px 20px rgba(255, 71, 87, 0.1);
-    }
-
-    .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: start;
-      margin-bottom: 15px;
-    }
-
-    .card-header h3 {
-      color: #2f3542;
-      font-size: 1.2rem;
-      margin-right: 10px;
-    }
-
-    .status-badge {
-      padding: 6px 12px;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      white-space: nowrap;
-    }
-
-    .status-pending {
-      background: #fff3cd;
-      color: #856404;
-    }
-
-    .status-approved {
-      background: #d4edda;
-      color: #155724;
-    }
-
-    .status-rejected {
-      background: #f8d7da;
-      color: #721c24;
-    }
-
-    .card-details {
-      margin: 15px 0;
-    }
-
-    .detail-row {
-      display: flex;
-      margin-bottom: 10px;
-      font-size: 0.9rem;
-    }
-
-    .detail-label {
-      width: 100px;
-      color: #747d8c;
-      font-weight: 500;
-    }
-
-    .detail-value {
-      color: #2f3542;
-      font-weight: 500;
-      flex: 1;
-    }
-
-    .tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 5px;
-      margin-top: 10px;
-    }
-
-    .tag {
-      background: #dfe4ea;
-      padding: 4px 10px;
-      border-radius: 15px;
-      font-size: 0.8rem;
-      color: #2f3542;
-    }
-
-    .card-actions {
-      display: flex;
-      gap: 10px;
-      margin-top: 20px;
-      flex-wrap: wrap;
-    }
-
-    .btn {
-      padding: 10px 20px;
-      border: none;
-      border-radius: 8px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      font-family: 'Poppins', sans-serif;
-      font-size: 0.9rem;
-      flex: 1;
-      min-width: 100px;
-    }
-
-    .btn-approve {
-      background: #2ed573;
-      color: #ffffff;
-    }
-
-    .btn-approve:hover:not(:disabled) {
-      background: #28b463;
-      transform: translateY(-2px);
-    }
-
-    .btn-reject {
-      background: #ff4757;
-      color: #ffffff;
-    }
-
-    .btn-reject:hover:not(:disabled) {
-      background: #ff2e3a;
-      transform: translateY(-2px);
-    }
-
-    .btn-view {
-      background: #747d8c;
-      color: #ffffff;
-    }
-
-    .btn-view:hover:not(:disabled) {
-      background: #5f6a7a;
-      transform: translateY(-2px);
-    }
-
-    .btn:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-
-    .empty-state {
-      text-align: center;
-      padding: 60px 20px;
-      color: #747d8c;
-      grid-column: 1 / -1;
-    }
-
-    .empty-state .icon {
-      font-size: 4rem;
-      margin-bottom: 20px;
-      opacity: 0.5;
-    }
-
-    .empty-state h3 {
-      color: #2f3542;
-      margin-bottom: 10px;
-    }
-
-    .loading-spinner {
-      display: inline-block;
-      width: 40px;
-      height: 40px;
-      border: 4px solid #f3f3f3;
-      border-top: 4px solid #ff4757;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
-
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    .message {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      padding: 15px 25px;
-      border-radius: 10px;
-      background: #ffffff;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-      display: none;
-      z-index: 1000;
-      animation: slideIn 0.3s ease;
-      max-width: 400px;
-    }
-
-    @keyframes slideIn {
-      from {
-        transform: translateX(100%);
-        opacity: 0;
-      }
-      to {
-        transform: translateX(0);
-        opacity: 1;
-      }
-    }
-
-    .message.success {
-      border-left: 4px solid #2ed573;
-    }
-
-    .message.error {
-      border-left: 4px solid #ff4757;
-    }
-
-    .message.info {
-      border-left: 4px solid #ffa502;
-    }
-
-    .refresh-btn {
-      background: #ff4757;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: 500;
-      transition: all 0.3s ease;
-    }
-
-    .refresh-btn:hover {
-      background: #ff2e3a;
-      transform: translateY(-2px);
-    }
-
-    .search-box {
-      padding: 10px 15px;
-      border: 2px solid #dfe4ea;
-      border-radius: 10px;
-      font-family: 'Poppins', sans-serif;
-      min-width: 250px;
-    }
-
-    .search-box:focus {
-      outline: none;
-      border-color: #ff4757;
-    }
-
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.5);
-      z-index: 1000;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .modal.active {
-      display: flex;
-    }
-
-    .modal-content {
-      background: #ffffff;
-      border-radius: 20px;
-      padding: 40px;
-      max-width: 500px;
-      width: 90%;
-      max-height: 80vh;
-      overflow-y: auto;
-    }
-
-    .modal-content h3 {
-      color: #ff4757;
-      margin-bottom: 20px;
-    }
-
-    .modal-details {
-      margin: 20px 0;
-    }
-
-    .modal-details .detail-row {
-      padding: 10px 0;
-      border-bottom: 1px solid #dfe4ea;
-    }
-
-    .close-modal {
-      background: #ff4757;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 8px;
-      cursor: pointer;
-      width: 100%;
-      font-weight: 500;
-    }
-
-    @media (max-width: 768px) {
-      .admin-header {
-        flex-direction: column;
-        gap: 15px;
-        text-align: center;
-        padding: 15px;
-      }
-      
-      .admin-stats {
-        grid-template-columns: 1fr;
-      }
-      
-      .admin-tabs {
-        flex-wrap: wrap;
-      }
-      
-      .tab-btn {
-        flex: 1;
-        padding: 10px;
-        font-size: 0.9rem;
-      }
-      
-      .restaurant-grid,
-      .users-grid {
-        grid-template-columns: 1fr;
-      }
-      
-      .section-header {
-        flex-direction: column;
-        align-items: stretch;
-      }
-      
-      .filter-select {
-        width: 100%;
-      }
-      
-      .card-actions {
-        flex-direction: column;
-      }
-      
-      .btn {
-        width: 100%;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MealCraft Admin - Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f1f5f9;
+            color: #0f172a;
+        }
+
+        .admin-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 280px;
+            background: #0f172a;
+            color: white;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            transition: all 0.3s;
+            box-shadow: 4px 0 20px rgba(0,0,0,0.1);
+        }
+
+        .sidebar-header {
+            padding: 30px 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .sidebar-header .logo {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .sidebar-header h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .sidebar-header p {
+            font-size: 0.85rem;
+            opacity: 0.7;
+            margin-top: 5px;
+        }
+
+        .admin-profile {
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .admin-avatar {
+            width: 50px;
+            height: 50px;
+            background: #ef4444;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .admin-info h4 {
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+
+        .admin-info p {
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+
+        .nav-menu {
+            padding: 20px 0;
+        }
+
+        .nav-item {
+            padding: 15px 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: rgba(255,255,255,0.7);
+            cursor: pointer;
+            transition: all 0.3s;
+            border-left: 4px solid transparent;
+        }
+
+        .nav-item:hover {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+
+        .nav-item.active {
+            background: rgba(239,68,68,0.2);
+            color: #ef4444;
+            border-left-color: #ef4444;
+        }
+
+        .nav-item i {
+            width: 24px;
+            font-size: 1.2rem;
+        }
+
+        .nav-item span {
+            flex: 1;
+            font-weight: 500;
+        }
+
+        .nav-item .badge {
+            background: #ef4444;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+        }
+
+        .main-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 30px;
+        }
+
+        .top-bar {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .page-title h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .page-title p {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        .logout-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(239,68,68,0.3);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border-left: 4px solid #ef4444;
+        }
+
+        .stat-card h3 {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .stat-number {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 5px;
+        }
+
+        .stat-sub {
+            color: #94a3b8;
+            font-size: 0.85rem;
+        }
+
+        .section {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .section-header h2 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-header h2 i {
+            color: #ef4444;
+        }
+
+        .add-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+
+        .add-btn:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(239,68,68,0.3);
+        }
+
+        .filter-bar {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            flex: 1;
+            padding: 12px 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-family: 'Inter', sans-serif;
+            min-width: 250px;
+        }
+
+        .filter-select {
+            padding: 12px 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-family: 'Inter', sans-serif;
+            min-width: 180px;
+            background: white;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+        }
+
+        .orders-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .order-row {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+            transition: all 0.3s;
+        }
+
+        .order-row:hover {
+            border-color: #ef4444;
+            box-shadow: 0 5px 15px rgba(239,68,68,0.1);
+        }
+
+        .order-info {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .order-id {
+            font-weight: 700;
+            color: #ef4444;
+            background: #fee2e2;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .order-customer {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .order-customer i {
+            color: #64748b;
+            width: 20px;
+        }
+
+        .order-amount {
+            font-weight: 700;
+            color: #10b981;
+        }
+
+        .order-status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-preparing {
+            background: #cce5ff;
+            color: #004085;
+        }
+
+        .status-out-for-delivery {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-delivered {
+            background: #d1e7dd;
+            color: #0f5132;
+        }
+
+        .status-cancelled {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .order-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-primary {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .btn-success {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-warning {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #64748b;
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.1);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .meal-card {
+            background: #f8fafc;
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s;
+            border: 1px solid #e2e8f0;
+        }
+
+        .meal-card:hover {
+            transform: translateY(-5px);
+            border-color: #ef4444;
+            box-shadow: 0 10px 20px rgba(239,68,68,0.1);
+        }
+
+        .meal-header {
+            padding: 20px;
+            background: linear-gradient(135deg, #ef4444, #f87171);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .meal-header h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .meal-price {
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .meal-body {
+            padding: 20px;
+        }
+
+        .user-card {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .user-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .user-header h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .user-status {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .status-active {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-inactive {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .city-card {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .city-info h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .city-info p {
+            color: #64748b;
+            font-size: 0.85rem;
+        }
+
+        .city-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .modal-content h3 {
+            color: #ef4444;
+            margin-bottom: 25px;
+            font-size: 1.5rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .modal-content input,
+        .modal-content select,
+        .modal-content textarea {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+        }
+
+        .modal-content input:focus,
+        .modal-content select:focus,
+        .modal-content textarea:focus {
+            outline: none;
+            border-color: #ef4444;
+        }
+
+        .checkbox-group {
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .checkbox-item:last-child {
+            border-bottom: none;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin-right: 12px;
+        }
+
+        .checkbox-item label {
+            flex: 1;
+            cursor: pointer;
+        }
+
+        .close-modal {
+            background: #e2e8f0;
+            color: #475569;
+            border: none;
+            padding: 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .message {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            padding: 15px 25px;
+            border-radius: 10px;
+            background: white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            display: none;
+            z-index: 1100;
+            animation: slideIn 0.3s ease;
+            border-left: 4px solid;
+            font-weight: 500;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .message.success {
+            border-left-color: #10b981;
+            color: #065f46;
+        }
+
+        .message.error {
+            border-left-color: #ef4444;
+            color: #991b1b;
+        }
+
+        .message.info {
+            border-left-color: #f59e0b;
+            color: #92400e;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px;
+            color: #94a3b8;
+            grid-column: 1 / -1;
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
+
+        .empty-state h3 {
+            color: #475569;
+            margin-bottom: 10px;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f1f5f9;
+            border-top: 4px solid #ef4444;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 80px;
+            }
+            .sidebar-header h2,
+            .sidebar-header p,
+            .admin-info,
+            .nav-item span {
+                display: none;
+            }
+            .main-content {
+                margin-left: 80px;
+            }
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .admin-container {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+            .main-content {
+                margin-left: 0;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            .order-info {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="admin-container">
-    <header class="admin-header">
-      <div class="logo">
-        <span>🍳</span>
-        <span>MealCraft Admin</span>
-      </div>
-      <div class="header-actions">
-        <button class="refresh-btn" onclick="refreshData()">🔄 Refresh</button>
-        <div class="admin-info" id="adminInfo">
-          <div class="admin-avatar" id="adminAvatar">A</div>
-          <span id="adminEmail">Loading...</span>
-        </div>
-        <button class="logout-btn" onclick="logout()">Logout</button>
-      </div>
-    </header>
-
-    <main class="admin-content">
-      <div class="admin-stats">
-        <div class="stat-card">
-          <h3>Total Users</h3>
-          <div class="number" id="totalUsers">-</div>
-          <div class="sub-text" id="userBreakdown">Customers: 0 | Partners: 0</div>
-        </div>
-        <div class="stat-card">
-          <h3>Total Restaurants</h3>
-          <div class="number" id="totalRestaurants">-</div>
-          <div class="sub-text" id="restaurantBreakdown">Total registered</div>
-        </div>
-        <div class="stat-card">
-          <h3>Pending Verification</h3>
-          <div class="number" id="pendingVerification">-</div>
-          <div class="sub-text">Awaiting review</div>
-        </div>
-        <div class="stat-card">
-          <h3>Approved Partners</h3>
-          <div class="number" id="approvedPartners">-</div>
-          <div class="sub-text">Active restaurants</div>
-        </div>
-      </div>
-
-      <div class="admin-tabs">
-        <button class="tab-btn active" onclick="switchTab('restaurants')" id="tabRestaurants">
-          🏪 Restaurants
-        </button>
-        <button class="tab-btn" onclick="switchTab('users')" id="tabUsers">
-          👥 Users
-        </button>
-      </div>
-
-      <div id="restaurantsSection" class="admin-section">
-        <div class="section-header">
-          <h2>Restaurant Management</h2>
-          <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-            <input type="text" class="search-box" id="restaurantSearch" placeholder="Search restaurants..." onkeyup="searchRestaurants()">
-            <select class="filter-select" id="restaurantFilter" onchange="filterRestaurants()">
-              <option value="all">All Restaurants</option>
-              <option value="pending">Pending</option>
-              <option value="approved">Approved</option>
-              <option value="rejected">Rejected</option>
-            </select>
-          </div>
-        </div>
-        <div id="restaurantList" class="restaurant-grid">
-          <div class="empty-state" id="restaurantLoading">
-            <div class="loading-spinner"></div>
-            <h3>Loading restaurants...</h3>
-          </div>
-        </div>
-      </div>
-
-      <div id="usersSection" class="admin-section" style="display: none;">
-        <div class="section-header">
-          <h2>User Management</h2>
-          <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-            <input type="text" class="search-box" id="userSearch" placeholder="Search users..." onkeyup="searchUsers()">
-            <select class="filter-select" id="userFilter" onchange="filterUsers()">
-              <option value="all">All Users</option>
-              <option value="customer">Customers</option>
-              <option value="restaurant">Restaurant Partners</option>
-            </select>
-          </div>
-        </div>
-        <div id="usersList" class="users-grid">
-          <div class="empty-state" id="usersLoading">
-            <div class="loading-spinner"></div>
-            <h3>Loading users...</h3>
-          </div>
-        </div>
-      </div>
-    </main>
-  </div>
-
-  <!-- Details Modal -->
-  <div class="modal" id="detailsModal">
-    <div class="modal-content">
-      <h3 id="modalTitle">Details</h3>
-      <div id="modalContent" class="modal-details"></div>
-      <button class="close-modal" onclick="closeModal()">Close</button>
-    </div>
-  </div>
-
-  <!-- Message Toast -->
-  <div id="message" class="message"></div>
-
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { 
-      getAuth, 
-      onAuthStateChanged, 
-      signOut 
-    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-    import { 
-      getFirestore, 
-      collection, 
-      query, 
-      where, 
-      getDocs, 
-      doc, 
-      updateDoc,
-      getDoc,
-      orderBy,
-      limit 
-    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-    // Firebase Configuration
-    const firebaseConfig = {
-      apiKey: "AIzaSyAT4CDao7eHCFU0OO_dee_m6BpjzKv_308",
-      authDomain: "mealcraft-9db35.firebaseapp.com",
-      projectId: "mealcraft-9db35",
-      messagingSenderId: "1052912873454",
-      appId: "1:1052912873454:web:2b794eb8e9524f0ba068ff"
-    };
-
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-
-    // Global variables
-    let allRestaurants = [];
-    let allUsers = [];
-    let filteredRestaurants = [];
-    let filteredUsers = [];
-    let isLoading = false;
-
-    // Check authentication and admin status
-    onAuthStateChanged(auth, async (user) => {
-      if (!user) {
-        console.log('No user found, redirecting to login');
-        window.location.replace("../index.html");
-        return;
-      }
-
-      // Strict admin check
-      if (user.email !== 'admin@mealcraft.com') {
-        console.log('Access denied: Not admin', user.email);
-        showMessage('Access denied. Admin only area.', 'error');
-        setTimeout(() => {
-          window.location.replace("home.html");
-        }, 2000);
-        return;
-      }
-
-      // Update admin info
-      document.getElementById('adminEmail').textContent = user.email;
-      document.getElementById('adminAvatar').textContent = user.email.charAt(0).toUpperCase();
-      
-      // Load dashboard data
-      await loadDashboardData();
-    });
-
-    // Load all dashboard data
-    const loadDashboardData = async () => {
-      if (isLoading) return;
-      
-      isLoading = true;
-      
-      try {
-        // Show loading states
-        document.getElementById('totalUsers').textContent = '...';
-        document.getElementById('totalRestaurants').textContent = '...';
-        document.getElementById('pendingVerification').textContent = '...';
-        document.getElementById('approvedPartners').textContent = '...';
-
-        // Load users
-        await loadUsers();
-        
-        // Load restaurants
-        await loadRestaurants();
-        
-        // Update stats
-        updateStats();
-        
-      } catch (error) {
-        console.error('Error loading dashboard:', error);
-        
-        if (error.code === 'permission-denied') {
-          showMessage('Permission denied. Please check Firebase rules.', 'error');
-        } else {
-          showMessage('Error loading data: ' + error.message, 'error');
-        }
-      } finally {
-        isLoading = false;
-      }
-    };
-
-    // Load users from Firestore
-    const loadUsers = async () => {
-      try {
-        const usersSnapshot = await getDocs(collection(db, 'users'));
-        allUsers = [];
-        
-        usersSnapshot.forEach(doc => {
-          allUsers.push({ 
-            id: doc.id, 
-            ...doc.data() 
-          });
-        });
-        
-        filteredUsers = [...allUsers];
-        displayUsers(filteredUsers);
-        
-      } catch (error) {
-        console.error('Error loading users:', error);
-        throw error;
-      }
-    };
-
-    // Load restaurants from Firestore
-    const loadRestaurants = async () => {
-      try {
-        const restaurantsSnapshot = await getDocs(collection(db, 'restaurants'));
-        allRestaurants = [];
-        
-        restaurantsSnapshot.forEach(doc => {
-          const data = doc.data();
-          allRestaurants.push({ 
-            id: doc.id, 
-            ...data,
-            // Ensure verified status exists
-            verified: data.verified || 'pending'
-          });
-        });
-        
-        filteredRestaurants = [...allRestaurants];
-        displayRestaurants(filteredRestaurants);
-        
-      } catch (error) {
-        console.error('Error loading restaurants:', error);
-        throw error;
-      }
-    };
-
-    // Update statistics
-    const updateStats = () => {
-      // User stats
-      const customers = allUsers.filter(u => u.role === 'customer').length;
-      const partners = allUsers.filter(u => u.role === 'restaurant').length;
-      
-      document.getElementById('totalUsers').textContent = allUsers.length;
-      document.getElementById('userBreakdown').textContent = 
-        `Customers: ${customers} | Partners: ${partners}`;
-
-      // Restaurant stats
-      const pending = allRestaurants.filter(r => r.verified === 'pending').length;
-      const approved = allRestaurants.filter(r => r.verified === 'approved').length;
-      const rejected = allRestaurants.filter(r => r.verified === 'rejected').length;
-      
-      document.getElementById('totalRestaurants').textContent = allRestaurants.length;
-      document.getElementById('pendingVerification').textContent = pending;
-      document.getElementById('approvedPartners').textContent = approved;
-      document.getElementById('restaurantBreakdown').textContent = 
-        `Pending: ${pending} | Approved: ${approved} | Rejected: ${rejected}`;
-    };
-
-    // Display restaurants in grid
-    const displayRestaurants = (restaurants) => {
-      const list = document.getElementById('restaurantList');
-      const loadingEl = document.getElementById('restaurantLoading');
-      
-      if (loadingEl) {
-        loadingEl.style.display = 'none';
-      }
-      
-      if (!restaurants || restaurants.length === 0) {
-        list.innerHTML = `
-          <div class="empty-state">
-            <div class="icon">🏪</div>
-            <h3>No Restaurants Found</h3>
-            <p>There are no restaurants registered yet.</p>
-          </div>
-        `;
-        return;
-      }
-
-      // Sort: pending first, then by date
-      restaurants.sort((a, b) => {
-        if (a.verified === 'pending' && b.verified !== 'pending') return -1;
-        if (a.verified !== 'pending' && b.verified === 'pending') return 1;
-        
-        // Sort by creation date if available
-        const dateA = a.createdAt?.seconds || 0;
-        const dateB = b.createdAt?.seconds || 0;
-        return dateB - dateA;
-      });
-
-      let html = '';
-      restaurants.forEach(restaurant => {
-        const status = restaurant.verified || 'pending';
-        const statusClass = `status-badge status-${status}`;
-        const statusText = status === 'pending' ? '⏳ Pending' : 
-                          status === 'approved' ? '✅ Approved' : '❌ Rejected';
-        
-        const tags = restaurant.tags || [];
-        const tagsHtml = tags.length > 0 
-          ? `<div class="tags">${tags.map(tag => `<span class="tag">${tag}</span>`).join('')}</div>`
-          : '';
-
-        // Format date
-        const joinedDate = restaurant.createdAt 
-          ? new Date(restaurant.createdAt.seconds * 1000).toLocaleDateString() 
-          : 'N/A';
-
-        html += `
-          <div class="restaurant-card" id="restaurant-${restaurant.id}">
-            <div class="card-header">
-              <h3>${restaurant.restaurantName || 'Unnamed Restaurant'}</h3>
-              <span class="${statusClass}">${statusText}</span>
+    <div class="admin-container">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">🍳</div>
+                <h2>MealCraft</h2>
+                <p>Admin Panel</p>
             </div>
-            <div class="card-details">
-              <div class="detail-row">
-                <span class="detail-label">Owner:</span>
-                <span class="detail-value">${restaurant.ownerName || restaurant.ownerEmail || 'N/A'}</span>
-              </div>
-              <div class="detail-row">
-                <span class="detail-label">Email:</span>
-                <span class="detail-value">${restaurant.ownerEmail || 'N/A'}</span>
-              </div>
-              <div class="detail-row">
-                <span class="detail-label">Mobile:</span>
-                <span class="detail-value">${restaurant.mobile || 'N/A'}</span>
-              </div>
-              <div class="detail-row">
-                <span class="detail-label">Location:</span>
-                <span class="detail-value">${restaurant.city || ''}, ${restaurant.country || ''}</span>
-              </div>
-              <div class="detail-row">
-                <span class="detail-label">Address:</span>
-                <span class="detail-value">${restaurant.address || 'N/A'}</span>
-              </div>
-              ${restaurant.website ? `
-                <div class="detail-row">
-                  <span class="detail-label">Website:</span>
-                  <span class="detail-value"><a href="${restaurant.website}" target="_blank">Visit</a></span>
+
+            <div class="admin-profile">
+                <div class="admin-avatar" id="sidebarAvatar">A</div>
+                <div class="admin-info">
+                    <h4 id="sidebarName">Admin</h4>
+                    <p id="sidebarEmail">admin@mealcraft.com</p>
                 </div>
-              ` : ''}
-              <div class="detail-row">
-                <span class="detail-label">Joined:</span>
-                <span class="detail-value">${joinedDate}</span>
-              </div>
-              ${tagsHtml}
             </div>
-            <div class="card-actions">
-              ${status !== 'approved' ? `
-                <button class="btn btn-approve" onclick="updateRestaurantStatus('${restaurant.id}', 'approved')">
-                  ✅ Approve
-                </button>
-              ` : ''}
-              ${status !== 'rejected' ? `
-                <button class="btn btn-reject" onclick="updateRestaurantStatus('${restaurant.id}', 'rejected')">
-                  ❌ Reject
-                </button>
-              ` : ''}
-              <button class="btn btn-view" onclick="viewDetails('restaurant', '${restaurant.id}')">
-                👁️ Details
-              </button>
-            </div>
-          </div>
-        `;
-      });
-      
-      list.innerHTML = html;
-    };
 
-    // Display users in grid
-    const displayUsers = (users) => {
-      const list = document.getElementById('usersList');
-      const loadingEl = document.getElementById('usersLoading');
-      
-      if (loadingEl) {
-        loadingEl.style.display = 'none';
-      }
-      
-      if (!users || users.length === 0) {
-        list.innerHTML = `
-          <div class="empty-state">
-            <div class="icon">👥</div>
-            <h3>No Users Found</h3>
-            <p>There are no users registered yet.</p>
-          </div>
-        `;
+            <div class="nav-menu">
+                <div class="nav-item active" onclick="switchSection('dashboard', event)">
+                    <i class="fas fa-chart-pie"></i>
+                    <span>Dashboard</span>
+                </div>
+                <div class="nav-item" onclick="switchSection('meals', event)">
+                    <i class="fas fa-utensils"></i>
+                    <span>All Meals</span>
+                    <span class="badge" id="mealsBadge">0</span>
+                </div>
+                <div class="nav-item" onclick="switchSection('addMeal', event)">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>Add Meal</span>
+                </div>
+                <div class="nav-item" onclick="switchSection('ingredients', event)">
+                    <i class="fas fa-carrot"></i>
+                    <span>Ingredients</span>
+                    <span class="badge" id="ingredientsBadge">0</span>
+                </div>
+                <div class="nav-item" onclick="switchSection('addIngredient', event)">
+                    <i class="fas fa-leaf"></i>
+                    <span>Add Ingredient</span>
+                </div>
+                <div class="nav-item" onclick="switchSection('delivery', event)">
+                    <i class="fas fa-motorcycle"></i>
+                    <span>Delivery Boys</span>
+                    <span class="badge" id="deliveryBadge">0</span>
+                </div>
+                <div class="nav-item" onclick="switchSection('users', event)">
+                    <i class="fas fa-users"></i>
+                    <span>Users</span>
+                    <span class="badge" id="usersBadge">0</span>
+                </div>
+                <div class="nav-item" onclick="switchSection('outlets', event)">
+                    <i class="fas fa-store"></i>
+                    <span>Outlets</span>
+                    <span class="badge" id="outletsBadge">0</span>
+                </div>
+                <div class="nav-item" onclick="switchSection('orders', event)">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span>Orders</span>
+                    <span class="badge" id="ordersBadge">0</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="top-bar">
+                <div class="page-title">
+                    <h1 id="pageTitle">Dashboard</h1>
+                    <p id="currentDateTime"></p>
+                </div>
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Total Meals</h3>
+                    <div class="stat-number" id="totalMeals">0</div>
+                    <div class="stat-sub">Active items</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Ingredients</h3>
+                    <div class="stat-number" id="totalIngredients">0</div>
+                    <div class="stat-sub">In stock</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Pending Orders</h3>
+                    <div class="stat-number" id="pendingOrders">0</div>
+                    <div class="stat-sub">Need attention</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Users</h3>
+                    <div class="stat-number" id="totalUsers">0</div>
+                    <div class="stat-sub">Active: <span id="activeUsers">0</span></div>
+                </div>
+            </div>
+
+            <div id="dashboardSection" class="section">
+                <h2><i class="fas fa-chart-line"></i> Welcome back, Admin!</h2>
+                <p style="color: #64748b; margin-top: 10px;">Manage your meals, ingredients, and orders from here.</p>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 30px;">
+                    <div style="background: #f8fafc; padding: 20px; border-radius: 16px;">
+                        <h3 style="margin-bottom: 15px;">Recent Meals</h3>
+                        <div id="recentMealsList"></div>
+                    </div>
+                    <div style="background: #f8fafc; padding: 20px; border-radius: 16px;">
+                        <h3 style="margin-bottom: 15px;">Recent Orders</h3>
+                        <div id="recentOrdersList"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="mealsSection" class="section" style="display: none;">
+                <div class="section-header">
+                    <h2><i class="fas fa-utensils"></i> All Meals</h2>
+                    <button class="add-btn" onclick="switchSection('addMeal', event)">
+                        <i class="fas fa-plus"></i> Add New Meal
+                    </button>
+                </div>
+                <div class="filter-bar">
+                    <input type="text" id="mealSearch" class="search-box" placeholder="Search meals..." onkeyup="searchMeals()">
+                </div>
+                <div id="mealsGrid" class="grid"></div>
+            </div>
+
+            <div id="addMealSection" class="section" style="display: none;">
+                <div class="section-header">
+                    <h2><i class="fas fa-plus-circle"></i> Add New Meal</h2>
+                </div>
+                <form onsubmit="event.preventDefault(); saveNewMeal()" style="max-width: 600px;">
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 500;">Meal Name *</label>
+                        <input type="text" id="newMealName" class="search-box" style="width: 100%;" placeholder="e.g., Margherita Pizza" required>
+                    </div>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 500;">Description *</label>
+                        <textarea id="newMealDesc" rows="3" class="search-box" style="width: 100%;" placeholder="Describe your meal..." required></textarea>
+                    </div>
+
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 500;">Base Price (₹) *</label>
+                        <input type="number" id="newMealPrice" class="search-box" style="width: 100%;" placeholder="299" required>
+                    </div>
+
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 500;">Category *</label>
+                        <select id="newMealCategory" class="filter-select" style="width: 100%;">
+                            <option value="Pizza">🍕 Pizza</option>
+                            <option value="Burger">🍔 Burger</option>
+                            <option value="Pasta">🍝 Pasta</option>
+                            <option value="Beverage">🥤 Beverage</option>
+                            <option value="Dessert">🍰 Dessert</option>
+                        </select>
+                    </div>
+
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 500;">Type *</label>
+                        <select id="newMealType" class="filter-select" style="width: 100%;">
+                            <option value="veg">🌱 Veg</option>
+                            <option value="nonveg">🍗 Non-Veg</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="add-btn" style="width: 100%;">
+                        <i class="fas fa-check-circle"></i> Create Meal
+                    </button>
+                </form>
+            </div>
+
+            <div id="ingredientsSection" class="section" style="display: none;">
+                <div class="section-header">
+                    <h2><i class="fas fa-carrot"></i> Ingredients</h2>
+                    <button class="add-btn" onclick="switchSection('addIngredient', event)">
+                        <i class="fas fa-plus"></i> Add Ingredient
+                    </button>
+                </div>
+                <div class="filter-bar">
+                    <input type="text" id="ingredientSearch" class="search-box" placeholder="Search ingredients..." onkeyup="searchIngredients()">
+                </div>
+                <div id="ingredientsGrid" class="grid"></div>
+            </div>
+
+            <div id="addIngredientSection" class="section" style="display: none;">
+                <div class="section-header">
+                    <h2><i class="fas fa-leaf"></i> Add New Ingredient</h2>
+                </div>
+                <form onsubmit="event.preventDefault(); saveNewIngredient()" style="max-width: 600px;">
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 500;">Ingredient Name *</label>
+                        <input type="text" id="newIngredientName" class="search-box" style="width: 100%;" placeholder="e.g., Extra Cheese" required>
+                    </div>
+
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 500;">Price (₹) *</label>
+                        <input type="number" id="newIngredientPrice" class="search-box" style="width: 100%;" placeholder="30" required>
+                    </div>
+
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 500;">Category</label>
+                        <select id="newIngredientCategory" class="filter-select" style="width: 100%;">
+                            <option value="Cheese">🧀 Cheese</option>
+                            <option value="Vegetable">🥬 Vegetable</option>
+                            <option value="Meat">🥩 Meat</option>
+                            <option value="Sauce">🥫 Sauce</option>
+                            <option value="Other">✨ Other</option>
+                        </select>
+                    </div>
+
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 500;">Type</label>
+                        <select id="newIngredientType" class="filter-select" style="width: 100%;">
+                            <option value="veg">🌱 Veg</option>
+                            <option value="nonveg">🍗 Non-Veg</option>
+                        </select>
+                    </div>
+
+                    <h4 style="margin: 20px 0 10px;">Available in Meals</h4>
+                    <div class="checkbox-group" id="ingredientMealsList">
+                        <p style="color: #94a3b8; text-align: center;">Loading meals...</p>
+                    </div>
+
+                    <button type="submit" class="add-btn" style="width: 100%;">
+                        <i class="fas fa-check-circle"></i> Add Ingredient
+                    </button>
+                </form>
+            </div>
+
+            <div id="deliverySection" class="section" style="display: none;">
+                <div class="section-header">
+                    <h2><i class="fas fa-motorcycle"></i> Delivery Boys</h2>
+                    <button class="add-btn" onclick="showAddDeliveryModal()">
+                        <i class="fas fa-plus"></i> Add Delivery Boy
+                    </button>
+                </div>
+                <div class="filter-bar">
+                    <input type="text" id="deliverySearch" class="search-box" placeholder="Search delivery boys..." onkeyup="searchDeliveryBoys()">
+                </div>
+                <div id="deliveryGrid" class="grid"></div>
+            </div>
+
+            <div id="usersSection" class="section" style="display: none;">
+                <div class="section-header">
+                    <h2><i class="fas fa-users"></i> Users</h2>
+                </div>
+                <div class="filter-bar">
+                    <input type="text" id="userSearch" class="search-box" placeholder="Search users..." onkeyup="searchUsers()">
+                    <select id="userStatusFilter" class="filter-select" onchange="filterUsers()">
+                        <option value="all">All Users</option>
+                        <option value="active">Active</option>
+                        <option value="blocked">Blocked</option>
+                    </select>
+                </div>
+                <div id="usersGrid" class="grid"></div>
+            </div>
+
+            <div id="outletsSection" class="section" style="display: none;">
+                <div class="section-header">
+                    <h2><i class="fas fa-store"></i> Outlets</h2>
+                    <button class="add-btn" onclick="showAddOutletModal()">
+                        <i class="fas fa-plus"></i> Add Outlet
+                    </button>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                    <div>
+                        <h3 style="margin-bottom: 20px;">States</h3>
+                        <div id="statesGrid" class="grid" style="grid-template-columns: 1fr;"></div>
+                    </div>
+                    <div>
+                        <h3 style="margin-bottom: 20px;">Cities</h3>
+                        <div id="citiesGrid" class="grid" style="grid-template-columns: 1fr;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="ordersSection" class="section" style="display: none;">
+                <div class="section-header">
+                    <h2><i class="fas fa-shopping-bag"></i> Orders Management</h2>
+                </div>
+                <div class="filter-bar">
+                    <select id="orderStatusFilter" class="filter-select" onchange="filterOrders()">
+                        <option value="all">All Orders</option>
+                        <option value="pending">Pending</option>
+                        <option value="preparing">Preparing</option>
+                        <option value="out-for-delivery">Out for Delivery</option>
+                        <option value="delivered">Delivered</option>
+                        <option value="cancelled">Cancelled</option>
+                    </select>
+                    <select id="orderDateFilter" class="filter-select" onchange="filterOrders()">
+                        <option value="all">All Time</option>
+                        <option value="today">Today</option>
+                        <option value="week">This Week</option>
+                        <option value="month">This Month</option>
+                    </select>
+                </div>
+                <div id="ordersList" class="orders-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="deliveryModal">
+        <div class="modal-content">
+            <h3><i class="fas fa-user-plus"></i> Add Delivery Boy</h3>
+            <form onsubmit="event.preventDefault(); addDeliveryBoy()">
+                <input type="text" id="deliveryFullName" placeholder="Full Name *" required>
+                <div class="input-group" style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; font-weight: 500;">Email will be: <span id="emailPreview" style="color: #ef4444;">name@mealcraft.delivery</span></label>
+                </div>
+                <input type="tel" id="deliveryPhone" placeholder="Phone Number *" required>
+                <input type="text" id="deliveryMobile" placeholder="Mobile Number (WhatsApp) *" required>
+                <input type="text" id="deliveryVehicle" placeholder="Vehicle Number">
+                <input type="text" id="deliveryAddress" placeholder="Address *" required>
+                <select id="deliveryStatus" required>
+                    <option value="active">🟢 Active</option>
+                    <option value="inactive">🔴 Inactive</option>
+                </select>
+                <button type="submit" class="add-btn" style="width:100%;">
+                    <i class="fas fa-check"></i> Add Delivery Boy
+                </button>
+            </form>
+            <button class="close-modal" onclick="closeModal('deliveryModal')">Cancel</button>
+        </div>
+    </div>
+
+    <div class="modal" id="outletModal">
+        <div class="modal-content">
+            <h3><i class="fas fa-store"></i> Add Outlet</h3>
+            <form onsubmit="event.preventDefault(); addOutlet()">
+                <select id="outletType" onchange="toggleStateSelect()" required>
+                    <option value="state">State</option>
+                    <option value="city">City</option>
+                </select>
+                <input type="text" id="outletName" placeholder="Name *" required>
+                <input type="text" id="outletCode" placeholder="Code (e.g., MH, MUM)">
+                <select id="outletStateId" style="display: none;">
+                    <option value="">Select State</option>
+                </select>
+                <button type="submit" class="add-btn" style="width:100%;">
+                    <i class="fas fa-check"></i> Add
+                </button>
+            </form>
+            <button class="close-modal" onclick="closeModal('outletModal')">Cancel</button>
+        </div>
+    </div>
+
+    <div class="modal" id="editMealModal">
+        <div class="modal-content">
+            <h3><i class="fas fa-edit"></i> Edit Meal</h3>
+            <input type="hidden" id="editMealId">
+            <input type="text" id="editMealName" placeholder="Meal Name" required>
+            <textarea id="editMealDesc" rows="3" placeholder="Description" required></textarea>
+            <input type="number" id="editMealPrice" placeholder="Price (₹)" required>
+            <select id="editMealCategory" required>
+                <option value="Pizza">🍕 Pizza</option>
+                <option value="Burger">🍔 Burger</option>
+                <option value="Pasta">🍝 Pasta</option>
+                <option value="Beverage">🥤 Beverage</option>
+                <option value="Dessert">🍰 Dessert</option>
+            </select>
+            <select id="editMealType" required>
+                <option value="veg">🌱 Veg</option>
+                <option value="nonveg">🍗 Non-Veg</option>
+            </select>
+            <button class="add-btn" onclick="updateMeal()" style="width:100%;">Update Meal</button>
+            <button class="close-modal" onclick="closeModal('editMealModal')">Cancel</button>
+        </div>
+    </div>
+
+    <div class="modal" id="editIngredientModal">
+        <div class="modal-content">
+            <h3><i class="fas fa-edit"></i> Edit Ingredient</h3>
+            <input type="hidden" id="editIngredientId">
+            <input type="text" id="editIngredientName" placeholder="Ingredient Name" required>
+            <input type="number" id="editIngredientPrice" placeholder="Price (₹)" required>
+            <select id="editIngredientCategory" required>
+                <option value="Cheese">🧀 Cheese</option>
+                <option value="Vegetable">🥬 Vegetable</option>
+                <option value="Meat">🥩 Meat</option>
+                <option value="Sauce">🥫 Sauce</option>
+                <option value="Other">✨ Other</option>
+            </select>
+            <select id="editIngredientType" required>
+                <option value="veg">🌱 Veg</option>
+                <option value="nonveg">🍗 Non-Veg</option>
+            </select>
+            <button class="add-btn" onclick="updateIngredient()" style="width:100%;">Update Ingredient</button>
+            <button class="close-modal" onclick="closeModal('editIngredientModal')">Cancel</button>
+        </div>
+    </div>
+
+    <div class="modal" id="editDeliveryModal">
+        <div class="modal-content">
+            <h3><i class="fas fa-edit"></i> Edit Delivery Boy</h3>
+            <input type="hidden" id="editDeliveryId">
+            <input type="text" id="editDeliveryName" placeholder="Full Name" required>
+            <input type="email" id="editDeliveryEmail" placeholder="Email" readonly style="background: #f1f5f9;">
+            <input type="tel" id="editDeliveryPhone" placeholder="Phone" required>
+            <input type="text" id="editDeliveryMobile" placeholder="Mobile (WhatsApp)" required>
+            <input type="text" id="editDeliveryVehicle" placeholder="Vehicle">
+            <input type="text" id="editDeliveryAddress" placeholder="Address" required>
+            <select id="editDeliveryStatus" required>
+                <option value="active">🟢 Active</option>
+                <option value="inactive">🔴 Inactive</option>
+            </select>
+            <button class="add-btn" onclick="updateDeliveryBoy()" style="width:100%;">Update</button>
+            <button class="close-modal" onclick="closeModal('editDeliveryModal')">Cancel</button>
+        </div>
+    </div>
+
+    <div class="modal" id="orderDetailsModal">
+        <div class="modal-content">
+            <h3><i class="fas fa-receipt"></i> Order Details</h3>
+            <div id="orderDetailsContent"></div>
+            <div style="margin-top: 20px;">
+                <select id="updateOrderStatus" style="width:100%; padding:12px; margin-bottom:10px;">
+                    <option value="pending">⏳ Pending</option>
+                    <option value="preparing">👨‍🍳 Preparing</option>
+                    <option value="cancelled">❌ Cancelled</option>
+                </select>
+                <div id="cancellationReasonDiv" style="display: none; margin-bottom: 10px;">
+                    <textarea id="cancellationReason" placeholder="Reason for cancellation *" rows="3" style="width:100%; padding:12px; border:2px solid #e2e8f0; border-radius:10px;"></textarea>
+                </div>
+                <select id="assignDeliveryBoy" style="width:100%; padding:12px; margin-bottom:10px; display: none;">
+                    <option value="">Assign Delivery Boy</option>
+                </select>
+                <button class="add-btn" onclick="updateOrder()" style="width:100%;">Update Order</button>
+            </div>
+            <button class="close-modal" onclick="closeModal('orderDetailsModal')">Close</button>
+        </div>
+    </div>
+
+    <div class="modal" id="assignDeliveryModal">
+        <div class="modal-content">
+            <h3><i class="fas fa-user-plus"></i> Assign Delivery Boy</h3>
+            <input type="hidden" id="assignOrderId">
+            <p style="margin-bottom: 15px;">Order will automatically be marked as "Out for Delivery" after assignment</p>
+            <select id="assignDeliveryBoySelect" style="width:100%; padding:12px; margin-bottom:15px;">
+                <option value="">Select Delivery Boy</option>
+            </select>
+            <button class="add-btn" onclick="confirmAssignDelivery()" style="width:100%;">Assign & Start Delivery</button>
+            <button class="close-modal" onclick="closeModal('assignDeliveryModal')">Cancel</button>
+        </div>
+    </div>
+
+    <div id="message" class="message"></div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { 
+            getAuth, 
+            onAuthStateChanged, 
+            signOut
+        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { 
+            getFirestore, 
+            collection, 
+            getDocs, 
+            doc, 
+            setDoc, 
+            updateDoc, 
+            deleteDoc, 
+            query, 
+            where,
+            orderBy,
+            onSnapshot,
+            Timestamp 
+        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAT4CDao7eHCFU0OO_dee_m6BpjzKv_308",
+            authDomain: "mealcraft-9db35.firebaseapp.com",
+            projectId: "mealcraft-9db35",
+            messagingSenderId: "1052912873454",
+            appId: "1:1052912873454:web:2b794eb8e9524f0ba068ff"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let currentUser = null;
+        let meals = [];
+        let ingredients = [];
+        let mealIngredients = [];
+        let deliveryBoys = [];
+        let users = [];
+        let orders = [];
+        let states = [];
+        let cities = [];
+        let currentSection = 'dashboard';
+
+        const COLLECTIONS = {
+            MEALS: 'meals',
+            INGREDIENTS: 'ingredients',
+            MEAL_INGREDIENTS: 'mealIngredients',
+            DELIVERY_BOYS: 'deliveryBoys',
+            USERS: 'users',
+            ORDERS: 'orders',
+            STATES: 'states',
+            CITIES: 'cities'
+        };
+
+        function updateDateTime() {
+            const now = new Date();
+            const options = { 
+                weekday: 'short', 
+                year: 'numeric', 
+                month: 'short', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            };
+            document.getElementById('currentDateTime').textContent = now.toLocaleDateString('en-US', options);
+        }
+        setInterval(updateDateTime, 1000);
+        updateDateTime();
+
+        document.getElementById('deliveryFullName')?.addEventListener('input', function(e) {
+            const name = e.target.value.trim().toLowerCase().replace(/\s+/g, '.');
+            if (name) {
+                document.getElementById('emailPreview').textContent = name + '@mealcraft.delivery';
+            } else {
+                document.getElementById('emailPreview').textContent = 'name@mealcraft.delivery';
+            }
+        });
+
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) {
+                window.location.replace("../login.html");
+                return;
+            }
+            
+            if (user.email !== 'admin@mealcraft.com') {
+                window.location.replace("../home.html");
+                return;
+            }
+            
+            currentUser = user;
+            document.getElementById('sidebarEmail').textContent = user.email;
+            document.getElementById('sidebarAvatar').textContent = user.email.charAt(0).toUpperCase();
+            document.getElementById('sidebarName').textContent = 'Administrator';
+            
+            setupRealtimeListeners();
+        });
+
+        function setupRealtimeListeners() {
+            onSnapshot(collection(db, COLLECTIONS.MEALS), (snapshot) => {
+                meals = [];
+                snapshot.forEach(doc => {
+                    meals.push({ id: doc.id, ...doc.data() });
+                });
+                displayMeals(meals);
+                updateStats();
+                updateMealCheckboxes();
+            });
+
+            onSnapshot(collection(db, COLLECTIONS.INGREDIENTS), (snapshot) => {
+                ingredients = [];
+                snapshot.forEach(doc => {
+                    ingredients.push({ id: doc.id, ...doc.data() });
+                });
+                displayIngredients(ingredients);
+                updateStats();
+            });
+
+            onSnapshot(collection(db, COLLECTIONS.MEAL_INGREDIENTS), (snapshot) => {
+                mealIngredients = [];
+                snapshot.forEach(doc => {
+                    mealIngredients.push({ id: doc.id, ...doc.data() });
+                });
+                displayMeals(meals);
+            });
+
+            onSnapshot(collection(db, COLLECTIONS.DELIVERY_BOYS), (snapshot) => {
+                deliveryBoys = [];
+                snapshot.forEach(doc => {
+                    deliveryBoys.push({ id: doc.id, ...doc.data() });
+                });
+                displayDeliveryBoys(deliveryBoys);
+                updateStats();
+                updateDeliveryBoyDropdowns();
+            });
+
+            onSnapshot(query(collection(db, COLLECTIONS.USERS), where('role', '==', 'customer')), (snapshot) => {
+                users = [];
+                snapshot.forEach(doc => {
+                    users.push({ id: doc.id, ...doc.data() });
+                });
+                displayUsers(users);
+                updateStats();
+            });
+
+            onSnapshot(query(collection(db, COLLECTIONS.ORDERS), orderBy('createdAt', 'desc')), (snapshot) => {
+                orders = [];
+                snapshot.forEach(doc => {
+                    orders.push({ id: doc.id, ...doc.data() });
+                });
+                displayOrders(orders);
+                updateStats();
+            });
+
+            onSnapshot(collection(db, COLLECTIONS.STATES), (snapshot) => {
+                states = [];
+                snapshot.forEach(doc => {
+                    states.push({ id: doc.id, ...doc.data() });
+                });
+                displayStates(states);
+                updateStateDropdown();
+            });
+
+            onSnapshot(collection(db, COLLECTIONS.CITIES), (snapshot) => {
+                cities = [];
+                snapshot.forEach(doc => {
+                    cities.push({ id: doc.id, ...doc.data() });
+                });
+                displayCities(cities);
+            });
+        }
+
+        function updateStateDropdown() {
+            const stateSelect = document.getElementById('outletStateId');
+            if (!stateSelect) return;
+            
+            stateSelect.innerHTML = '<option value="">Select State</option>';
+            states.forEach(state => {
+                stateSelect.innerHTML += `<option value="${state.id}">${state.name}</option>`;
+            });
+        }
+
+        function updateDeliveryBoyDropdowns() {
+            const assignSelect = document.getElementById('assignDeliveryBoy');
+            const assignSelect2 = document.getElementById('assignDeliveryBoySelect');
+            
+            if (assignSelect) {
+                assignSelect.innerHTML = '<option value="">Select Delivery Boy</option>';
+                deliveryBoys.filter(b => b.status === 'active').forEach(boy => {
+                    assignSelect.innerHTML += `<option value="${boy.id}">${boy.fullName} (${boy.phone})</option>`;
+                });
+            }
+            
+            if (assignSelect2) {
+                assignSelect2.innerHTML = '<option value="">Select Delivery Boy</option>';
+                deliveryBoys.filter(b => b.status === 'active').forEach(boy => {
+                    assignSelect2.innerHTML += `<option value="${boy.id}">${boy.fullName} (${boy.phone})</option>`;
+                });
+            }
+        }
+
+        window.toggleStateSelect = () => {
+            const type = document.getElementById('outletType').value;
+            const stateSelect = document.getElementById('outletStateId');
+            if (type === 'city') {
+                stateSelect.style.display = 'block';
+                updateStateDropdown();
+            } else {
+                stateSelect.style.display = 'none';
+            }
+        };
+
+        function updateStats() {
+            document.getElementById('totalMeals').textContent = meals.length;
+            document.getElementById('totalIngredients').textContent = ingredients.length;
+            document.getElementById('pendingOrders').textContent = orders.filter(o => o.status === 'pending').length;
+            document.getElementById('totalUsers').textContent = users.length;
+            document.getElementById('activeUsers').textContent = users.filter(u => u.status === 'active').length;
+            
+            document.getElementById('mealsBadge').textContent = meals.length;
+            document.getElementById('ingredientsBadge').textContent = ingredients.length;
+            document.getElementById('deliveryBadge').textContent = deliveryBoys.length;
+            document.getElementById('usersBadge').textContent = users.length;
+            document.getElementById('ordersBadge').textContent = orders.filter(o => o.status === 'pending').length;
+            document.getElementById('outletsBadge').textContent = states.length + cities.length;
+        }
+
+        function displayMeals(mealsList) {
+            const grid = document.getElementById('mealsGrid');
+            if (!grid) return;
+            
+            if (mealsList.length === 0) {
+                grid.innerHTML = '<div class="empty-state"><i class="fas fa-utensils"></i><h3>No Meals Yet</h3><p>Click "Add Meal" to create your first meal.</p></div>';
+                return;
+            }
+
+            let html = '';
+            mealsList.forEach(meal => {
+                const mealIngs = mealIngredients.filter(mi => mi.mealId === meal.id);
+                
+                html += `
+                    <div class="meal-card">
+                        <div class="meal-header">
+                            <h3>${meal.name}</h3>
+                            <span class="meal-price">₹${meal.price}</span>
+                        </div>
+                        <div class="meal-body">
+                            <p class="meal-desc">${meal.description}</p>
+                            <p style="margin-bottom: 10px;"><strong>Category:</strong> ${meal.category} • ${meal.type}</p>
+                            
+                            <div class="ingredients-list">
+                                <h4 style="margin-bottom: 10px;">Ingredients (${mealIngs.length})</h4>
+                                ${mealIngs.slice(0, 5).map(mi => {
+                                    const ing = ingredients.find(i => i.id === mi.ingredientId);
+                                    return ing ? `
+                                        <div class="ingredient-item">
+                                            <span class="ingredient-name">
+                                                ${ing.name}
+                                                <span class="ingredient-type">${mi.type}</span>
+                                            </span>
+                                            ${mi.price ? `<span class="ingredient-price">+₹${mi.price}</span>` : ''}
+                                        </div>
+                                    ` : '';
+                                }).join('')}
+                                ${mealIngs.length > 5 ? `<p style="color: #64748b; margin-top: 5px;">+${mealIngs.length - 5} more</p>` : ''}
+                            </div>
+
+                            <div class="meal-actions">
+                                <button class="btn btn-primary" onclick="editMeal('${meal.id}')">
+                                    <i class="fas fa-edit"></i> Edit
+                                </button>
+                                <button class="btn btn-danger" onclick="deleteMeal('${meal.id}')">
+                                    <i class="fas fa-trash"></i> Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            grid.innerHTML = html;
+            
+            const recentList = document.getElementById('recentMealsList');
+            if (recentList) {
+                recentList.innerHTML = mealsList.slice(0, 5).map(meal => `
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px; padding: 8px; background: white; border-radius: 8px;">
+                        <span><strong>${meal.name}</strong></span>
+                        <span>₹${meal.price}</span>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function displayIngredients(ingredientsList) {
+            const grid = document.getElementById('ingredientsGrid');
+            if (!grid) return;
+            
+            if (ingredientsList.length === 0) {
+                grid.innerHTML = '<div class="empty-state"><i class="fas fa-carrot"></i><h3>No Ingredients Yet</h3><p>Click "Add Ingredient" to create your first ingredient.</p></div>';
+                return;
+            }
+
+            let html = '';
+            ingredientsList.forEach(ing => {
+                const usedIn = mealIngredients
+                    .filter(mi => mi.ingredientId === ing.id)
+                    .map(mi => meals.find(m => m.id === mi.mealId))
+                    .filter(m => m);
+
+                html += `
+                    <div class="meal-card">
+                        <div class="meal-header" style="background: linear-gradient(135deg, #10b981, #34d399);">
+                            <h3>${ing.name}</h3>
+                            <span class="meal-price">₹${ing.price}</span>
+                        </div>
+                        <div class="meal-body">
+                            <p><strong>Category:</strong> ${ing.category} • ${ing.type}</p>
+                            
+                            <div style="margin: 15px 0;">
+                                <h4 style="margin-bottom: 10px;">Used in ${usedIn.length} meals</h4>
+                                ${usedIn.slice(0, 3).map(meal => `
+                                    <span class="ingredient-type" style="margin-right: 5px;">${meal.name}</span>
+                                `).join('')}
+                                ${usedIn.length > 3 ? `<span>+${usedIn.length - 3} more</span>` : ''}
+                            </div>
+
+                            <div class="meal-actions">
+                                <button class="btn btn-primary" onclick="editIngredient('${ing.id}')">
+                                    <i class="fas fa-edit"></i> Edit
+                                </button>
+                                <button class="btn btn-danger" onclick="deleteIngredient('${ing.id}')">
+                                    <i class="fas fa-trash"></i> Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            grid.innerHTML = html;
+        }
+
+        function displayDeliveryBoys(boys) {
+            const grid = document.getElementById('deliveryGrid');
+            if (!grid) return;
+            
+            if (boys.length === 0) {
+                grid.innerHTML = '<div class="empty-state"><i class="fas fa-motorcycle"></i><h3>No Delivery Boys</h3><p>Click "Add Delivery Boy" to create one.</p></div>';
+                return;
+            }
+
+            let html = '';
+            boys.forEach(boy => {
+                html += `
+                    <div class="user-card">
+                        <div class="user-header">
+                            <h3>${boy.fullName}</h3>
+                            <span class="user-status ${boy.status === 'active' ? 'status-active' : 'status-inactive'}">
+                                ${boy.status === 'active' ? '🟢 Active' : '🔴 Inactive'}
+                            </span>
+                        </div>
+                        <div class="user-details">
+                            <div class="detail-row">
+                                <span class="detail-label">Email:</span>
+                                <span class="detail-value">${boy.email}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Phone:</span>
+                                <span class="detail-value">${boy.phone}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Mobile:</span>
+                                <span class="detail-value">${boy.mobile || 'N/A'}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Vehicle:</span>
+                                <span class="detail-value">${boy.vehicle || 'N/A'}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Address:</span>
+                                <span class="detail-value">${boy.address}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Deliveries:</span>
+                                <span class="detail-value">${boy.totalDeliveries || 0}</span>
+                            </div>
+                        </div>
+                        <div class="meal-actions">
+                            <button class="btn btn-primary" onclick="editDeliveryBoy('${boy.id}')">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button class="btn btn-danger" onclick="deleteDeliveryBoy('${boy.id}')">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            grid.innerHTML = html;
+        }
+
+        function displayUsers(userList) {
+            const grid = document.getElementById('usersGrid');
+            if (!grid) return;
+            
+            if (userList.length === 0) {
+                grid.innerHTML = '<div class="empty-state"><i class="fas fa-users"></i><h3>No Users</h3></div>';
+                return;
+            }
+
+            let html = '';
+            userList.forEach(user => {
+                html += `
+                    <div class="user-card">
+                        <div class="user-header">
+                            <h3>${user.fullName || user.username || 'User'}</h3>
+                            <span class="user-status ${user.status === 'blocked' ? 'status-blocked' : 'status-active'}">
+                                ${user.status === 'blocked' ? '🔴 Blocked' : '🟢 Active'}
+                            </span>
+                        </div>
+                        <div class="user-details">
+                            <div class="detail-row">
+                                <span class="detail-label">Email:</span>
+                                <span class="detail-value">${user.email}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Phone:</span>
+                                <span class="detail-value">${user.mobile || 'N/A'}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">City:</span>
+                                <span class="detail-value">${user.city || 'N/A'}</span>
+                            </div>
+                        </div>
+                        <div class="meal-actions">
+                            ${user.status === 'blocked' ? 
+                                `<button class="btn btn-success" onclick="updateUserStatus('${user.id}', 'active')">
+                                    <i class="fas fa-check"></i> Unblock
+                                </button>` :
+                                `<button class="btn btn-danger" onclick="updateUserStatus('${user.id}', 'blocked')">
+                                    <i class="fas fa-ban"></i> Block
+                                </button>`
+                            }
+                        </div>
+                    </div>
+                `;
+            });
+            
+            grid.innerHTML = html;
+        }
+
+        function displayStates(statesList) {
+            const grid = document.getElementById('statesGrid');
+            if (!grid) return;
+            
+            if (statesList.length === 0) {
+                grid.innerHTML = '<div class="empty-state"><p>No states added yet.</p></div>';
+                return;
+            }
+
+            let html = '';
+            statesList.forEach(state => {
+                html += `
+                    <div class="city-card">
+                        <div class="city-info">
+                            <h4>${state.name}</h4>
+                            <p>Code: ${state.code || 'N/A'}</p>
+                        </div>
+                        <div class="city-actions">
+                            <button class="btn btn-danger" onclick="deleteState('${state.id}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            grid.innerHTML = html;
+        }
+
+        function displayCities(citiesList) {
+            const grid = document.getElementById('citiesGrid');
+            if (!grid) return;
+            
+            if (citiesList.length === 0) {
+                grid.innerHTML = '<div class="empty-state"><p>No cities added yet.</p></div>';
+                return;
+            }
+
+            let html = '';
+            citiesList.forEach(city => {
+                const state = states.find(s => s.id === city.stateId);
+                html += `
+                    <div class="city-card">
+                        <div class="city-info">
+                            <h4>${city.name}</h4>
+                            <p>${state ? state.name : 'N/A'} • Code: ${city.code || 'N/A'}</p>
+                        </div>
+                        <div class="city-actions">
+                            <button class="btn btn-danger" onclick="deleteCity('${city.id}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            grid.innerHTML = html;
+        }
+
+        function displayOrders(ordersList) {
+            const list = document.getElementById('ordersList');
+            if (!list) return;
+            
+            if (ordersList.length === 0) {
+                list.innerHTML = '<div class="empty-state"><i class="fas fa-shopping-bag"></i><h3>No Orders</h3></div>';
+                return;
+            }
+
+            let html = '';
+            ordersList.forEach(order => {
+                const statusClass = `status-${order.status || 'pending'}`;
+                const statusText = order.status ? order.status.replace(/-/g, ' ') : 'pending';
+                
+                const deliveryBoy = order.deliveryBoyId ? deliveryBoys.find(b => b.id === order.deliveryBoyId) : null;
+                const deliveryInfo = deliveryBoy ? `Assigned to: ${deliveryBoy.fullName}` : 'Not assigned';
+
+                html += `
+                    <div class="order-row">
+                        <div class="order-info">
+                            <span class="order-id">#${order.id.slice(-8)}</span>
+                            <div class="order-customer">
+                                <i class="fas fa-user"></i>
+                                <span>${order.customerName || 'N/A'}</span>
+                            </div>
+                            <div class="order-customer">
+                                <i class="fas fa-phone"></i>
+                                <span>${order.phone || 'N/A'}</span>
+                            </div>
+                            <span class="order-amount">₹${order.total || 0}</span>
+                            <span class="order-status-badge ${statusClass}">${statusText}</span>
+                            <span style="color: #64748b; font-size: 0.85rem;">${deliveryInfo}</span>
+                        </div>
+                        <div class="order-actions">
+                            <button class="btn btn-primary" onclick="viewOrderDetails('${order.id}')">
+                                <i class="fas fa-eye"></i> View
+                            </button>
+                            ${order.status === 'pending' ? `
+                                <button class="btn btn-success" onclick="updateOrderStatus('${order.id}', 'preparing')">
+                                    <i class="fas fa-fire"></i> Start Preparing
+                                </button>
+                            ` : ''}
+                            ${order.status === 'preparing' ? `
+                                <button class="btn btn-warning" onclick="showAssignDeliveryModal('${order.id}')">
+                                    <i class="fas fa-motorcycle"></i> Assign Delivery
+                                </button>
+                            ` : ''}
+                            ${order.status === 'pending' || order.status === 'preparing' ? `
+                                <button class="btn btn-danger" onclick="showCancelOrderModal('${order.id}')">
+                                    <i class="fas fa-ban"></i> Cancel
+                                </button>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            list.innerHTML = html;
+            
+            const recentList = document.getElementById('recentOrdersList');
+            if (recentList) {
+                recentList.innerHTML = ordersList.slice(0, 5).map(order => `
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px; padding: 8px; background: white; border-radius: 8px;">
+                        <span>Order #${order.id.slice(-6)}</span>
+                        <span class="order-status-badge status-${order.status || 'pending'}">${order.status || 'pending'}</span>
+                    </div>
+                `).join('');
+            }
+        }
+
+        window.viewOrderDetails = (orderId) => {
+            const order = orders.find(o => o.id === orderId);
+            if (!order) return;
+
+            const modal = document.getElementById('orderDetailsModal');
+            const content = document.getElementById('orderDetailsContent');
+            
+            const items = order.items || [];
+            const itemsHtml = items.map(item => `
+                <div style="background: #f8fafc; padding: 10px; margin-bottom: 10px; border-radius: 8px;">
+                    <p><strong>${item.customName || item.mealName}</strong></p>
+                    <p style="color: #666; font-size: 0.85rem;">
+                        ${item.selectedIngredients?.map(ing => ing.name).join(', ') || 'No extras'}
+                    </p>
+                    <p style="text-align: right; font-weight: 600;">₹${item.totalPrice}</p>
+                </div>
+            `).join('');
+
+            const deliveryBoy = order.deliveryBoyId ? deliveryBoys.find(b => b.id === order.deliveryBoyId) : null;
+
+            content.innerHTML = `
+                <div style="max-height: 400px; overflow-y: auto;">
+                    <p><strong>Order ID:</strong> ${order.id}</p>
+                    <p><strong>Date:</strong> ${order.createdAt?.toDate ? new Date(order.createdAt.toDate()).toLocaleString() : 'N/A'}</p>
+                    <p><strong>Customer:</strong> ${order.customerName || 'N/A'}</p>
+                    <p><strong>Phone:</strong> ${order.phone || 'N/A'}</p>
+                    <p><strong>Address:</strong> ${order.address || 'N/A'}</p>
+                    <p><strong>Payment:</strong> ${order.paymentMethod || 'N/A'} (${order.paymentStatus || 'pending'})</p>
+                    ${order.cancellationReason ? `<p><strong>Cancellation Reason:</strong> ${order.cancellationReason}</p>` : ''}
+                    ${deliveryBoy ? `<p><strong>Delivery Boy:</strong> ${deliveryBoy.fullName} (${deliveryBoy.phone})</p>` : ''}
+                    
+                    <h4 style="margin: 15px 0 10px;">Items:</h4>
+                    ${itemsHtml}
+                    
+                    <div style="border-top: 1px solid #eee; margin-top: 15px; padding-top: 15px;">
+                        <p><strong>Subtotal:</strong> ₹${order.subtotal || 0}</p>
+                        <p><strong>Delivery Fee:</strong> ₹${order.deliveryFee || 40}</p>
+                        <p><strong>Total:</strong> ₹${order.total || 0}</p>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('updateOrderStatus').value = order.status || 'pending';
+            document.getElementById('cancellationReasonDiv').style.display = 'none';
+            document.getElementById('cancellationReason').value = '';
+            modal.dataset.orderId = orderId;
+            modal.classList.add('active');
+        };
+
+        document.getElementById('updateOrderStatus').addEventListener('change', function() {
+            const reasonDiv = document.getElementById('cancellationReasonDiv');
+            if (this.value === 'cancelled') {
+                reasonDiv.style.display = 'block';
+                document.getElementById('cancellationReason').required = true;
+            } else {
+                reasonDiv.style.display = 'none';
+                document.getElementById('cancellationReason').required = false;
+            }
+        });
+
+        window.updateOrder = async () => {
+            const orderId = document.getElementById('orderDetailsModal').dataset.orderId;
+            const newStatus = document.getElementById('updateOrderStatus').value;
+            const cancellationReason = document.getElementById('cancellationReason').value;
+
+            if (newStatus === 'cancelled' && !cancellationReason) {
+                showMessage('Please provide cancellation reason', 'error');
+                return;
+            }
+
+            try {
+                const updates = {
+                    status: newStatus,
+                    updatedAt: Timestamp.now()
+                };
+
+                if (newStatus === 'preparing') {
+                    updates.preparingAt = Timestamp.now();
+                } else if (newStatus === 'cancelled') {
+                    updates.cancelledAt = Timestamp.now();
+                    updates.cancellationReason = cancellationReason;
+                }
+
+                await updateDoc(doc(db, COLLECTIONS.ORDERS, orderId), updates);
+                showMessage(`✅ Order updated to ${newStatus}!`, 'success');
+                closeModal('orderDetailsModal');
+            } catch (error) {
+                console.error('Error updating order:', error);
+                showMessage('Error updating order', 'error');
+            }
+        };
+
+        window.showAssignDeliveryModal = (orderId) => {
+            document.getElementById('assignOrderId').value = orderId;
+            updateDeliveryBoyDropdowns();
+            document.getElementById('assignDeliveryModal').classList.add('active');
+        };
+
+        // Fix the confirmAssignDelivery function
+window.confirmAssignDelivery = async () => {
+    const orderId = document.getElementById('assignOrderId').value;
+    const deliveryBoyId = document.getElementById('assignDeliveryBoySelect').value;
+
+    if (!deliveryBoyId) {
+        showMessage('Please select a delivery boy', 'error');
         return;
-      }
+    }
 
-      let html = '';
-      users.forEach(user => {
-        const joinedDate = user.createdAt 
-          ? new Date(user.createdAt.seconds * 1000).toLocaleDateString() 
-          : 'N/A';
-
-        html += `
-          <div class="user-card">
-            <div class="card-header">
-              <h3>${user.username || 'Unknown User'}</h3>
-              <span class="status-badge ${user.role === 'customer' ? 'status-approved' : 'status-pending'}">
-                ${user.role === 'customer' ? '👤 Customer' : '🏪 Partner'}
-              </span>
-            </div>
-            <div class="card-details">
-              <div class="detail-row">
-                <span class="detail-label">Email:</span>
-                <span class="detail-value">${user.email || 'N/A'}</span>
-              </div>
-              <div class="detail-row">
-                <span class="detail-label">Mobile:</span>
-                <span class="detail-value">${user.mobile || 'N/A'}</span>
-              </div>
-              <div class="detail-row">
-                <span class="detail-label">Location:</span>
-                <span class="detail-value">${user.city || ''}, ${user.country || ''}</span>
-              </div>
-              <div class="detail-row">
-                <span class="detail-label">Address:</span>
-                <span class="detail-value">${user.address || 'N/A'}</span>
-              </div>
-              <div class="detail-row">
-                <span class="detail-label">Joined:</span>
-                <span class="detail-value">${joinedDate}</span>
-              </div>
-            </div>
-            <div class="card-actions">
-              <button class="btn btn-view" onclick="viewDetails('user', '${user.id}')">
-                👁️ View Details
-              </button>
-            </div>
-          </div>
-        `;
-      });
-      
-      list.innerHTML = html;
-    };
-
-    // Switch between tabs
-    window.switchTab = (tab) => {
-      const restaurantsSection = document.getElementById('restaurantsSection');
-      const usersSection = document.getElementById('usersSection');
-      const tabRestaurants = document.getElementById('tabRestaurants');
-      const tabUsers = document.getElementById('tabUsers');
-      
-      if (tab === 'restaurants') {
-        restaurantsSection.style.display = 'block';
-        usersSection.style.display = 'none';
-        tabRestaurants.classList.add('active');
-        tabUsers.classList.remove('active');
-      } else {
-        restaurantsSection.style.display = 'none';
-        usersSection.style.display = 'block';
-        tabRestaurants.classList.remove('active');
-        tabUsers.classList.add('active');
-      }
-    };
-
-    // Filter restaurants
-    window.filterRestaurants = () => {
-      const filter = document.getElementById('restaurantFilter').value;
-      
-      if (filter === 'all') {
-        filteredRestaurants = [...allRestaurants];
-      } else {
-        filteredRestaurants = allRestaurants.filter(r => r.verified === filter);
-      }
-      
-      displayRestaurants(filteredRestaurants);
-    };
-
-    // Filter users
-    window.filterUsers = () => {
-      const filter = document.getElementById('userFilter').value;
-      
-      if (filter === 'all') {
-        filteredUsers = [...allUsers];
-      } else {
-        filteredUsers = allUsers.filter(u => u.role === filter);
-      }
-      
-      displayUsers(filteredUsers);
-    };
-
-    // Search restaurants
-    window.searchRestaurants = () => {
-      const searchTerm = document.getElementById('restaurantSearch').value.toLowerCase();
-      
-      if (!searchTerm) {
-        filteredRestaurants = [...allRestaurants];
-      } else {
-        filteredRestaurants = allRestaurants.filter(restaurant => {
-          return (
-            (restaurant.restaurantName && restaurant.restaurantName.toLowerCase().includes(searchTerm)) ||
-            (restaurant.ownerEmail && restaurant.ownerEmail.toLowerCase().includes(searchTerm)) ||
-            (restaurant.city && restaurant.city.toLowerCase().includes(searchTerm)) ||
-            (restaurant.tags && restaurant.tags.some(tag => tag.toLowerCase().includes(searchTerm)))
-          );
-        });
-      }
-      
-      displayRestaurants(filteredRestaurants);
-    };
-
-    // Search users
-    window.searchUsers = () => {
-      const searchTerm = document.getElementById('userSearch').value.toLowerCase();
-      
-      if (!searchTerm) {
-        filteredUsers = [...allUsers];
-      } else {
-        filteredUsers = allUsers.filter(user => {
-          return (
-            (user.username && user.username.toLowerCase().includes(searchTerm)) ||
-            (user.email && user.email.toLowerCase().includes(searchTerm)) ||
-            (user.city && user.city.toLowerCase().includes(searchTerm))
-          );
-        });
-      }
-      
-      displayUsers(filteredUsers);
-    };
-
-    // Update restaurant status
-    window.updateRestaurantStatus = async (restaurantId, status) => {
-      try {
-        // Show loading state on the specific card
-        const card = document.getElementById(`restaurant-${restaurantId}`);
-        const buttons = card.querySelectorAll('.btn');
-        buttons.forEach(btn => {
-          btn.disabled = true;
-          btn.style.opacity = '0.5';
-        });
-
-        // Get restaurant data first
-        const restaurantDoc = await getDoc(doc(db, 'restaurants', restaurantId));
+    try {
+        // Get the delivery boy document
+        const boyDoc = await getDoc(doc(db, COLLECTIONS.DELIVERY_BOYS, deliveryBoyId));
+        if (!boyDoc.exists()) {
+            showMessage('Delivery boy not found', 'error');
+            return;
+        }
         
-        if (!restaurantDoc.exists()) {
-          throw new Error('Restaurant not found');
+        const boy = boyDoc.data();
+        const otpCode = Math.floor(10000 + Math.random() * 90000).toString();
+
+        // Update the order with delivery boy info
+        await updateDoc(doc(db, COLLECTIONS.ORDERS, orderId), {
+            deliveryBoyId: deliveryBoyId,  // Store the document ID
+            deliveryBoyUid: boy.uid || '', // Store Firebase Auth UID if exists
+            deliveryBoyName: boy.fullName,
+            deliveryBoyPhone: boy.phone,
+            deliveryBoyMobile: boy.mobile || boy.phone,
+            deliveryVehicle: boy.vehicle || '',
+            status: 'out-for-delivery',
+            outForDeliveryAt: Timestamp.now(),
+            otpCode: otpCode,
+            updatedAt: Timestamp.now()
+        });
+
+        showMessage(`✅ Order assigned! OTP: ${otpCode}`, 'success');
+        closeModal('assignDeliveryModal');
+    } catch (error) {
+        console.error('Error assigning delivery:', error);
+        showMessage('Error assigning delivery boy: ' + error.message, 'error');
+    }
+};
+
+        window.showCancelOrderModal = (orderId) => {
+            viewOrderDetails(orderId);
+            document.getElementById('updateOrderStatus').value = 'cancelled';
+            document.getElementById('cancellationReasonDiv').style.display = 'block';
+        };
+
+        window.updateOrderStatus = async (orderId, newStatus) => {
+            try {
+                const updates = {
+                    status: newStatus,
+                    updatedAt: Timestamp.now()
+                };
+
+                if (newStatus === 'preparing') {
+                    updates.preparingAt = Timestamp.now();
+                }
+
+                await updateDoc(doc(db, COLLECTIONS.ORDERS, orderId), updates);
+                showMessage(`✅ Order status updated to ${newStatus}!`, 'success');
+            } catch (error) {
+                console.error('Error updating order:', error);
+                showMessage('Error updating order', 'error');
+            }
+        };
+
+        function updateMealCheckboxes() {
+            const container = document.getElementById('ingredientMealsList');
+            if (!container) return;
+
+            if (meals.length === 0) {
+                container.innerHTML = '<p style="color: #94a3b8; text-align: center;">No meals yet. Add meals first.</p>';
+                return;
+            }
+
+            let html = '';
+            meals.forEach(meal => {
+                html += `
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="meal_${meal.id}" value="${meal.id}">
+                        <label for="meal_${meal.id}">${meal.name} (₹${meal.price})</label>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
         }
 
-        const restaurantData = restaurantDoc.data();
+        window.saveNewMeal = async () => {
+            const name = document.getElementById('newMealName')?.value;
+            const desc = document.getElementById('newMealDesc')?.value;
+            const price = parseFloat(document.getElementById('newMealPrice')?.value);
+            const category = document.getElementById('newMealCategory')?.value;
+            const type = document.getElementById('newMealType')?.value;
 
-        // Update restaurant status
-        await updateDoc(doc(db, 'restaurants', restaurantId), {
-          verified: status,
-          updatedAt: new Date(),
-          updatedBy: auth.currentUser.email
+            if (!name || !desc || !price) {
+                showMessage('Please fill all fields', 'error');
+                return;
+            }
+
+            try {
+                const mealId = 'meal_' + Date.now().toString();
+                
+                await setDoc(doc(db, COLLECTIONS.MEALS, mealId), {
+                    name: name,
+                    description: desc,
+                    price: price,
+                    category: category,
+                    type: type,
+                    createdAt: Timestamp.now()
+                });
+
+                showMessage('✅ Meal created successfully!', 'success');
+                
+                document.getElementById('newMealName').value = '';
+                document.getElementById('newMealDesc').value = '';
+                document.getElementById('newMealPrice').value = '';
+                
+                switchSection('meals', { currentTarget: document.querySelector('[onclick="switchSection(\'meals\', event)"]') });
+            } catch (error) {
+                console.error('Error creating meal:', error);
+                showMessage('Error creating meal: ' + error.message, 'error');
+            }
+        };
+
+        window.saveNewIngredient = async () => {
+            const name = document.getElementById('newIngredientName')?.value;
+            const price = parseFloat(document.getElementById('newIngredientPrice')?.value);
+            const category = document.getElementById('newIngredientCategory')?.value;
+            const type = document.getElementById('newIngredientType')?.value;
+
+            if (!name || !price) {
+                showMessage('Please fill all fields', 'error');
+                return;
+            }
+
+            try {
+                const ingredientId = 'ing_' + Date.now().toString();
+                
+                await setDoc(doc(db, COLLECTIONS.INGREDIENTS, ingredientId), {
+                    name: name,
+                    price: price,
+                    category: category,
+                    type: type,
+                    createdAt: Timestamp.now()
+                });
+
+                const mealCheckboxes = document.querySelectorAll('#ingredientMealsList input[type="checkbox"]:checked');
+                for (let checkbox of mealCheckboxes) {
+                    const mealId = checkbox.value;
+                    await setDoc(doc(db, COLLECTIONS.MEAL_INGREDIENTS, `${mealId}_${ingredientId}`), {
+                        mealId: mealId,
+                        ingredientId: ingredientId,
+                        type: 'available',
+                        createdAt: Timestamp.now()
+                    });
+                }
+
+                showMessage('✅ Ingredient created successfully!', 'success');
+                
+                document.getElementById('newIngredientName').value = '';
+                document.getElementById('newIngredientPrice').value = '';
+                
+                switchSection('ingredients', { currentTarget: document.querySelector('[onclick="switchSection(\'ingredients\', event)"]') });
+            } catch (error) {
+                console.error('Error creating ingredient:', error);
+                showMessage('Error creating ingredient: ' + error.message, 'error');
+            }
+        };
+
+        window.addDeliveryBoy = async () => {
+    const name = document.getElementById('deliveryFullName')?.value;
+    const phone = document.getElementById('deliveryPhone')?.value;
+    const mobile = document.getElementById('deliveryMobile')?.value;
+    const vehicle = document.getElementById('deliveryVehicle')?.value;
+    const address = document.getElementById('deliveryAddress')?.value;
+    const status = document.getElementById('deliveryStatus')?.value;
+
+    if (!name || !phone || !mobile || !address) {
+        showMessage('Please fill all required fields', 'error');
+        return;
+    }
+
+    try {
+        const emailName = name.trim().toLowerCase().replace(/\s+/g, '.');
+        const email = `${emailName}@mealcraft.delivery`;
+        
+        const existingQuery = query(collection(db, COLLECTIONS.DELIVERY_BOYS), where('email', '==', email));
+        const existingSnapshot = await getDocs(existingQuery);
+        
+        if (!existingSnapshot.empty) {
+            showMessage('❌ Delivery boy with this name already exists', 'error');
+            return;
+        }
+
+        const deliveryId = 'del_' + Date.now().toString();
+        
+        // Get the current user's UID if this is the delivery boy logging in
+        // For admin adding delivery boys, we don't have the UID yet
+        // The delivery boy will get their UID when they login first time
+        
+        await setDoc(doc(db, COLLECTIONS.DELIVERY_BOYS, deliveryId), {
+            fullName: name,
+            email: email,
+            phone: phone,
+            mobile: mobile,
+            vehicle: vehicle || '',
+            address: address,
+            status: status,
+            totalDeliveries: 0,
+            createdAt: Timestamp.now(),
+            // Store a placeholder UID that will be updated when delivery boy logs in
+            uid: '' 
         });
 
-        // Update user's role if exists
-        if (restaurantData.ownerId) {
-          await updateDoc(doc(db, 'users', restaurantData.ownerId), {
-            role: status === 'approved' ? 'restaurant' : 'customer',
-            restaurantStatus: status,
-            updatedAt: new Date()
-          });
-        }
-
-        showMessage(`Restaurant ${status} successfully!`, 'success');
+        showMessage('✅ Delivery boy added successfully!', 'success');
+        closeModal('deliveryModal');
         
-        // Refresh data
-        await loadRestaurants();
-        await loadUsers();
-        updateStats();
+        document.getElementById('deliveryFullName').value = '';
+        document.getElementById('deliveryPhone').value = '';
+        document.getElementById('deliveryMobile').value = '';
+        document.getElementById('deliveryVehicle').value = '';
+        document.getElementById('deliveryAddress').value = '';
+        document.getElementById('emailPreview').textContent = 'name@mealcraft.delivery';
         
-      } catch (error) {
-        console.error('Error updating status:', error);
-        showMessage('Error updating status: ' + error.message, 'error');
-        
-        // Reset buttons
-        const card = document.getElementById(`restaurant-${restaurantId}`);
-        if (card) {
-          const buttons = card.querySelectorAll('.btn');
-          buttons.forEach(btn => {
-            btn.disabled = false;
-            btn.style.opacity = '1';
-          });
-        }
-      }
-    };
+    } catch (error) {
+        console.error('Error adding delivery boy:', error);
+        showMessage('Error: ' + error.message, 'error');
+    }
+};
 
-    // View details in modal
-    window.viewDetails = (type, id) => {
-      const modal = document.getElementById('detailsModal');
-      const modalTitle = document.getElementById('modalTitle');
-      const modalContent = document.getElementById('modalContent');
-      
-      let data = type === 'restaurant' 
-        ? allRestaurants.find(r => r.id === id)
-        : allUsers.find(u => u.id === id);
-      
-      if (!data) return;
-      
-      modalTitle.textContent = type === 'restaurant' ? 'Restaurant Details' : 'User Details';
-      
-      let html = '';
-      
-      if (type === 'restaurant') {
-        html = `
-          <div class="detail-row">
-            <span class="detail-label">ID:</span>
-            <span class="detail-value">${data.id}</span>
-          </div>
-          <div class="detail-row">
-            <span class="detail-label">Name:</span>
-            <span class="detail-value">${data.restaurantName || 'N/A'}</span>
-          </div>
-          <div class="detail-row">
-            <span class="detail-label">Owner:</span>
-            <span class="detail-value">${data.ownerName || data.ownerEmail || 'N/A'}</span>
-          </div>
-          <div class="detail-row">
-            <span class="detail-label">Email:</span>
-            <span class="detail-value">${data.ownerEmail || 'N/A'}</span>
-          </div>
-          <div class="detail-row">
-            <span class="detail-label">Mobile:</span>
-            <span class="detail-value">${data.mobile || 'N/A'}</span>
-          </div>
-          <div class="detail-row">
-            <span class="detail-label">Country:</span>
-            <span class="detail-value">${data.country || 'N/A'}</span>
-          </div>
-          <div class="detail-row">
-            <span class="detail-label">State:</span>
-            <span class="detail-value">${data.state || 'N/A'}</span>
-          </div>
-          <div class="detail-row">
-            <span class="detail-label">City:</span>
-            <span class="detail-value">${data.city || 'N/A'}</span>
-          </div>
-          <div class="detail-row">
-            <span class="detail-label">Address:</span>
-            <span class="detail-value">${data.address || 'N/A'}</span>
-          </div>
-          <div class="detail-row">
-            <span class="detail-label">Website:</span>
-            <span class="detail-value">${data.website || 'N/A'}</span>
-          </div>
-          <div class="detail-row">
-            <span class="detail-label">Tags:</span>
-            <span class="detail-value">${data.tags ? data.tags.join(', ') : 'N/A'}</span>
-          </div>
-          <div class="detail-row">
-            <span class="detail-label">Status:</span>
-            <span class="detail-value">${data.verified || 'pending'}</span>
-          </div>
-          <div class="detail-row">
-            <span class="detail-label">Created:</span>
-            <span class="detail-value">${data.createdAt ? new Date(data.createdAt.seconds * 1000).toLocaleString() : 'N/A'}</span>
-          </div>
-          <div class="detail-row">
-            <span class="detail-label">Updated:</span>
-            <span class="detail-value">${data.updatedAt ? new Date(data.updatedAt.seconds * 1000).toLocaleString() : 'N/A'}</span>
-          </div>
-        `;
-      } else {
-        html = `
-          <div class="detail-row">
-            <span class="detail-label">ID:</span>
-            <span class="detail-value">${data.id}</span>
-          </div>
-          <div class="detail-row">
-            <span class="detail-label">Username:</span>
-            <span class="detail-value">${data.username || 'N/A'}</span>
-          </div>
-          <div class="detail-row">
-            <span class="detail-label">Email:</span>
-            <span class="detail-value">${data.email || 'N/A'}</span>
-          </div>
-          <div class="detail-row">
-            <span class="detail-label">Role:</span>
-            <span class="detail-value">${data.role || 'N/A'}</span>
-          </div>
-          <div class="detail-row">
-            <span class="detail-label">Mobile:</span>
-            <span class="detail-value">${data.mobile || 'N/A'}</span>
-          </div>
-          <div class="detail-row">
-            <span class="detail-label">Country:</span>
-            <span class="detail-value">${data.country || 'N/A'}</span>
-          </div>
-          <div class="detail-row">
-            <span class="detail-label">State:</span>
-            <span class="detail-value">${data.state || 'N/A'}</span>
-          </div>
-          <div class="detail-row">
-            <span class="detail-label">City:</span>
-            <span class="detail-value">${data.city || 'N/A'}</span>
-          </div>
-          <div class="detail-row">
-            <span class="detail-label">Address:</span>
-            <span class="detail-value">${data.address || 'N/A'}</span>
-          </div>
-          <div class="detail-row">
-            <span class="detail-label">Created:</span>
-            <span class="detail-value">${data.createdAt ? new Date(data.createdAt.seconds * 1000).toLocaleString() : 'N/A'}</span>
-          </div>
-          <div class="detail-row">
-            <span class="detail-label">Updated:</span>
-            <span class="detail-value">${data.updatedAt ? new Date(data.updatedAt.seconds * 1000).toLocaleString() : 'N/A'}</span>
-          </div>
-        `;
-      }
-      
-      modalContent.innerHTML = html;
-      modal.classList.add('active');
-    };
+        window.addOutlet = async () => {
+            const type = document.getElementById('outletType')?.value;
+            const name = document.getElementById('outletName')?.value;
+            const code = document.getElementById('outletCode')?.value;
 
-    // Close modal
-    window.closeModal = () => {
-      document.getElementById('detailsModal').classList.remove('active');
-    };
+            if (!name) {
+                showMessage('Please enter name', 'error');
+                return;
+            }
 
-    // Refresh data
-    window.refreshData = async () => {
-      showMessage('Refreshing data...', 'info');
-      await loadDashboardData();
-      showMessage('Data refreshed!', 'success');
-    };
+            try {
+                const id = type + '_' + Date.now().toString();
+                const collection = type === 'state' ? COLLECTIONS.STATES : COLLECTIONS.CITIES;
+                
+                const data = {
+                    name: name,
+                    code: code,
+                    createdAt: Timestamp.now()
+                };
 
-    // Logout function
-    window.logout = async () => {
-      try {
-        await signOut(auth);
-        sessionStorage.clear();
-        window.location.replace("../index.html");
-      } catch (error) {
-        console.error('Logout error:', error);
-        showMessage('Error logging out', 'error');
-      }
-    };
+                if (type === 'city') {
+                    const stateId = document.getElementById('outletStateId')?.value;
+                    if (!stateId) {
+                        showMessage('Please select a state for the city', 'error');
+                        return;
+                    }
+                    data.stateId = stateId;
+                }
 
-    // Show message
-    const showMessage = (message, type) => {
-      const messageDiv = document.getElementById('message');
-      messageDiv.textContent = message;
-      messageDiv.className = `message ${type}`;
-      messageDiv.style.display = 'block';
-      
-      setTimeout(() => {
-        messageDiv.style.display = 'none';
-      }, 3000);
-    };
+                await setDoc(doc(db, collection, id), data);
 
-    // Close modal when clicking outside
-    window.onclick = (event) => {
-      const modal = document.getElementById('detailsModal');
-      if (event.target === modal) {
-        closeModal();
-      }
-    };
-  </script>
+                showMessage(`✅ ${type} added successfully!`, 'success');
+                closeModal('outletModal');
+                
+                document.getElementById('outletName').value = '';
+                document.getElementById('outletCode').value = '';
+                
+            } catch (error) {
+                console.error('Error adding outlet:', error);
+                showMessage('Error adding outlet: ' + error.message, 'error');
+            }
+        };
+
+        window.editMeal = (id) => {
+            const meal = meals.find(m => m.id === id);
+            if (!meal) return;
+
+            document.getElementById('editMealId').value = meal.id;
+            document.getElementById('editMealName').value = meal.name;
+            document.getElementById('editMealDesc').value = meal.description;
+            document.getElementById('editMealPrice').value = meal.price;
+            document.getElementById('editMealCategory').value = meal.category;
+            document.getElementById('editMealType').value = meal.type;
+
+            document.getElementById('editMealModal').classList.add('active');
+        };
+
+        window.updateMeal = async () => {
+            const id = document.getElementById('editMealId').value;
+            const name = document.getElementById('editMealName').value;
+            const desc = document.getElementById('editMealDesc').value;
+            const price = parseFloat(document.getElementById('editMealPrice').value);
+            const category = document.getElementById('editMealCategory').value;
+            const type = document.getElementById('editMealType').value;
+
+            try {
+                await updateDoc(doc(db, COLLECTIONS.MEALS, id), {
+                    name: name,
+                    description: desc,
+                    price: price,
+                    category: category,
+                    type: type,
+                    updatedAt: Timestamp.now()
+                });
+
+                showMessage('✅ Meal updated successfully!', 'success');
+                closeModal('editMealModal');
+            } catch (error) {
+                showMessage('Error updating meal', 'error');
+            }
+        };
+
+        window.editIngredient = (id) => {
+            const ing = ingredients.find(i => i.id === id);
+            if (!ing) return;
+
+            document.getElementById('editIngredientId').value = ing.id;
+            document.getElementById('editIngredientName').value = ing.name;
+            document.getElementById('editIngredientPrice').value = ing.price;
+            document.getElementById('editIngredientCategory').value = ing.category;
+            document.getElementById('editIngredientType').value = ing.type;
+
+            document.getElementById('editIngredientModal').classList.add('active');
+        };
+
+        window.updateIngredient = async () => {
+            const id = document.getElementById('editIngredientId').value;
+            const name = document.getElementById('editIngredientName').value;
+            const price = parseFloat(document.getElementById('editIngredientPrice').value);
+            const category = document.getElementById('editIngredientCategory').value;
+            const type = document.getElementById('editIngredientType').value;
+
+            try {
+                await updateDoc(doc(db, COLLECTIONS.INGREDIENTS, id), {
+                    name: name,
+                    price: price,
+                    category: category,
+                    type: type,
+                    updatedAt: Timestamp.now()
+                });
+
+                showMessage('✅ Ingredient updated successfully!', 'success');
+                closeModal('editIngredientModal');
+            } catch (error) {
+                showMessage('Error updating ingredient', 'error');
+            }
+        };
+
+        window.editDeliveryBoy = (id) => {
+            const boy = deliveryBoys.find(b => b.id === id);
+            if (!boy) return;
+
+            document.getElementById('editDeliveryId').value = boy.id;
+            document.getElementById('editDeliveryName').value = boy.fullName;
+            document.getElementById('editDeliveryEmail').value = boy.email;
+            document.getElementById('editDeliveryPhone').value = boy.phone;
+            document.getElementById('editDeliveryMobile').value = boy.mobile || '';
+            document.getElementById('editDeliveryVehicle').value = boy.vehicle || '';
+            document.getElementById('editDeliveryAddress').value = boy.address;
+            document.getElementById('editDeliveryStatus').value = boy.status;
+
+            document.getElementById('editDeliveryModal').classList.add('active');
+        };
+
+        window.updateDeliveryBoy = async () => {
+            const id = document.getElementById('editDeliveryId').value;
+            const name = document.getElementById('editDeliveryName').value;
+            const phone = document.getElementById('editDeliveryPhone').value;
+            const mobile = document.getElementById('editDeliveryMobile').value;
+            const vehicle = document.getElementById('editDeliveryVehicle').value;
+            const address = document.getElementById('editDeliveryAddress').value;
+            const status = document.getElementById('editDeliveryStatus').value;
+
+            try {
+                await updateDoc(doc(db, COLLECTIONS.DELIVERY_BOYS, id), {
+                    fullName: name,
+                    phone: phone,
+                    mobile: mobile,
+                    vehicle: vehicle,
+                    address: address,
+                    status: status,
+                    updatedAt: Timestamp.now()
+                });
+
+                showMessage('✅ Delivery boy updated successfully!', 'success');
+                closeModal('editDeliveryModal');
+            } catch (error) {
+                showMessage('Error updating delivery boy', 'error');
+            }
+        };
+
+        window.updateUserStatus = async (userId, status) => {
+            try {
+                await updateDoc(doc(db, COLLECTIONS.USERS, userId), {
+                    status: status,
+                    updatedAt: Timestamp.now()
+                });
+                showMessage(`✅ User ${status === 'blocked' ? 'blocked' : 'unblocked'}!`, 'success');
+            } catch (error) {
+                showMessage('Error updating user', 'error');
+            }
+        };
+
+        window.deleteMeal = async (id) => {
+            if (!confirm('Delete this meal?')) return;
+            try {
+                await deleteDoc(doc(db, COLLECTIONS.MEALS, id));
+                showMessage('✅ Meal deleted!', 'success');
+            } catch (error) {
+                showMessage('Error deleting: ' + error.message, 'error');
+            }
+        };
+
+        window.deleteIngredient = async (id) => {
+            if (!confirm('Delete this ingredient?')) return;
+            try {
+                await deleteDoc(doc(db, COLLECTIONS.INGREDIENTS, id));
+                showMessage('✅ Ingredient deleted!', 'success');
+            } catch (error) {
+                showMessage('Error deleting: ' + error.message, 'error');
+            }
+        };
+
+        window.deleteDeliveryBoy = async (id) => {
+            if (!confirm('Delete this delivery boy?')) return;
+            try {
+                await deleteDoc(doc(db, COLLECTIONS.DELIVERY_BOYS, id));
+                showMessage('✅ Delivery boy deleted!', 'success');
+            } catch (error) {
+                showMessage('Error deleting: ' + error.message, 'error');
+            }
+        };
+
+        window.deleteState = async (id) => {
+            if (!confirm('Delete this state?')) return;
+            try {
+                await deleteDoc(doc(db, COLLECTIONS.STATES, id));
+                showMessage('✅ State deleted!', 'success');
+            } catch (error) {
+                showMessage('Error deleting: ' + error.message, 'error');
+            }
+        };
+
+        window.deleteCity = async (id) => {
+            if (!confirm('Delete this city?')) return;
+            try {
+                await deleteDoc(doc(db, COLLECTIONS.CITIES, id));
+                showMessage('✅ City deleted!', 'success');
+            } catch (error) {
+                showMessage('Error deleting: ' + error.message, 'error');
+            }
+        };
+
+        window.filterUsers = () => {
+            const filter = document.getElementById('userStatusFilter')?.value;
+            if (filter === 'all') {
+                displayUsers(users);
+            } else {
+                const filtered = users.filter(u => u.status === filter);
+                displayUsers(filtered);
+            }
+        };
+
+        window.filterOrders = () => {
+            const status = document.getElementById('orderStatusFilter')?.value;
+            const date = document.getElementById('orderDateFilter')?.value;
+            
+            let filtered = [...orders];
+
+            if (status !== 'all') {
+                filtered = filtered.filter(o => o.status === status);
+            }
+
+            if (date !== 'all') {
+                const now = new Date();
+                if (date === 'today') {
+                    const today = now.setHours(0,0,0,0);
+                    filtered = filtered.filter(o => {
+                        const orderDate = o.createdAt?.toDate?.() || new Date(o.createdAt);
+                        return orderDate.setHours(0,0,0,0) === today;
+                    });
+                } else if (date === 'week') {
+                    const weekAgo = new Date(now.setDate(now.getDate() - 7));
+                    filtered = filtered.filter(o => {
+                        const orderDate = o.createdAt?.toDate?.() || new Date(o.createdAt);
+                        return orderDate >= weekAgo;
+                    });
+                } else if (date === 'month') {
+                    const monthAgo = new Date(now.setMonth(now.getMonth() - 1));
+                    filtered = filtered.filter(o => {
+                        const orderDate = o.createdAt?.toDate?.() || new Date(o.createdAt);
+                        return orderDate >= monthAgo;
+                    });
+                }
+            }
+
+            displayOrders(filtered);
+        };
+
+        window.searchMeals = () => {
+            const term = document.getElementById('mealSearch')?.value.toLowerCase() || '';
+            const filtered = meals.filter(meal => 
+                meal.name?.toLowerCase().includes(term) ||
+                meal.description?.toLowerCase().includes(term)
+            );
+            displayMeals(filtered);
+        };
+
+        window.searchIngredients = () => {
+            const term = document.getElementById('ingredientSearch')?.value.toLowerCase() || '';
+            const filtered = ingredients.filter(ing => 
+                ing.name?.toLowerCase().includes(term)
+            );
+            displayIngredients(filtered);
+        };
+
+        window.searchDeliveryBoys = () => {
+            const term = document.getElementById('deliverySearch')?.value.toLowerCase() || '';
+            const filtered = deliveryBoys.filter(boy => 
+                boy.fullName?.toLowerCase().includes(term) ||
+                boy.email?.toLowerCase().includes(term) ||
+                boy.phone?.includes(term)
+            );
+            displayDeliveryBoys(filtered);
+        };
+
+        window.searchUsers = () => {
+            const term = document.getElementById('userSearch')?.value.toLowerCase() || '';
+            const filtered = users.filter(user => 
+                user.fullName?.toLowerCase().includes(term) ||
+                user.email?.toLowerCase().includes(term) ||
+                user.mobile?.includes(term)
+            );
+            displayUsers(filtered);
+        };
+
+        window.switchSection = (section, event) => {
+            currentSection = section;
+            
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            if (event && event.currentTarget) {
+                event.currentTarget.classList.add('active');
+            }
+
+            const sections = [
+                'dashboard', 'meals', 'addMeal', 'ingredients', 'addIngredient',
+                'delivery', 'users', 'outlets', 'orders'
+            ];
+            
+            sections.forEach(s => {
+                const el = document.getElementById(s + 'Section');
+                if (el) el.style.display = 'none';
+            });
+
+            const sectionEl = document.getElementById(section + 'Section');
+            if (sectionEl) sectionEl.style.display = 'block';
+
+            const titles = {
+                dashboard: 'Dashboard',
+                meals: 'All Meals',
+                addMeal: 'Add New Meal',
+                ingredients: 'Ingredients',
+                addIngredient: 'Add Ingredient',
+                delivery: 'Delivery Boys',
+                users: 'Users',
+                outlets: 'Outlets',
+                orders: 'Orders'
+            };
+            document.getElementById('pageTitle').textContent = titles[section] || 'Dashboard';
+
+            if (section === 'addIngredient') updateMealCheckboxes();
+            if (section === 'outlets') {
+                updateStateDropdown();
+            }
+            if (section === 'orders') {
+                updateDeliveryBoyDropdowns();
+                displayOrders(orders);
+            }
+        };
+
+        window.showAddDeliveryModal = () => {
+            document.getElementById('deliveryModal').classList.add('active');
+        };
+
+        window.showAddOutletModal = () => {
+            updateStateDropdown();
+            document.getElementById('outletModal').classList.add('active');
+        };
+
+        window.closeModal = (modalId) => {
+            document.getElementById(modalId).classList.remove('active');
+        };
+
+        window.logout = async () => {
+            try {
+                await signOut(auth);
+                window.location.replace("../login.html");
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        const showMessage = (message, type) => {
+            const msgDiv = document.getElementById('message');
+            if (!msgDiv) return;
+            
+            const icon = type === 'success' ? 'fa-check-circle' : 
+                        type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle';
+            
+            msgDiv.innerHTML = `<i class="fas ${icon}"></i> ${message}`;
+            msgDiv.className = `message ${type}`;
+            msgDiv.style.display = 'block';
+            
+            setTimeout(() => {
+                msgDiv.style.display = 'none';
+            }, 3000);
+        };
+
+        window.onclick = (event) => {
+            if (event.target.classList.contains('modal')) {
+                event.target.classList.remove('active');
+            }
+        };
+    </script>
 </body>
 </html>

@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Meals - Meal Craft</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Copy styles from home.html for consistency */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: #F9F7F5;
+            background-image: 
+                radial-gradient(circle at 0% 0%, rgba(255, 140, 50, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 100% 100%, rgba(255, 140, 50, 0.1) 0%, transparent 40%);
+            color: #1a1a1a;
+        }
+
+        header {
+            background: white;
+            padding: 15px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .logo-top { 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            font-weight: 900; 
+            cursor: pointer;
+        }
+        
+        .mini-logo-card {
+            background: linear-gradient(135deg, #e67e22, #d35400);
+            width: 32px; 
+            height: 32px; 
+            border-radius: 6px;
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(211, 84, 0, 0.15);
+        }
+        
+        .mini-logo-card img { 
+            width: 16px; 
+            filter: brightness(0) invert(1);
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #666;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin: 0 15px;
+        }
+
+        .content-wrapper {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .page-header {
+            margin-bottom: 40px;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #1a1a1a;
+            margin-bottom: 10px;
+        }
+
+        .page-header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .filter-bar {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .filter-tab {
+            padding: 8px 24px;
+            border: 2px solid #eee;
+            border-radius: 30px;
+            background: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-tab:hover,
+        .filter-tab.active {
+            background: #f37021;
+            border-color: #f37021;
+            color: white;
+        }
+
+        .meals-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        .meal-card {
+            background: white;
+            border-radius: 18px;
+            overflow: hidden;
+            transition: all 0.3s;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+        }
+
+        .meal-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+
+        .meal-image {
+            height: 150px;
+            background: linear-gradient(135deg, #e67e22, #d35400);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: white;
+            position: relative;
+        }
+
+        .meal-type {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
+
+        .meal-content {
+            padding: 20px;
+        }
+
+        .meal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .meal-header h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .meal-price {
+            color: #f37021;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .meal-desc {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .loading-spinner {
+            text-align: center;
+            padding: 60px;
+            grid-column: 1 / -1;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #f5f5f5;
+            border-top: 4px solid #f37021;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px;
+            color: #999;
+            grid-column: 1 / -1;
+        }
+
+        @media (max-width: 768px) {
+            .meals-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-top" onclick="goToHome()">
+            <div class="mini-logo-card">
+                <img src="https://img.icons8.com/ios-filled/50/ffffff/cutlery.png" alt="Logo">
+            </div>
+            <strong>Meal Craft</strong>
+        </div>
+        <nav class="nav-links">
+            <a href="home.html">Home</a>
+            <a href="profile.html">Profile</a>
+            <a href="cart.html">Cart</a>
+        </nav>
+    </header>
+
+    <main class="content-wrapper">
+        <div class="page-header">
+            <h1>All Meals</h1>
+            <p>Choose your base and start customizing</p>
+        </div>
+
+        <div class="filter-bar">
+            <button class="filter-tab active" onclick="filterMeals('all')">All</button>
+            <button class="filter-tab" onclick="filterMeals('veg')">🌱 Veg</button>
+            <button class="filter-tab" onclick="filterMeals('nonveg')">🍗 Non-Veg</button>
+        </div>
+
+        <div id="mealsGrid" class="meals-grid">
+            <div class="loading-spinner">
+                <div class="spinner"></div>
+                <p>Loading meals...</p>
+            </div>
+        </div>
+    </main>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAT4CDao7eHCFU0OO_dee_m6BpjzKv_308",
+            authDomain: "mealcraft-9db35.firebaseapp.com",
+            projectId: "mealcraft-9db35",
+            messagingSenderId: "1052912873454",
+            appId: "1:1052912873454:web:2b794eb8e9524f0ba068ff"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        let allMeals = [];
+
+        // Load meals
+        const loadMeals = async () => {
+            try {
+                const snapshot = await getDocs(collection(db, 'meals'));
+                allMeals = [];
+                snapshot.forEach(doc => {
+                    allMeals.push({ id: doc.id, ...doc.data() });
+                });
+                displayMeals(allMeals);
+            } catch (error) {
+                console.error('Error loading meals:', error);
+            }
+        };
+
+        // Display meals
+        const displayMeals = (meals) => {
+            const grid = document.getElementById('mealsGrid');
+            
+            if (meals.length === 0) {
+                grid.innerHTML = '<div class="empty-state">No meals available</div>';
+                return;
+            }
+
+            let html = '';
+            meals.forEach(meal => {
+                html += `
+                    <div class="meal-card" onclick="viewMeal('${meal.id}')">
+                        <div class="meal-image">
+                            <i class="fas ${meal.category === 'Pizza' ? 'fa-pizza-slice' : meal.category === 'Burger' ? 'fa-hamburger' : 'fa-utensils'}"></i>
+                            <span class="meal-type">${meal.type === 'veg' ? '🌱 VEG' : '🍗 NON-VEG'}</span>
+                        </div>
+                        <div class="meal-content">
+                            <div class="meal-header">
+                                <h3>${meal.name}</h3>
+                                <span class="meal-price">₹${meal.price}</span>
+                            </div>
+                            <p class="meal-desc">${meal.description}</p>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            grid.innerHTML = html;
+        };
+
+        // Filter meals
+        window.filterMeals = (type) => {
+            const tabs = document.querySelectorAll('.filter-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+
+            if (type === 'all') {
+                displayMeals(allMeals);
+            } else {
+                const filtered = allMeals.filter(meal => meal.type === type);
+                displayMeals(filtered);
+            }
+        };
+
+        // View meal
+        window.viewMeal = (mealId) => {
+            window.location.href = `craft_meal.html?id=${mealId}`;
+        };
+
+        // Go to home
+        window.goToHome = () => {
+            window.location.href = 'home.html';
+        };
+
+        // Load on page load
+        loadMeals();
+    </script>
+</body>
+</html>

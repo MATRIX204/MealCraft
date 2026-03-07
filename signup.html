@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meal Craft - Sign Up</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body class="auth-body">
+
+    <header>
+        <div class="logo-top">
+            <div class="mini-logo-card">
+                <img src="https://img.icons8.com/ios-filled/50/ffffff/cutlery.png" alt="Meal Craft Logo">
+            </div>
+            <strong>Meal Craft</strong>
+        </div>
+        <nav class="nav-links">
+            <a href="#">Menu</a>
+            <a href="#">How it Works</a>
+            <a href="#">About</a>
+            <button class="toggle-btn" id="to-login-btn">Log In</button>
+        </nav>
+    </header>
+
+    <main class="login-container">
+        <div class="auth-card">
+            <div class="auth-image-side">
+                <div class="image-overlay">
+                    <h3 id="image-title">Crafted By You</h3>
+                    <p id="image-desc">Join thousands of people getting high-quality, customized meals delivered right where you are.</p>
+                </div>
+            </div>
+
+            <div class="auth-form-side">
+                <h2 id="form-title">CREATE ACCOUNT</h2>
+                <p class="subtitle" id="form-subtitle">Start your culinary journey</p>
+
+                <button class="google-btn" id="google-signup">
+                    <img src="https://img.icons8.com/color/16/000000/google-logo.png" alt="Google"/> 
+                    <span id="google-text">Sign up with Google</span>
+                </button>
+
+                <div class="divider"><span>Or</span></div>
+
+                <form id="auth-form" novalidate>
+                    <div class="input-group">
+                        <label>Full Name</label>
+                        <input type="text" id="full-name" placeholder="Enter your name">
+                        <div class="input-error" id="name-error"></div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>E-mail</label>
+                        <input type="email" id="email" placeholder="you@university.edu" required>
+                        <div class="input-error" id="email-error"></div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Password</label>
+                        <input type="password" id="password" placeholder="••••••••" required>
+                        <div class="strength-meter">
+                            <div class="strength-bar" id="strength-bar"></div>
+                        </div>
+                        <div class="password-hint">Minimum 8 characters with letters & numbers</div>
+                        <div class="input-error" id="password-error"></div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Confirm Password</label>
+                        <input type="password" id="confirm-password" placeholder="••••••••" required>
+                        <div class="input-error" id="confirm-error"></div>
+                    </div>
+
+                    <button type="submit" class="auth-submit-btn" id="submit-btn">Sign Up</button>
+                </form>
+
+                <div class="auth-footer">
+                    <p>Have a restaurant? <a href="#">Partner with us</a></p>
+                    <p class="terms">
+                        By continuing, you agree to Meal Craft's <br>
+                        <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                    </p>
+                </div>
+
+                <div id="message" class="message"></div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        &copy; 2023 Meal Craft Inc. Built for Students.
+    </footer>
+
+    <script type="module" src="signup-script.js"></script>
+</body>
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meal Craft - Login</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        /* Additional styles for admin button */
+        .admin-quick-login {
+            margin-top: 20px;
+            padding: 15px;
+            background: #fef2f2;
+            border-radius: 12px;
+            border: 1px solid #fee2e2;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .admin-quick-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .admin-icon {
+            width: 40px;
+            height: 40px;
+            background: #f37021;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .admin-quick-info h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 4px;
+        }
+
+        .admin-quick-info p {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .admin-quick-btn {
+            background: #f37021;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .admin-quick-btn:hover {
+            background: #e6651a;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(243, 112, 33, 0.3);
+        }
+
+        .admin-quick-btn i {
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body class="auth-body">
+
+    <header>
+        <div class="logo-top">
+            <div class="mini-logo-card">
+                <img src="https://img.icons8.com/ios-filled/50/ffffff/cutlery.png" alt="Meal Craft Logo">
+            </div>
+            <strong>Meal Craft</strong>
+        </div>
+        <nav class="nav-links">
+            <a href="#">Menu</a>
+            <a href="#">How it Works</a>
+            <a href="#">About</a>
+            <button class="toggle-btn" id="to-signup-btn">Sign Up</button>
+        </nav>
+    </header>
+
+    <main class="login-container">
+        <div class="auth-card">
+            <div class="auth-image-side">
+                <div class="image-overlay">
+                    <h3 id="image-title">Crafted By You</h3>
+                    <p id="image-desc">Join thousands of people getting high-quality, customized meals delivered right where you are.</p>
+                </div>
+            </div>
+
+            <div class="auth-form-side">
+                <h2 id="form-title">YOU NEED YOU BUILD</h2>
+                <p class="subtitle" id="form-subtitle">Custom meals for your life</p>
+
+                <button class="google-btn" id="google-login">
+                    <img src="https://img.icons8.com/color/16/000000/google-logo.png" alt="Google"/> 
+                    <span id="google-text">Continue with Google</span>
+                </button>
+
+                <div class="divider"><span>Or</span></div>
+
+                <form id="auth-form" novalidate>
+                    <div class="input-group">
+                        <label>E-mail</label>
+                        <input type="email" id="email" placeholder="you@university.edu" required>
+                        <div class="input-error" id="email-error"></div>
+                    </div>
+
+                    <div class="input-group">
+                        <div class="label-row">
+                            <label>Password</label>
+                            <a href="#" class="forgot-link" id="forgot-link">Forgot password?</a>
+                        </div>
+                        <input type="password" id="password" placeholder="••••••••" required>
+                        <div class="input-error" id="password-error"></div>
+                    </div>
+
+                    <button type="submit" class="auth-submit-btn" id="submit-btn">Log In</button>
+                </form>
+
+                <!-- Admin Quick Login Button -->
+                <div class="admin-quick-login">
+                    <div class="admin-quick-info">
+                        <div class="admin-icon">
+                            <i class="fas fa-crown"></i>
+                        </div>
+                        <div>
+                            <h4>Admin Access</h4>
+                            <p>Quick login to admin panel</p>
+                        </div>
+                    </div>
+                    <button class="admin-quick-btn" onclick="fillAdminCredentials()">
+                        <i class="fas fa-key"></i> Auto-fill Admin
+                    </button>
+                </div>
+
+                <p class="terms">
+                    By continuing, you agree to Meal Craft's <br>
+                    <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                </p>
+
+                <div id="message" class="message"></div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        &copy; 2023 Meal Craft Inc. Built for Students.
+    </footer>
+
+    <!-- Font Awesome for icons -->
+    <script src="https://kit.fontawesome.com/your-kit-code.js" crossorigin="anonymous"></script>
+    <script type="module" src="login-script.js"></script>
+</body>
+</html>

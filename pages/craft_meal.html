@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Craft Your Meal - Meal Craft</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: #F9F7F5;
+            background-image: 
+                radial-gradient(circle at 0% 0%, rgba(255, 140, 50, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 100% 100%, rgba(255, 140, 50, 0.1) 0%, transparent 40%);
+            color: #1a1a1a;
+        }
+
+        header {
+            background: white;
+            padding: 15px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .logo-top { 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            font-weight: 900; 
+            cursor: pointer;
+        }
+        
+        .mini-logo-card {
+            background: linear-gradient(135deg, #e67e22, #d35400);
+            width: 32px; 
+            height: 32px; 
+            border-radius: 6px;
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(211, 84, 0, 0.15);
+        }
+        
+        .mini-logo-card img { 
+            width: 16px; 
+            filter: brightness(0) invert(1);
+        }
+
+        .cart-btn {
+            background: #f37021;
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .content-wrapper {
+            max-width: 1300px;
+            margin: 40px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1fr 0.8fr;
+            gap: 30px;
+        }
+
+        /* Left Column - Meal Preview */
+        .preview-section {
+            background: white;
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 100px;
+            height: fit-content;
+        }
+
+        .meal-preview {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .preview-image {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(135deg, #f37021, #e67e22);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 25px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .preview-image i {
+            font-size: 5rem;
+            color: white;
+            opacity: 0.9;
+        }
+
+        .preview-image .meal-type-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.2);
+            padding: 8px 16px;
+            border-radius: 30px;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+            backdrop-filter: blur(5px);
+        }
+
+        .preview-details h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #1a1a1a;
+            margin-bottom: 10px;
+        }
+
+        .preview-details p {
+            color: #666;
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .base-price-display {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .base-price-display .label {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+
+        .base-price-display .amount {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #f37021;
+        }
+
+        .selected-ingredients-preview {
+            background: #fafafa;
+            border-radius: 16px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .selected-ingredients-preview h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #1a1a1a;
+        }
+
+        .preview-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .preview-tag {
+            background: white;
+            padding: 6px 15px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            border: 1px solid #f37021;
+            color: #f37021;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .preview-tag i {
+            color: #27ae60;
+            font-size: 0.8rem;
+        }
+
+        .preview-tag .remove-tag {
+            color: #e74c3c;
+            cursor: pointer;
+            font-size: 0.8rem;
+            margin-left: 5px;
+        }
+
+        .preview-tag .remove-tag:hover {
+            color: #c0392b;
+        }
+
+        .addons-summary {
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+            margin-top: 15px;
+        }
+
+        .addons-row {
+            display: flex;
+            justify-content: space-between;
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+        }
+
+        .addons-total {
+            font-weight: 700;
+            color: #f37021;
+        }
+
+        .total-price-box {
+            background: #f37021;
+            color: white;
+            padding: 20px;
+            border-radius: 16px;
+            margin-top: 20px;
+        }
+
+        .total-price-box .label {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+
+        .total-price-box .amount {
+            font-size: 2.5rem;
+            font-weight: 800;
+        }
+
+        .total-price-box .breakdown {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+
+        /* Right Column - Customization */
+        .customization-section {
+            background: white;
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            color: #1a1a1a;
+        }
+
+        .section-title i {
+            color: #f37021;
+            margin-right: 10px;
+        }
+
+        .base-info {
+            background: #f5f5f5;
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .base-info .base-label {
+            font-weight: 600;
+            color: #666;
+        }
+
+        .base-info .base-value {
+            font-weight: 700;
+            color: #f37021;
+            font-size: 1.2rem;
+        }
+
+        .ingredients-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .ingredient-card {
+            background: #fafafa;
+            border-radius: 16px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border: 2px solid #eee;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .ingredient-card:hover {
+            border-color: #f37021;
+        }
+
+        .ingredient-card.selected {
+            border-color: #f37021;
+            background: #fff3e0;
+        }
+
+        .ingredient-check {
+            width: 24px;
+            height: 24px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.8rem;
+            transition: all 0.3s;
+        }
+
+        .ingredient-card.selected .ingredient-check {
+            background: #f37021;
+            border-color: #f37021;
+        }
+
+        .ingredient-card.selected .ingredient-check i {
+            color: white;
+        }
+
+        .ingredient-info {
+            flex: 1;
+        }
+
+        .ingredient-info h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .ingredient-category {
+            font-size: 0.75rem;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .ingredient-price {
+            font-weight: 700;
+            color: #f37021;
+            font-size: 1.1rem;
+        }
+
+        .special-instructions {
+            margin: 30px 0;
+            padding: 20px;
+            background: #fafafa;
+            border-radius: 16px;
+        }
+
+        .special-instructions h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .special-instructions h3 i {
+            color: #f37021;
+        }
+
+        .instructions-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #eee;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            resize: vertical;
+            min-height: 100px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .instructions-input:focus {
+            outline: none;
+            border-color: #f37021;
+        }
+
+        .name-section {
+            margin: 30px 0;
+        }
+
+        .name-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #eee;
+            border-radius: 12px;
+            font-size: 1rem;
+        }
+
+        .name-input:focus {
+            outline: none;
+            border-color: #f37021;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            flex: 1;
+        }
+
+        .btn-primary {
+            background: #f37021;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #e6651a;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #f5f5f5;
+            color: #666;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        .btn-success {
+            background: #27ae60;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #219a52;
+            transform: translateY(-2px);
+        }
+
+        .message {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            padding: 15px 25px;
+            border-radius: 10px;
+            background: white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            display: none;
+            z-index: 1000;
+            border-left: 4px solid;
+            font-weight: 600;
+        }
+
+        .message.success {
+            border-left-color: #2ecc71;
+            color: #27ae60;
+        }
+
+        .message.error {
+            border-left-color: #e74c3c;
+            color: #c0392b;
+        }
+
+        .loading-spinner {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 60px;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #f5f5f5;
+            border-top: 4px solid #f37021;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px;
+            color: #999;
+        }
+
+        @media (max-width: 1000px) {
+            .content-wrapper {
+                grid-template-columns: 1fr;
+            }
+            
+            .preview-section {
+                position: static;
+            }
+            
+            header {
+                padding: 15px 20px;
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-top" onclick="goToHome()">
+            <div class="mini-logo-card">
+                <img src="https://img.icons8.com/ios-filled/50/ffffff/cutlery.png" alt="Logo">
+            </div>
+            <strong>Meal Craft</strong>
+        </div>
+        <button class="cart-btn" onclick="goToCart()">
+            <i class="fas fa-shopping-cart"></i> Cart (<span id="cartCount">0</span>)
+        </button>
+    </header>
+
+    <main class="content-wrapper">
+        <div id="loadingState" class="loading-spinner" style="grid-column: 1 / -1;">
+            <div class="spinner"></div>
+            <p>Loading meal details...</p>
+        </div>
+
+        <!-- Left Column - Meal Preview -->
+        <div id="previewSection" class="preview-section" style="display: none;">
+            <div class="meal-preview">
+                <div class="preview-image" id="previewImage">
+                    <i class="fas fa-utensils"></i>
+                    <span class="meal-type-badge" id="mealTypeBadge">🌱 VEG</span>
+                </div>
+                <div class="preview-details">
+                    <h2 id="previewMealName">Loading...</h2>
+                    <p id="previewMealDesc"></p>
+                    
+                    <div class="base-price-display">
+                        <div class="label">Base Price</div>
+                        <div class="amount" id="basePriceDisplay">₹0</div>
+                    </div>
+                    
+                    <div class="selected-ingredients-preview">
+                        <h3><i class="fas fa-plus-circle" style="color: #f37021;"></i> Added Ingredients</h3>
+                        <div id="selectedIngredientsPreview" class="preview-tags">
+                            <span class="preview-tag">No ingredients added</span>
+                        </div>
+                        
+                        <div id="addonsSummary" class="addons-summary" style="display: none;">
+                            <div class="addons-row">
+                                <span>Add-ons Total:</span>
+                                <span class="addons-total" id="addonsTotal">+₹0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="special-instructions-preview" id="specialInstructionsPreview" style="display: none;">
+                        <h3><i class="fas fa-utensil-spoon"></i> Special Instructions</h3>
+                        <p id="previewInstructions" style="background: #f5f5f5; padding: 15px; border-radius: 10px; color: #666;"></p>
+                    </div>
+
+                    <div class="total-price-box">
+                        <div class="label">Total Price</div>
+                        <div class="amount" id="previewTotalPrice">₹0</div>
+                        <div class="breakdown" id="priceBreakdown">Base: ₹0 + Add-ons: ₹0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column - Customization -->
+        <div id="customizationSection" class="customization-section" style="display: none;">
+            <h2 class="section-title"><i class="fas fa-magic"></i> Customize Your Meal</h2>
+            
+            <div class="base-info">
+                <span class="base-label">Base Price:</span>
+                <span class="base-value" id="basePriceValue">₹0</span>
+            </div>
+            
+            <h3 style="margin-bottom: 15px;"><i class="fas fa-carrot"></i> Add Ingredients (Optional)</h3>
+            
+            <div class="ingredients-grid" id="ingredientsGrid">
+                <!-- Ingredients will be loaded here -->
+            </div>
+
+            <div class="special-instructions">
+                <h3><i class="fas fa-utensil-spoon"></i> Special Instructions (Optional)</h3>
+                <textarea id="specialInstructions" class="instructions-input" 
+                    placeholder="E.g., Extra crispy, less spicy, no onions, etc."></textarea>
+            </div>
+
+            <div class="name-section">
+                <h3 style="margin-bottom: 15px;"><i class="fas fa-tag"></i> Name Your Creation</h3>
+                <input type="text" id="customName" class="name-input" 
+                    placeholder="e.g., My Special Pizza" maxlength="50" required>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-secondary" onclick="goToHome()">
+                    <i class="fas fa-times"></i> Cancel
+                </button>
+                <button class="btn btn-primary" onclick="addToCart()">
+                    <i class="fas fa-shopping-cart"></i> Add to Cart
+                </button>
+            </div>
+        </div>
+
+        <!-- Success Actions -->
+        <div id="successActions" style="display: none; grid-column: 1 / -1;" class="action-buttons">
+            <button class="btn btn-success" onclick="viewCart()">
+                <i class="fas fa-shopping-cart"></i> View Cart
+            </button>
+            <button class="btn btn-primary" onclick="craftAnother()">
+                <i class="fas fa-plus"></i> Craft Another Meal
+            </button>
+        </div>
+    </main>
+
+    <div id="message" class="message"></div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, doc, getDoc, collection, addDoc, query, where, getDocs, Timestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAT4CDao7eHCFU0OO_dee_m6BpjzKv_308",
+            authDomain: "mealcraft-9db35.firebaseapp.com",
+            projectId: "mealcraft-9db35",
+            messagingSenderId: "1052912873454",
+            appId: "1:1052912873454:web:2b794eb8e9524f0ba068ff"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let currentUser = null;
+        let currentMeal = null;
+        let allIngredients = [];
+        let selectedIngredients = new Set(); // Store selected ingredient IDs
+        let basePrice = 0;
+        let addonsTotal = 0;
+
+        // Get meal ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const mealId = urlParams.get('id');
+
+        // Check authentication
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.href = '../login.html';
+                return;
+            }
+            currentUser = user;
+            loadMealData();
+        });
+
+        // Load cart count
+        const savedCart = localStorage.getItem('cart');
+        if (savedCart) {
+            const cart = JSON.parse(savedCart);
+            document.getElementById('cartCount').textContent = cart.length;
+        }
+
+        // Load meal data
+        const loadMealData = async () => {
+            if (!mealId) {
+                showMessage('No meal selected', 'error');
+                setTimeout(() => window.location.href = 'home.html', 2000);
+                return;
+            }
+
+            try {
+                // Load meal details
+                const mealDoc = await getDoc(doc(db, 'meals', mealId));
+                if (!mealDoc.exists()) {
+                    showMessage('Meal not found', 'error');
+                    setTimeout(() => window.location.href = 'home.html', 2000);
+                    return;
+                }
+
+                currentMeal = { id: mealDoc.id, ...mealDoc.data() };
+                basePrice = currentMeal.price || 0;
+
+                // Update preview
+                document.getElementById('previewMealName').textContent = currentMeal.name;
+                document.getElementById('previewMealDesc').textContent = currentMeal.description;
+                document.getElementById('mealTypeBadge').textContent = 
+                    currentMeal.type === 'veg' ? '🌱 VEG' : '🍗 NON-VEG';
+                
+                // Update price displays
+                document.getElementById('basePriceDisplay').textContent = `₹${basePrice}`;
+                document.getElementById('basePriceValue').textContent = `₹${basePrice}`;
+                
+                // Set preview image based on category
+                const previewImage = document.getElementById('previewImage').querySelector('i');
+                if (currentMeal.category === 'Pizza') {
+                    previewImage.className = 'fas fa-pizza-slice';
+                } else if (currentMeal.category === 'Burger') {
+                    previewImage.className = 'fas fa-hamburger';
+                } else {
+                    previewImage.className = 'fas fa-utensils';
+                }
+
+                // Load all ingredients
+                const ingredientsSnapshot = await getDocs(collection(db, 'ingredients'));
+                allIngredients = [];
+                ingredientsSnapshot.forEach(doc => {
+                    allIngredients.push({ id: doc.id, ...doc.data() });
+                });
+
+                // Load meal ingredients relationships
+                const mealIngQuery = query(
+                    collection(db, 'mealIngredients'),
+                    where('mealId', '==', mealId)
+                );
+                const mealIngSnapshot = await getDocs(mealIngQuery);
+                
+                // Get ingredient IDs that are available for this meal
+                const availableIngredientIds = new Set();
+                mealIngSnapshot.forEach(doc => {
+                    availableIngredientIds.add(doc.data().ingredientId);
+                });
+
+                // Filter ingredients to only show those available for this meal
+                const availableIngredients = allIngredients.filter(ing => 
+                    availableIngredientIds.has(ing.id)
+                );
+
+                displayIngredients(availableIngredients);
+                
+                // Hide loading, show content
+                document.getElementById('loadingState').style.display = 'none';
+                document.getElementById('previewSection').style.display = 'block';
+                document.getElementById('customizationSection').style.display = 'block';
+
+                // Update total price
+                updateTotal();
+
+            } catch (error) {
+                console.error('Error loading meal:', error);
+                showMessage('Error loading meal', 'error');
+            }
+        };
+
+        // Display ingredients (all selectable as add-ons)
+        const displayIngredients = (ingredients) => {
+            const container = document.getElementById('ingredientsGrid');
+            
+            if (ingredients.length === 0) {
+                container.innerHTML = '<p style="color: #999; text-align: center;">No ingredients available for this meal</p>';
+                return;
+            }
+
+            let html = '';
+            ingredients.forEach(ing => {
+                html += `
+                    <div class="ingredient-card" id="ingredient-${ing.id}" onclick="toggleIngredient('${ing.id}')">
+                        <div class="ingredient-check" id="check-${ing.id}">
+                            <i class="fas fa-check" style="opacity: 0;"></i>
+                        </div>
+                        <div class="ingredient-info">
+                            <h4>${ing.name}</h4>
+                            <span class="ingredient-category">${ing.category}</span>
+                        </div>
+                        <div class="ingredient-price">+₹${ing.price}</div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        };
+
+        // Toggle ingredient selection
+        window.toggleIngredient = (ingredientId) => {
+            const card = document.getElementById(`ingredient-${ingredientId}`);
+            const check = document.getElementById(`check-${ingredientId}`);
+            
+            if (selectedIngredients.has(ingredientId)) {
+                selectedIngredients.delete(ingredientId);
+                card.classList.remove('selected');
+                check.innerHTML = '<i class="fas fa-check" style="opacity: 0;"></i>';
+            } else {
+                selectedIngredients.add(ingredientId);
+                card.classList.add('selected');
+                check.innerHTML = '<i class="fas fa-check"></i>';
+            }
+            
+            updatePreview();
+            updateTotal();
+        };
+
+        // Update preview of selected ingredients
+        const updatePreview = () => {
+            const previewContainer = document.getElementById('selectedIngredientsPreview');
+            const selectedIngs = allIngredients.filter(ing => selectedIngredients.has(ing.id));
+            const addonsSummary = document.getElementById('addonsSummary');
+            
+            if (selectedIngs.length === 0) {
+                previewContainer.innerHTML = `
+                    <h3><i class="fas fa-plus-circle" style="color: #f37021;"></i> Added Ingredients</h3>
+                    <div class="preview-tags">
+                        <span class="preview-tag">No ingredients added</span>
+                    </div>
+                `;
+                addonsSummary.style.display = 'none';
+                return;
+            }
+
+            let tagsHtml = '';
+            let addonsTotal = 0;
+            
+            selectedIngs.forEach(ing => {
+                tagsHtml += `
+                    <span class="preview-tag">
+                        <i class="fas fa-check"></i> ${ing.name}
+                        <span style="margin-left: 5px; color: #f37021;">+₹${ing.price}</span>
+                        <span class="remove-tag" onclick="removeIngredient('${ing.id}', event)">
+                            <i class="fas fa-times"></i>
+                        </span>
+                    </span>
+                `;
+                addonsTotal += ing.price;
+            });
+
+            previewContainer.innerHTML = `
+                <h3><i class="fas fa-plus-circle" style="color: #f37021;"></i> Added Ingredients</h3>
+                <div class="preview-tags">
+                    ${tagsHtml}
+                </div>
+            `;
+            
+            addonsSummary.style.display = 'block';
+            document.getElementById('addonsTotal').textContent = `+₹${addonsTotal}`;
+        };
+
+        // Remove ingredient from selection
+        window.removeIngredient = (ingredientId, event) => {
+            event.stopPropagation();
+            
+            if (selectedIngredients.has(ingredientId)) {
+                const card = document.getElementById(`ingredient-${ingredientId}`);
+                const check = document.getElementById(`check-${ingredientId}`);
+                
+                selectedIngredients.delete(ingredientId);
+                card.classList.remove('selected');
+                check.innerHTML = '<i class="fas fa-check" style="opacity: 0;"></i>';
+                
+                updatePreview();
+                updateTotal();
+            }
+        };
+
+        // Update total price
+        const updateTotal = () => {
+            let addonsTotal = 0;
+            selectedIngredients.forEach(id => {
+                const ing = allIngredients.find(i => i.id === id);
+                if (ing) addonsTotal += ing.price;
+            });
+            
+            const total = basePrice + addonsTotal;
+            
+            document.getElementById('previewTotalPrice').textContent = `₹${total}`;
+            document.getElementById('priceBreakdown').textContent = 
+                `Base: ₹${basePrice} + Add-ons: ₹${addonsTotal}`;
+        };
+
+        // Update special instructions preview
+        document.getElementById('specialInstructions')?.addEventListener('input', function(e) {
+            const preview = document.getElementById('specialInstructionsPreview');
+            const previewText = document.getElementById('previewInstructions');
+            
+            if (e.target.value.trim()) {
+                preview.style.display = 'block';
+                previewText.textContent = e.target.value;
+            } else {
+                preview.style.display = 'none';
+            }
+        });
+
+        // Add to cart
+        // Add to cart - Updated with better error handling
+// Add to cart - FIXED VERSION with proper user-specific storage
+// Add to cart - COMPLETE FIXED VERSION
+window.addToCart = async () => {
+    const customName = document.getElementById('customName').value.trim();
+    const specialInstructions = document.getElementById('specialInstructions').value.trim();
+    
+    if (!customName) {
+        showMessage('Please name your creation', 'error');
+        return;
+    }
+
+    if (selectedIngredients.size === 0) {
+        showMessage('Please select at least one ingredient', 'error');
+        return;
+    }
+
+    // Get selected ingredients details
+    const selectedIngs = allIngredients.filter(ing => selectedIngredients.has(ing.id));
+    const addonsTotal = selectedIngs.reduce((sum, ing) => sum + ing.price, 0);
+    const totalPrice = basePrice + addonsTotal;
+
+    // Create customized meal object with unique ID
+    const customizedMeal = {
+        id: 'cart_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+        mealId: mealId,
+        mealName: currentMeal.name,
+        customName: customName,
+        basePrice: basePrice,
+        selectedIngredients: selectedIngs.map(ing => ({
+            id: ing.id,
+            name: ing.name,
+            price: ing.price,
+            category: ing.category
+        })),
+        addonsTotal: addonsTotal,
+        specialInstructions: specialInstructions,
+        totalPrice: totalPrice,
+        userId: currentUser.uid,
+        userEmail: currentUser.email,
+        createdAt: new Date().toISOString()
+    };
+
+    try {
+        console.log("=".repeat(50));
+        console.log("SAVING TO CART");
+        console.log("=".repeat(50));
+        console.log("User ID:", currentUser.uid);
+        console.log("Customized Meal:", customizedMeal);
+        
+        // ===== CRITICAL FIX: Use 'carts' object with user ID =====
+        // Get all carts from localStorage
+        const allCarts = JSON.parse(localStorage.getItem('carts')) || {};
+        console.log("Current allCarts before:", allCarts);
+        
+        // Get current user's cart or empty array
+        const userCart = allCarts[currentUser.uid] || [];
+        console.log("User cart before:", userCart);
+        
+        // Add new item
+        userCart.push(customizedMeal);
+        console.log("User cart after:", userCart);
+        
+        // Save back
+        allCarts[currentUser.uid] = userCart;
+        localStorage.setItem('carts', JSON.stringify(allCarts));
+        
+        console.log("All carts after:", allCarts);
+        console.log("=".repeat(50));
+        
+        // Update cart count in header
+        document.getElementById('cartCount').textContent = userCart.length;
+
+        // Show success actions
+        document.getElementById('previewSection').style.display = 'none';
+        document.getElementById('customizationSection').style.display = 'none';
+        document.getElementById('successActions').style.display = 'flex';
+        
+        showMessage('✅ Added to cart!', 'success');
+
+    } catch (error) {
+        console.error('Error saving to cart:', error);
+        showMessage('Error adding to cart: ' + error.message, 'error');
+    }
+};
+
+        // View cart
+        window.viewCart = () => {
+            window.location.href = 'cart.html';
+        };
+
+        // Craft another meal
+        window.craftAnother = () => {
+            window.location.href = 'home.html';
+        };
+
+        // Go to home
+        window.goToHome = () => {
+            window.location.href = 'home.html';
+        };
+
+        // Go to cart
+        window.goToCart = () => {
+            window.location.href = 'cart.html';
+        };
+
+        // Show message
+        const showMessage = (message, type) => {
+            const msgDiv = document.getElementById('message');
+            msgDiv.textContent = message;
+            msgDiv.className = `message ${type}`;
+            msgDiv.style.display = 'block';
+            
+            setTimeout(() => {
+                msgDiv.style.display = 'none';
+            }, 3000);
+        };
+    </script>
+</body>
+</html>

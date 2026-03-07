@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Your Order - Meal Craft</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: #F9F7F5;
+            background-image: 
+                radial-gradient(circle at 0% 0%, rgba(255, 140, 50, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 100% 100%, rgba(255, 140, 50, 0.1) 0%, transparent 40%);
+            color: #1a1a1a;
+        }
+
+        header {
+            background: white;
+            padding: 15px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .logo-top { 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            font-weight: 900; 
+            cursor: pointer;
+        }
+        
+        .mini-logo-card {
+            background: linear-gradient(135deg, #e67e22, #d35400);
+            width: 32px; 
+            height: 32px; 
+            border-radius: 6px;
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(211, 84, 0, 0.15);
+        }
+        
+        .mini-logo-card img { 
+            width: 16px; 
+            filter: brightness(0) invert(1);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #666;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: #f37021;
+        }
+
+        .content-wrapper {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .order-header {
+            background: white;
+            border-radius: 24px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .order-header h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #1a1a1a;
+        }
+
+        .order-header .order-id {
+            background: #f5f5f5;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            color: #f37021;
+        }
+
+        /* Progress Bar */
+        .progress-section {
+            background: white;
+            border-radius: 24px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .progress-steps::before {
+            content: '';
+            position: absolute;
+            top: 35px;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: #e0e0e0;
+            z-index: 1;
+        }
+
+        .progress-step {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            flex: 1;
+        }
+
+        .step-icon {
+            width: 70px;
+            height: 70px;
+            background: white;
+            border: 3px solid #e0e0e0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 1.8rem;
+            color: #999;
+            transition: all 0.3s;
+        }
+
+        .progress-step.completed .step-icon {
+            background: #27ae60;
+            border-color: #27ae60;
+            color: white;
+        }
+
+        .progress-step.active .step-icon {
+            border-color: #f37021;
+            color: #f37021;
+            background: #fff3e0;
+        }
+
+        .step-label {
+            font-weight: 600;
+            color: #666;
+        }
+
+        .step-date {
+            font-size: 0.8rem;
+            color: #999;
+            margin-top: 5px;
+        }
+
+        /* Delivery Info */
+        .delivery-info {
+            background: white;
+            border-radius: 24px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .delivery-info h2 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .delivery-info h2 i {
+            color: #f37021;
+        }
+
+        .delivery-card {
+            background: #fafafa;
+            border-radius: 16px;
+            padding: 25px;
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .delivery-avatar {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #e67e22, #d35400);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: white;
+        }
+
+        .delivery-details {
+            flex: 1;
+        }
+
+        .delivery-details h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .delivery-details p {
+            margin-bottom: 8px;
+            color: #666;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .delivery-details p i {
+            color: #f37021;
+            width: 20px;
+        }
+
+        /* OTP Code */
+        .otp-section {
+            background: white;
+            border-radius: 24px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            display: none;
+        }
+
+        .otp-section.active {
+            display: block;
+        }
+
+        .otp-code {
+            background: #fff3e0;
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .otp-code .label {
+            color: #f37021;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .otp-digits {
+            font-size: 4rem;
+            font-weight: 800;
+            letter-spacing: 10px;
+            color: #1a1a1a;
+            font-family: monospace;
+        }
+
+        .otp-note {
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 15px;
+        }
+
+        /* Order Details */
+        .order-details {
+            background: white;
+            border-radius: 24px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .order-details h2 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .order-details h2 i {
+            color: #f37021;
+        }
+
+        .order-items {
+            margin-bottom: 20px;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .order-item:last-child {
+            border-bottom: none;
+        }
+
+        .item-name h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .item-name p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .item-price {
+            font-weight: 700;
+            color: #f37021;
+        }
+
+        .order-summary {
+            background: #fafafa;
+            padding: 20px;
+            border-radius: 16px;
+            margin-top: 20px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .summary-row.total {
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: #f37021;
+            border-top: 2px dashed #eee;
+            padding-top: 15px;
+            margin-top: 15px;
+        }
+
+        .payment-info {
+            display: inline-block;
+            padding: 5px 15px;
+            background: #fff3e0;
+            border-radius: 30px;
+            color: #f37021;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .success-message {
+            background: #27ae60;
+            color: white;
+            padding: 30px;
+            border-radius: 16px;
+            text-align: center;
+            margin-top: 30px;
+            display: none;
+        }
+
+        .success-message i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .success-message h2 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .message {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            padding: 15px 25px;
+            border-radius: 10px;
+            background: white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            display: none;
+            z-index: 1000;
+            border-left: 4px solid;
+            font-weight: 600;
+        }
+
+        .message.success {
+            border-left-color: #2ecc71;
+            color: #27ae60;
+        }
+
+        .message.error {
+            border-left-color: #e74c3c;
+            color: #c0392b;
+        }
+
+        .loading-spinner {
+            text-align: center;
+            padding: 60px;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #f5f5f5;
+            border-top: 4px solid #f37021;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .progress-steps {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .progress-steps::before {
+                display: none;
+            }
+            
+            .progress-step {
+                display: flex;
+                align-items: center;
+                text-align: left;
+                gap: 20px;
+            }
+            
+            .step-icon {
+                margin: 0;
+            }
+            
+            .delivery-card {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            
+            .delivery-details p {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-top" onclick="goToHome()">
+            <div class="mini-logo-card">
+                <img src="https://img.icons8.com/ios-filled/50/ffffff/cutlery.png" alt="Logo">
+            </div>
+            <strong>Meal Craft</strong>
+        </div>
+        <nav class="nav-links">
+            <a href="home.html">Home</a>
+            <a href="profile.html">Profile</a>
+        </nav>
+    </header>
+
+    <main class="content-wrapper" id="mainContent">
+        <div class="loading-spinner" id="loadingState">
+            <div class="spinner"></div>
+            <p>Loading order details...</p>
+        </div>
+    </main>
+
+    <div id="message" class="message"></div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, doc, getDoc, collection, query, where, getDocs, onSnapshot, Timestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAT4CDao7eHCFU0OO_dee_m6BpjzKv_308",
+            authDomain: "mealcraft-9db35.firebaseapp.com",
+            projectId: "mealcraft-9db35",
+            messagingSenderId: "1052912873454",
+            appId: "1:1052912873454:web:2b794eb8e9524f0ba068ff"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let currentUser = null;
+        let orderId = null;
+        let currentOrder = null;
+        let unsubscribe = null;
+
+        // Get order ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        orderId = urlParams.get('id');
+
+        // Check authentication
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) {
+                window.location.href = '../login.html';
+                return;
+            }
+            currentUser = user;
+            
+            if (!orderId) {
+                window.location.href = 'home.html';
+                return;
+            }
+            
+            loadOrder();
+        });
+
+        // Load order with real-time updates
+        const loadOrder = () => {
+            const orderRef = doc(db, 'orders', orderId);
+            
+            unsubscribe = onSnapshot(orderRef, (doc) => {
+                if (!doc.exists()) {
+                    showMessage('Order not found', 'error');
+                    setTimeout(() => window.location.href = 'home.html', 2000);
+                    return;
+                }
+
+                const orderData = doc.data();
+                
+                // Check if order belongs to current user
+                if (orderData.userId !== currentUser.uid) {
+                    showMessage('You do not have permission to view this order', 'error');
+                    setTimeout(() => window.location.href = 'home.html', 2000);
+                    return;
+                }
+
+                currentOrder = { id: doc.id, ...orderData };
+                displayOrder();
+            }, (error) => {
+                console.error('Error loading order:', error);
+                showMessage('Error loading order', 'error');
+            });
+        };
+
+        // Display order
+        const displayOrder = () => {
+            const mainContent = document.getElementById('mainContent');
+            
+            // Get order dates for each status
+            const dates = {
+                pending: currentOrder.createdAt?.toDate ? new Date(currentOrder.createdAt.toDate()) : new Date(),
+                preparing: currentOrder.preparingAt?.toDate ? new Date(currentOrder.preparingAt.toDate()) : null,
+                outForDelivery: currentOrder.outForDeliveryAt?.toDate ? new Date(currentOrder.outForDeliveryAt.toDate()) : null,
+                delivered: currentOrder.deliveredAt?.toDate ? new Date(currentOrder.deliveredAt.toDate()) : null
+            };
+
+            // Determine current step
+            const statusOrder = ['pending', 'preparing', 'out-for-delivery', 'delivered'];
+            const currentStatus = currentOrder.status || 'pending';
+            const currentStepIndex = statusOrder.indexOf(currentStatus);
+
+            // Generate OTP if not exists and status is out-for-delivery
+            const otpCode = currentOrder.otpCode || (currentStatus === 'out-for-delivery' ? generateOTP() : null);
+
+            // Format date
+            const formatDate = (date) => {
+                if (!date) return '';
+                return date.toLocaleDateString('en-US', { 
+                    month: 'short', 
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+            };
+
+            // Get delivery boy info
+            const deliveryBoy = currentOrder.deliveryBoyName || 'Not assigned';
+            const deliveryVehicle = currentOrder.deliveryVehicle || 'N/A';
+            const deliveryPhone = currentOrder.deliveryPhone || 'N/A';
+
+            mainContent.innerHTML = `
+                <div class="order-header">
+                    <h1>Track Your Order</h1>
+                    <span class="order-id">#${orderId.slice(-8)}</span>
+                </div>
+
+                <div class="progress-section">
+                    <div class="progress-steps">
+                        <div class="progress-step ${currentStepIndex >= 0 ? 'completed' : ''} ${currentStatus === 'pending' ? 'active' : ''}">
+                            <div class="step-icon">
+                                <i class="fas fa-clipboard-check"></i>
+                            </div>
+                            <div class="step-label">Pending</div>
+                            <div class="step-date">${formatDate(dates.pending)}</div>
+                        </div>
+                        <div class="progress-step ${currentStepIndex >= 1 ? 'completed' : ''} ${currentStatus === 'preparing' ? 'active' : ''}">
+                            <div class="step-icon">
+                                <i class="fas fa-utensils"></i>
+                            </div>
+                            <div class="step-label">Preparing</div>
+                            <div class="step-date">${formatDate(dates.preparing)}</div>
+                        </div>
+                        <div class="progress-step ${currentStepIndex >= 2 ? 'completed' : ''} ${currentStatus === 'out-for-delivery' ? 'active' : ''}">
+                            <div class="step-icon">
+                                <i class="fas fa-motorcycle"></i>
+                            </div>
+                            <div class="step-label">Out for Delivery</div>
+                            <div class="step-date">${formatDate(dates.outForDelivery)}</div>
+                        </div>
+                        <div class="progress-step ${currentStepIndex >= 3 ? 'completed' : ''} ${currentStatus === 'delivered' ? 'active' : ''}">
+                            <div class="step-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="step-label">Delivered</div>
+                            <div class="step-date">${formatDate(dates.delivered)}</div>
+                        </div>
+                    </div>
+                </div>
+
+                ${currentStatus === 'out-for-delivery' ? `
+                    <div class="otp-section active">
+                        <div class="otp-code">
+                            <div class="label">Your OTP Code</div>
+                            <div class="otp-digits">${otpCode}</div>
+                            <div class="otp-note">Share this code with the delivery boy when you receive your order</div>
+                        </div>
+                    </div>
+                ` : ''}
+
+                ${currentStatus === 'delivered' ? `
+                    <div class="success-message" style="display: block;">
+                        <i class="fas fa-check-circle"></i>
+                        <h2>Enjoy Your Crafted Meal!</h2>
+                        <p>Thank you for ordering with Meal Craft</p>
+                    </div>
+                ` : ''}
+
+                <div class="delivery-info">
+                    <h2><i class="fas fa-motorcycle"></i> Delivery Details</h2>
+                    <div class="delivery-card">
+                        <div class="delivery-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="delivery-details">
+                            <h3>${deliveryBoy}</h3>
+                            <p><i class="fas fa-motorcycle"></i> Vehicle: ${deliveryVehicle}</p>
+                            <p><i class="fas fa-phone"></i> Phone: ${deliveryPhone}</p>
+                            <p><i class="fas fa-map-marker-alt"></i> Address: ${currentOrder.address}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="order-details">
+                    <h2><i class="fas fa-receipt"></i> Order Summary</h2>
+                    <div class="order-items">
+                        ${currentOrder.items.map(item => `
+                            <div class="order-item">
+                                <div class="item-name">
+                                    <h4>${item.customName || item.mealName}</h4>
+                                    <p>${item.selectedIngredients?.map(ing => ing.name).join(', ') || 'No extras'}</p>
+                                </div>
+                                <div class="item-price">₹${item.totalPrice}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    
+                    <div class="order-summary">
+                        <div class="summary-row">
+                            <span>Subtotal</span>
+                            <span>₹${currentOrder.subtotal || 0}</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Delivery Fee</span>
+                            <span>₹${currentOrder.deliveryFee || 40}</span>
+                        </div>
+                        <div class="summary-row total">
+                            <span>Total</span>
+                            <span>₹${currentOrder.total || 0}</span>
+                        </div>
+                        <div class="payment-info">
+                            <i class="fas fa-${currentOrder.paymentMethod === 'Cash on Delivery' ? 'money-bill' : 'credit-card'}"></i>
+                            ${currentOrder.paymentMethod}
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('loadingState').style.display = 'none';
+        };
+
+        // Generate 5-digit OTP
+        const generateOTP = () => {
+            return Math.floor(10000 + Math.random() * 90000).toString();
+        };
+
+        // Clean up listener on page unload
+        window.addEventListener('beforeunload', () => {
+            if (unsubscribe) {
+                unsubscribe();
+            }
+        });
+
+        // Go to home
+        window.goToHome = () => {
+            window.location.href = 'home.html';
+        };
+
+        // Show message
+        const showMessage = (message, type) => {
+            const msgDiv = document.getElementById('message');
+            msgDiv.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i> ${message}`;
+            msgDiv.className = `message ${type}`;
+            msgDiv.style.display = 'block';
+            
+            setTimeout(() => {
+                msgDiv.style.display = 'none';
+            }, 3000);
+        };
+    </script>
+</body>
+</html>
