@@ -2,9 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>Meal Craft - Home</title>
-    <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -24,95 +23,147 @@
             color: #1a1a1a;
         }
 
-        /* --- Header --- */
+        /* --- Header - Mobile First --- */
         header {
             background: white;
-            padding: 15px 50px;
+            padding: 10px 15px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: space-between;
             position: sticky;
             top: 0;
             z-index: 100;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            flex-wrap: nowrap;
+        }
+
+        @media (min-width: 768px) {
+            header {
+                padding: 15px 50px;
+            }
         }
 
         .logo-top { 
             display: flex; 
             align-items: center; 
-            gap: 10px; 
+            gap: 6px; 
             font-weight: 900; 
             cursor: pointer;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        @media (min-width: 768px) {
+            .logo-top {
+                font-size: 1rem;
+                gap: 10px;
+            }
         }
         
         .mini-logo-card {
             background: linear-gradient(135deg, #e67e22, #d35400);
-            width: 32px; 
-            height: 32px; 
+            width: 28px; 
+            height: 28px; 
             border-radius: 6px;
             display: flex; 
             justify-content: center; 
             align-items: center;
             box-shadow: 0 4px 10px rgba(211, 84, 0, 0.15);
         }
+
+        @media (min-width: 768px) {
+            .mini-logo-card {
+                width: 32px;
+                height: 32px;
+            }
+        }
         
         .mini-logo-card img { 
-            width: 16px; 
+            width: 14px; 
             filter: brightness(0) invert(1);
+        }
+
+        @media (min-width: 768px) {
+            .mini-logo-card img {
+                width: 16px;
+            }
         }
 
         .nav-links {
             display: flex;
-            gap: 25px;
+            gap: 10px;
+            margin: 0 5px;
+        }
+
+        @media (min-width: 768px) {
+            .nav-links {
+                gap: 25px;
+                margin: 0;
+            }
         }
 
         .nav-links a {
             text-decoration: none;
             color: #666;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             transition: color 0.2s;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
+            white-space: nowrap;
+        }
+
+        @media (min-width: 768px) {
+            .nav-links a {
+                font-size: 0.9rem;
+                gap: 6px;
+            }
         }
 
         .nav-links a.active, .nav-links a:hover { 
             color: #f37021;
         }
 
-        .header-actions { 
-            display: flex; 
-            gap: 15px; 
-            align-items: center; 
-        }
-        
-        .search-bar input {
-            padding: 8px 15px;
-            border-radius: 20px;
-            border: 1px solid #eee;
-            background: #f9f9f9;
-            font-family: 'Inter', sans-serif;
-            width: 250px;
+        .nav-links a i {
+            font-size: 0.8rem;
         }
 
-        .search-bar input:focus {
-            outline: none;
-            border-color: #f37021;
+        .header-actions { 
+            display: flex; 
+            gap: 6px; 
+            align-items: center; 
+            flex-shrink: 0;
+        }
+
+        @media (min-width: 768px) {
+            .header-actions {
+                gap: 15px;
+            }
         }
 
         .cart-btn {
             background: #f37021;
             color: white;
             border: none;
-            padding: 8px 18px;
+            padding: 6px 10px;
             border-radius: 8px;
             font-weight: 700;
             cursor: pointer;
             transition: all 0.2s;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 4px;
+            font-size: 0.75rem;
+            white-space: nowrap;
+        }
+
+        @media (min-width: 768px) {
+            .cart-btn {
+                padding: 8px 18px;
+                font-size: 0.9rem;
+                gap: 8px;
+            }
         }
 
         .cart-btn:hover { 
@@ -123,21 +174,30 @@
         .profile-menu {
             display: flex;
             align-items: center;
-            gap: 10px;
         }
 
         .profile-btn {
             background: #f5f5f5;
             border: none;
-            padding: 8px 15px;
+            padding: 6px 10px;
             border-radius: 8px;
             font-weight: 600;
             color: #666;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 4px;
             transition: all 0.2s;
+            font-size: 0.75rem;
+            white-space: nowrap;
+        }
+
+        @media (min-width: 768px) {
+            .profile-btn {
+                padding: 8px 15px;
+                font-size: 0.9rem;
+                gap: 8px;
+            }
         }
 
         .profile-btn:hover {
@@ -145,91 +205,147 @@
             color: white;
         }
 
-        /* --- Hero --- */
+        .profile-btn i {
+            font-size: 0.7rem;
+        }
+
+        /* --- Hero - Mobile First --- */
         .content-wrapper { 
             max-width: 1200px; 
-            margin: 40px auto; 
-            padding: 0 20px; 
+            margin: 20px auto; 
+            padding: 0 15px; 
+        }
+
+        @media (min-width: 768px) {
+            .content-wrapper {
+                margin: 40px auto;
+                padding: 0 20px;
+            }
         }
 
         .hero-card {
             background: white;
-            border-radius: 24px;
+            border-radius: 20px;
             display: flex;
+            flex-direction: column;
             overflow: hidden;
-            margin-bottom: 60px;
+            margin-bottom: 40px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.05);
         }
 
+        @media (min-width: 768px) {
+            .hero-card {
+                flex-direction: row;
+                border-radius: 24px;
+                margin-bottom: 60px;
+            }
+        }
+
         .hero-text { 
-            flex: 1; 
-            padding: 60px; 
+            padding: 30px; 
             display: flex; 
             flex-direction: column; 
             justify-content: center; 
+        }
+
+        @media (min-width: 768px) {
+            .hero-text {
+                flex: 1;
+                padding: 60px;
+            }
         }
         
         .badge { 
             color: #f37021; 
             font-weight: 800; 
-            font-size: 0.75rem; 
+            font-size: 0.65rem; 
             letter-spacing: 1px; 
-            margin-bottom: 15px; 
+            margin-bottom: 10px; 
+        }
+
+        @media (min-width: 768px) {
+            .badge {
+                font-size: 0.75rem;
+                margin-bottom: 15px;
+            }
         }
         
         .hero-text h1 { 
-            font-size: 2.8rem; 
+            font-size: 1.8rem; 
             font-weight: 900; 
             line-height: 1.2; 
-            margin-bottom: 20px; 
+            margin-bottom: 15px; 
             color: #1a1a1a;
+        }
+
+        @media (min-width: 768px) {
+            .hero-text h1 {
+                font-size: 2.8rem;
+                margin-bottom: 20px;
+            }
         }
         
         .hero-text p { 
             color: #666; 
-            font-size: 1.1rem; 
-            margin-bottom: 30px; 
+            font-size: 0.9rem; 
+            margin-bottom: 20px; 
+        }
+
+        @media (min-width: 768px) {
+            .hero-text p {
+                font-size: 1.1rem;
+                margin-bottom: 30px;
+            }
         }
 
         .hero-btns { 
             display: flex; 
-            gap: 15px; 
+            gap: 10px; 
+            flex-wrap: wrap;
+        }
+
+        @media (min-width: 768px) {
+            .hero-btns {
+                gap: 15px;
+            }
         }
         
-        .order-now { 
+        .order-now, .view-menu { 
             background: #f37021; 
             color: white; 
             border: none; 
-            padding: 15px 30px; 
-            border-radius: 10px; 
+            padding: 10px 20px; 
+            border-radius: 8px; 
             font-weight: 700; 
             cursor: pointer;
             transition: all 0.2s;
+            font-size: 0.85rem;
+            flex: 1;
         }
 
-        .order-now:hover { 
-            transform: translateY(-2px);
-            background-color: #e6651a;
+        @media (min-width: 768px) {
+            .order-now, .view-menu {
+                padding: 15px 30px;
+                font-size: 1rem;
+                flex: none;
+            }
         }
 
-        .view-menu { 
-            background: #f37021; 
-            color: white; 
-            border: none; 
-            padding: 15px 30px; 
-            border-radius: 10px; 
-            font-weight: 700; 
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .view-menu:hover { 
+        .order-now:hover, .view-menu:hover { 
             transform: translateY(-2px);
             background-color: #e6651a;
         }
 
         .hero-image { 
-            flex: 1; 
+            width: 100%;
+            height: 200px;
+        }
+
+        @media (min-width: 768px) {
+            .hero-image {
+                flex: 1;
+                height: auto;
+            }
         }
         
         .hero-image img { 
@@ -238,16 +354,24 @@
             object-fit: cover; 
         }
 
-        /* --- Welcome Card (Simplified) --- */
+        /* --- Welcome Card --- */
         .welcome-card {
             background: linear-gradient(135deg, #f37021, #e67e22);
-            border-radius: 24px;
-            padding: 40px;
-            margin-bottom: 30px;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
             color: white;
             position: relative;
             overflow: hidden;
             box-shadow: 0 10px 30px rgba(243, 112, 33, 0.3);
+        }
+
+        @media (min-width: 768px) {
+            .welcome-card {
+                border-radius: 24px;
+                padding: 40px;
+                margin-bottom: 30px;
+            }
         }
 
         .welcome-card::before {
@@ -262,141 +386,233 @@
         }
 
         .welcome-card h1 {
-            font-size: 2.2rem;
+            font-size: 1.5rem;
             font-weight: 800;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             position: relative;
         }
 
+        @media (min-width: 768px) {
+            .welcome-card h1 {
+                font-size: 2.2rem;
+                margin-bottom: 15px;
+            }
+        }
+
         .welcome-card p {
-            font-size: 1.1rem;
+            font-size: 0.9rem;
             opacity: 0.9;
             max-width: 600px;
             position: relative;
+        }
+
+        @media (min-width: 768px) {
+            .welcome-card p {
+                font-size: 1.1rem;
+            }
         }
 
         /* --- Browse Mode Banner --- */
         .browse-banner {
             background: white;
             border-radius: 16px;
-            padding: 20px 30px;
-            margin-bottom: 30px;
+            padding: 15px;
+            margin-bottom: 25px;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: space-between;
+            gap: 15px;
             border-left: 4px solid #f37021;
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
         }
 
+        @media (min-width: 768px) {
+            .browse-banner {
+                flex-direction: row;
+                justify-content: space-between;
+                padding: 20px 30px;
+                margin-bottom: 30px;
+            }
+        }
+
         .browse-info {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 15px;
+            gap: 10px;
+            text-align: center;
+        }
+
+        @media (min-width: 768px) {
+            .browse-info {
+                flex-direction: row;
+                align-items: center;
+                gap: 15px;
+                text-align: left;
+            }
         }
 
         .browse-icon {
-            width: 50px;
-            height: 50px;
+            width: 45px;
+            height: 45px;
             background: #fff3e0;
-            border-radius: 12px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: #f37021;
-            font-size: 1.5rem;
+            font-size: 1.3rem;
+        }
+
+        @media (min-width: 768px) {
+            .browse-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 1.5rem;
+            }
         }
 
         .browse-text h3 {
-            font-size: 1.2rem;
+            font-size: 1rem;
             font-weight: 700;
-            margin-bottom: 5px;
+            margin-bottom: 3px;
             color: #1a1a1a;
+        }
+
+        @media (min-width: 768px) {
+            .browse-text h3 {
+                font-size: 1.2rem;
+                margin-bottom: 5px;
+            }
         }
 
         .browse-text p {
             color: #666;
-            font-size: 0.95rem;
+            font-size: 0.8rem;
+        }
+
+        @media (min-width: 768px) {
+            .browse-text p {
+                font-size: 0.95rem;
+            }
         }
 
         .browse-btn {
             background: #f37021;
             color: white;
             border: none;
-            padding: 12px 30px;
-            border-radius: 10px;
+            padding: 10px 20px;
+            border-radius: 8px;
             font-weight: 700;
             cursor: pointer;
             transition: all 0.3s;
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 8px;
+            width: 100%;
+            font-size: 0.85rem;
         }
 
-        .browse-btn:hover {
-            background: #e6651a;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(243, 112, 33, 0.2);
+        @media (min-width: 768px) {
+            .browse-btn {
+                padding: 12px 30px;
+                width: auto;
+                font-size: 0.95rem;
+            }
         }
 
         /* --- Sections & Cards --- */
         .section-container { 
-            margin-bottom: 60px; 
+            margin-bottom: 40px; 
+        }
+
+        @media (min-width: 768px) {
+            .section-container {
+                margin-bottom: 60px;
+            }
         }
 
         .section-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 25px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        @media (min-width: 768px) {
+            .section-header {
+                margin-bottom: 25px;
+            }
         }
 
         .section-header h2 { 
-            font-size: 1.8rem; 
+            font-size: 1.3rem; 
             font-weight: 900; 
             color: #1a1a1a;
         }
 
+        @media (min-width: 768px) {
+            .section-header h2 {
+                font-size: 1.8rem;
+            }
+        }
+
         .section-header h2 i {
             color: #f37021;
-            margin-right: 10px;
+            margin-right: 8px;
         }
 
         .view-all {
             text-decoration: none;
             color: #f37021;
             font-weight: 700;
-            font-size: 0.95rem;
+            font-size: 0.8rem;
             transition: all 0.2s;
             display: flex;
             align-items: center;
-            gap: 5px;
-            padding: 8px 16px;
+            gap: 4px;
+            padding: 6px 12px;
             background: #fff3e0;
             border-radius: 30px;
         }
 
-        .view-all:hover { 
-            background: #f37021;
-            color: white;
-            gap: 8px;
-        }
-
-        .view-all i {
-            font-size: 0.8rem;
+        @media (min-width: 768px) {
+            .view-all {
+                font-size: 0.95rem;
+                padding: 8px 16px;
+                gap: 5px;
+            }
         }
 
         /* Horizontal Scroll for Ingredients */
         .horizontal-scroll {
             display: flex;
-            gap: 20px;
+            gap: 12px;
             overflow-x: auto;
-            padding: 10px 0 20px;
+            padding: 5px 0 15px;
             scrollbar-width: thin;
             scrollbar-color: #f37021 #f1f1f1;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        @media (min-width: 768px) {
+            .horizontal-scroll {
+                gap: 20px;
+                padding: 10px 0 20px;
+            }
         }
 
         .horizontal-scroll::-webkit-scrollbar {
-            height: 6px;
+            height: 4px;
+        }
+
+        @media (min-width: 768px) {
+            .horizontal-scroll::-webkit-scrollbar {
+                height: 6px;
+            }
         }
 
         .horizontal-scroll::-webkit-scrollbar-track {
@@ -410,14 +626,21 @@
         }
 
         .ingredient-card {
-            min-width: 180px;
+            min-width: 130px;
             background: white;
-            border-radius: 16px;
-            padding: 20px;
+            border-radius: 12px;
+            padding: 15px 10px;
             text-align: center;
             border: 1px solid #eee;
             transition: all 0.3s;
             box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+        }
+
+        @media (min-width: 768px) {
+            .ingredient-card {
+                min-width: 180px;
+                padding: 20px;
+            }
         }
 
         .ingredient-card:hover {
@@ -427,53 +650,100 @@
         }
 
         .ingredient-icon {
-            width: 60px;
-            height: 60px;
+            width: 45px;
+            height: 45px;
             background: #fff3e0;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 15px;
+            margin: 0 auto 10px;
             color: #f37021;
-            font-size: 1.8rem;
+            font-size: 1.3rem;
+        }
+
+        @media (min-width: 768px) {
+            .ingredient-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 1.8rem;
+                margin: 0 auto 15px;
+            }
         }
 
         .ingredient-card h4 {
-            font-size: 1.1rem;
+            font-size: 0.9rem;
             font-weight: 700;
-            margin-bottom: 5px;
+            margin-bottom: 3px;
+        }
+
+        @media (min-width: 768px) {
+            .ingredient-card h4 {
+                font-size: 1.1rem;
+                margin-bottom: 5px;
+            }
         }
 
         .ingredient-price {
             color: #f37021;
             font-weight: 700;
-            font-size: 1rem;
+            font-size: 0.85rem;
+        }
+
+        @media (min-width: 768px) {
+            .ingredient-price {
+                font-size: 1rem;
+            }
         }
 
         .ingredient-category {
             color: #999;
-            font-size: 0.8rem;
-            margin-top: 5px;
+            font-size: 0.65rem;
+            margin-top: 3px;
         }
 
-        /* Grids */
-        .grid-categories, .meals-grid { 
-            display: grid; 
-            grid-template-columns: repeat(3, 1fr); 
-            gap: 25px; 
+        @media (min-width: 768px) {
+            .ingredient-category {
+                font-size: 0.8rem;
+                margin-top: 5px;
+            }
         }
 
+        /* Grids - Mobile First */
+        .grid-categories, 
+        .meals-grid,
         .grid-favorites { 
             display: grid; 
-            grid-template-columns: repeat(4, 1fr); 
-            gap: 20px; 
+            grid-template-columns: 1fr; 
+            gap: 15px; 
+        }
+
+        @media (min-width: 480px) {
+            .grid-categories, .meals-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .grid-favorites {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 768px) {
+            .grid-categories, .meals-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 25px;
+            }
+            
+            .grid-favorites {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 20px;
+            }
         }
 
         /* Category Cards */
         .cat-card {
             background: white;
-            border-radius: 18px;
+            border-radius: 16px;
             overflow: hidden;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             cursor: pointer;
@@ -481,102 +751,135 @@
         }
 
         .cat-card:hover {
-            transform: translateY(-8px);
+            transform: translateY(-5px);
             box-shadow: 0 15px 30px rgba(0,0,0,0.1);
         }
 
-        .cat-card img { 
-            width: 100%; 
-            height: 200px; 
-            object-fit: cover; 
+        .cat-card .meal-image {
+            height: 120px;
+        }
+
+        @media (min-width: 768px) {
+            .cat-card .meal-image {
+                height: 150px;
+            }
         }
 
         .cat-info { 
-            padding: 20px; 
+            padding: 15px; 
         }
 
         .cat-info h3 { 
-            font-size: 1.2rem; 
+            font-size: 1rem; 
             font-weight: 700; 
             margin-bottom: 5px; 
         }
 
+        @media (min-width: 768px) {
+            .cat-info h3 {
+                font-size: 1.2rem;
+            }
+        }
+
         .cat-info p { 
             color: #666; 
-            font-size: 0.9rem; 
+            font-size: 0.8rem; 
         }
 
         /* Meal Cards */
         .meal-card {
             background: white;
-            border-radius: 18px;
+            border-radius: 16px;
             overflow: hidden;
             transition: all 0.3s;
             cursor: pointer;
             box-shadow: 0 4px 15px rgba(0,0,0,0.03);
         }
 
-        .meal-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
-        }
-
         .meal-image {
-            height: 150px;
+            height: 120px;
             background: linear-gradient(135deg, #e67e22, #d35400);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2.5rem;
+            font-size: 2rem;
             color: white;
             position: relative;
         }
 
+        @media (min-width: 768px) {
+            .meal-image {
+                height: 150px;
+                font-size: 2.5rem;
+            }
+        }
+
         .meal-type {
             position: absolute;
-            top: 15px;
-            right: 15px;
-            padding: 4px 10px;
+            top: 10px;
+            right: 10px;
+            padding: 3px 8px;
             border-radius: 20px;
-            font-size: 0.7rem;
+            font-size: 0.6rem;
             font-weight: 600;
             background: rgba(255,255,255,0.2);
             color: white;
         }
 
+        @media (min-width: 768px) {
+            .meal-type {
+                top: 15px;
+                right: 15px;
+                padding: 4px 10px;
+                font-size: 0.7rem;
+            }
+        }
+
         .meal-content {
-            padding: 20px;
+            padding: 15px;
         }
 
         .meal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 8px;
+            margin-bottom: 5px;
         }
 
         .meal-header h3 {
-            font-size: 1.2rem;
+            font-size: 1rem;
             font-weight: 700;
+        }
+
+        @media (min-width: 768px) {
+            .meal-header h3 {
+                font-size: 1.2rem;
+            }
         }
 
         .meal-price {
             color: #f37021;
             font-weight: 700;
-            font-size: 1.2rem;
+            font-size: 1rem;
+        }
+
+        @media (min-width: 768px) {
+            .meal-price {
+                font-size: 1.2rem;
+            }
         }
 
         .meal-desc {
             color: #666;
-            font-size: 0.9rem;
-            margin-bottom: 10px;
-            line-height: 1.5;
+            font-size: 0.8rem;
+            margin-bottom: 8px;
+            line-height: 1.4;
         }
 
         /* Favorite Cards */
         .fav-card {
             background: white;
-            border-radius: 18px;
+            border-radius: 16px;
             overflow: hidden;
             transition: all 0.3s;
             cursor: pointer;
@@ -588,26 +891,56 @@
             box-shadow: 0 15px 30px rgba(0,0,0,0.1);
         }
 
-        .fav-card img { 
-            width: 100%; 
-            height: 150px; 
-            object-fit: cover; 
+        .fav-card .meal-image {
+            height: 100px;
+            font-size: 1.8rem;
+        }
+
+        @media (min-width: 768px) {
+            .fav-card .meal-image {
+                height: 150px;
+                font-size: 2.5rem;
+            }
         }
 
         .fav-info { 
-            padding: 15px; 
+            padding: 12px; 
+        }
+
+        @media (min-width: 768px) {
+            .fav-info {
+                padding: 15px;
+            }
         }
 
         .fav-info h4 { 
-            font-size: 1rem; 
+            font-size: 0.9rem; 
             font-weight: 700; 
             margin-bottom: 5px; 
+        }
+
+        @media (min-width: 768px) {
+            .fav-info h4 {
+                font-size: 1rem;
+            }
         }
 
         .price { 
             font-weight: 900; 
             color: #f37021; 
-            font-size: 1.1rem; 
+            font-size: 0.95rem; 
+        }
+
+        @media (min-width: 768px) {
+            .price {
+                font-size: 1.1rem;
+            }
+        }
+
+        .creator-name {
+            color: #666;
+            font-size: 0.7rem;
+            margin-top: 5px;
         }
 
         /* Loading State */
@@ -616,18 +949,33 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 60px;
+            padding: 30px;
             grid-column: 1 / -1;
         }
 
+        @media (min-width: 768px) {
+            .loading-spinner {
+                padding: 60px;
+            }
+        }
+
         .spinner {
-            width: 50px;
-            height: 50px;
-            border: 4px solid #f5f5f5;
-            border-top: 4px solid #f37021;
+            width: 35px;
+            height: 35px;
+            border: 3px solid #f5f5f5;
+            border-top: 3px solid #f37021;
             border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
+        }
+
+        @media (min-width: 768px) {
+            .spinner {
+                width: 50px;
+                height: 50px;
+                border-width: 4px;
+                margin-bottom: 15px;
+            }
         }
 
         @keyframes spin {
@@ -638,28 +986,54 @@
         /* Empty State */
         .empty-state {
             text-align: center;
-            padding: 60px;
+            padding: 30px;
             color: #999;
             grid-column: 1 / -1;
         }
 
+        @media (min-width: 768px) {
+            .empty-state {
+                padding: 60px;
+            }
+        }
+
         .empty-state i {
-            font-size: 4rem;
-            margin-bottom: 20px;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
             opacity: 0.3;
+        }
+
+        @media (min-width: 768px) {
+            .empty-state i {
+                font-size: 4rem;
+                margin-bottom: 20px;
+            }
         }
 
         .empty-state h3 {
             color: #666;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
+            font-size: 1rem;
+        }
+
+        @media (min-width: 768px) {
+            .empty-state h3 {
+                font-size: 1.3rem;
+                margin-bottom: 10px;
+            }
+        }
+
+        .empty-state p {
+            font-size: 0.8rem;
         }
 
         /* Message Toast */
         .message {
             position: fixed;
-            top: 30px;
-            right: 30px;
-            padding: 15px 25px;
+            top: 20px;
+            right: 20px;
+            left: 20px;
+            padding: 12px 20px;
             border-radius: 10px;
             background: white;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
@@ -668,6 +1042,17 @@
             animation: slideIn 0.3s ease;
             border-left: 4px solid;
             font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        @media (min-width: 768px) {
+            .message {
+                top: 30px;
+                right: 30px;
+                left: auto;
+                padding: 15px 25px;
+                font-size: 1rem;
+            }
         }
 
         @keyframes slideIn {
@@ -681,22 +1066,112 @@
             }
         }
 
-        .message.success {
-            border-left-color: #2ecc71;
+        /* Track Order Panel */
+        .track-order-panel {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            border-radius: 16px;
+            padding: 15px;
+            margin-bottom: 25px;
+            color: white;
+            box-shadow: 0 10px 30px rgba(39, 174, 96, 0.3);
+        }
+
+        @media (min-width: 768px) {
+            .track-order-panel {
+                padding: 20px 30px;
+                margin-bottom: 30px;
+            }
+        }
+
+        .track-order-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        @media (min-width: 768px) {
+            .track-order-content {
+                flex-direction: row;
+                justify-content: space-between;
+                gap: 20px;
+            }
+        }
+
+        .track-icon {
+            width: 45px;
+            height: 45px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .track-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 2rem;
+            }
+        }
+
+        .track-info {
+            flex: 1;
+            text-align: center;
+        }
+
+        @media (min-width: 768px) {
+            .track-info {
+                text-align: left;
+            }
+        }
+
+        .track-info h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 3px;
+        }
+
+        @media (min-width: 768px) {
+            .track-info h3 {
+                font-size: 1.3rem;
+                margin-bottom: 5px;
+            }
+        }
+
+        .track-info p {
+            opacity: 0.9;
+            font-size: 0.8rem;
+        }
+
+        .track-btn {
+            background: white;
             color: #27ae60;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            width: 100%;
+            justify-content: center;
         }
 
-        .message.error {
-            border-left-color: #e74c3c;
-            color: #c0392b;
+        @media (min-width: 768px) {
+            .track-btn {
+                padding: 12px 30px;
+                width: auto;
+                font-size: 0.95rem;
+            }
         }
 
-        .message.info {
-            border-left-color: #f39c12;
-            color: #e67e22;
-        }
-
-        /* Login Prompt Modal */
+        /* Modal */
         .modal {
             display: none;
             position: fixed;
@@ -709,6 +1184,7 @@
             z-index: 2000;
             align-items: center;
             justify-content: center;
+            padding: 15px;
         }
 
         .modal.active {
@@ -717,23 +1193,30 @@
 
         .modal-content {
             background: white;
-            border-radius: 24px;
-            padding: 40px;
+            border-radius: 20px;
+            padding: 30px 20px;
             max-width: 400px;
-            width: 90%;
+            width: 100%;
             text-align: center;
             box-shadow: 0 30px 60px rgba(0,0,0,0.3);
         }
 
+        @media (min-width: 768px) {
+            .modal-content {
+                border-radius: 24px;
+                padding: 40px;
+            }
+        }
+
         .modal-icon {
-            width: 70px;
-            height: 70px;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 20px;
-            font-size: 2rem;
+            margin: 0 auto 15px;
+            font-size: 1.8rem;
         }
 
         .modal-icon.info {
@@ -743,30 +1226,39 @@
 
         .modal-content h3 {
             color: #1a1a1a;
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-weight: 700;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
 
         .modal-content p {
             color: #666;
-            margin-bottom: 30px;
-            line-height: 1.6;
+            margin-bottom: 25px;
+            line-height: 1.5;
+            font-size: 0.9rem;
         }
 
         .modal-actions {
             display: flex;
-            gap: 15px;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        @media (min-width: 768px) {
+            .modal-actions {
+                flex-direction: row;
+                gap: 15px;
+            }
         }
 
         .btn {
-            padding: 12px 24px;
+            padding: 12px 20px;
             border: none;
             border-radius: 10px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -793,49 +1285,95 @@
             background: #e0e0e0;
         }
 
-        /* --- Footer --- */
+        /* Footer */
         .main-footer { 
             background: white; 
-            padding: 60px 50px 20px; 
-            margin-top: 100px; 
+            padding: 40px 20px 20px; 
+            margin-top: 60px; 
+        }
+
+        @media (min-width: 768px) {
+            .main-footer {
+                padding: 60px 50px 20px;
+                margin-top: 100px;
+            }
         }
         
         .footer-grid { 
             display: grid; 
-            grid-template-columns: 1.5fr 1fr 1fr 1fr; 
-            gap: 40px; 
+            grid-template-columns: 1fr; 
+            gap: 30px; 
             border-bottom: 1px solid #eee; 
-            padding-bottom: 40px; 
+            padding-bottom: 30px; 
             max-width: 1200px;
             margin: 0 auto;
         }
+
+        @media (min-width: 768px) {
+            .footer-grid {
+                grid-template-columns: 1.5fr 1fr 1fr 1fr;
+                gap: 40px;
+                padding-bottom: 40px;
+            }
+        }
         
         .footer-brand h3 { 
-            font-size: 1.5rem; 
+            font-size: 1.3rem; 
             font-weight: 900; 
-            margin-bottom: 15px; 
+            margin-bottom: 10px; 
             color: #1a1a1a;
         }
 
+        @media (min-width: 768px) {
+            .footer-brand h3 {
+                font-size: 1.5rem;
+                margin-bottom: 15px;
+            }
+        }
+
         .footer-brand p {
-            margin-top: 20px;   
+            margin-top: 15px;   
             color: #666;
-            line-height: 1.6;
+            line-height: 1.5;
+            font-size: 0.9rem;
+        }
+
+        @media (min-width: 768px) {
+            .footer-brand p {
+                margin-top: 20px;
+                line-height: 1.6;
+                font-size: 1rem;
+            }
         }
         
         .footer-col h4 { 
-            margin-bottom: 20px; 
+            margin-bottom: 15px; 
             font-weight: 900; 
             color: #1a1a1a;
+            font-size: 1rem;
+        }
+
+        @media (min-width: 768px) {
+            .footer-col h4 {
+                margin-bottom: 20px;
+                font-size: 1.1rem;
+            }
         }
         
         .footer-col a { 
             display: block; 
             text-decoration: none; 
             color: #666; 
-            margin-bottom: 10px; 
-            font-size: 0.9rem;
+            margin-bottom: 8px; 
+            font-size: 0.85rem;
             transition: color 0.2s;
+        }
+
+        @media (min-width: 768px) {
+            .footer-col a {
+                margin-bottom: 10px;
+                font-size: 0.9rem;
+            }
         }
 
         .footer-col a:hover {
@@ -844,7 +1382,7 @@
 
         .footer-col p {
             color: #666;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             margin-bottom: 8px;
             display: flex;
             align-items: center;
@@ -853,150 +1391,15 @@
         
         .footer-bottom { 
             text-align: center; 
-            padding: 20px; 
+            padding: 20px 0 0; 
             color: #aaa; 
-            font-size: 0.8rem; 
-        }
-        .track-order-panel {
-            background: linear-gradient(135deg, #27ae60, #2ecc71);
-            border-radius: 16px;
-            padding: 20px 30px;
-            margin-bottom: 30px;
-            color: white;
-            box-shadow: 0 10px 30px rgba(39, 174, 96, 0.3);
+            font-size: 0.7rem; 
         }
 
-        .track-order-content {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        .track-icon {
-            width: 60px;
-            height: 60px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-        }
-
-        .track-info {
-            flex: 1;
-        }
-
-        .track-info h3 {
-            font-size: 1.3rem;
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
-
-        .track-info p {
-            opacity: 0.9;
-        }
-
-        .track-btn {
-            background: white;
-            color: #27ae60;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 10px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .track-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-
-        @media (max-width: 600px) {
-            .track-order-content {
-                flex-direction: column;
-                text-align: center;
-            }
-        }
-
-        /* Responsive */
-        @media (max-width: 1024px) {
-            .grid-categories,
-            .meals-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .grid-favorites {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
-
-        @media (max-width: 768px) {
-            header {
-                flex-direction: column;
-                gap: 15px;
-                padding: 15px 20px;
-            }
-            
-            .nav-links {
-                gap: 15px;
-            }
-            
-            .search-bar input {
-                width: 100%;
-            }
-            
-            .header-actions {
-                width: 100%;
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-            
-            .hero-card {
-                flex-direction: column;
-            }
-            
-            .hero-text {
-                padding: 40px;
-            }
-            
-            .hero-text h1 {
-                font-size: 2rem;
-            }
-            
-            .browse-banner {
-                flex-direction: column;
-                text-align: center;
-                gap: 15px;
-            }
-            
-            .browse-info {
-                flex-direction: column;
-            }
-            
-            .grid-categories,
-            .meals-grid,
-            .grid-favorites {
-                grid-template-columns: 1fr;
-            }
-            
-            .footer-grid {
-                grid-template-columns: 1fr;
-                gap: 30px;
-            }
-            
-            .welcome-card h1 {
-                font-size: 1.8rem;
-            }
-            
-            .modal-actions {
-                flex-direction: column;
+        @media (min-width: 768px) {
+            .footer-bottom {
+                padding: 20px;
+                font-size: 0.8rem;
             }
         }
     </style>
@@ -1010,15 +1413,12 @@
             <strong>Meal Craft</strong>
         </div>
         <nav class="nav-links">
-            <a href="#" class="active"><i class="fas fa-home"></i> Home</a>
-            <a href="#" id="profile-link"><i class="fas fa-user"></i> Profile</a>
+            <a href="#" class="active"><i class="fas fa-home"></i></a>
+            <a href="#" id="profile-link"><i class="fas fa-user"></i></a>
         </nav>
         <div class="header-actions">
-            <div class="search-bar">
-                <input type="text" id="searchInput" placeholder="Search meals..." onkeyup="searchMeals()">
-            </div>
             <button class="cart-btn" onclick="goToCart()">
-                <i class="fas fa-shopping-cart"></i> Cart (<span id="cartCount">0</span>)
+                <i class="fas fa-shopping-cart"></i> <span id="cartCount">0</span>
             </button>
             <div class="profile-menu">
                 <button class="profile-btn" id="profileBtn" onclick="handleProfileClick()">
@@ -1039,19 +1439,19 @@
                 <p id="trackOrderStatus">Order #12345 is being prepared</p>
             </div>
             <button class="track-btn" onclick="goToTrackOrder()">
-                <i class="fas fa-arrow-right"></i> Track Order
+                Track Order <i class="fas fa-arrow-right"></i>
             </button>
         </div>
     </div>
 
     <main class="content-wrapper">
-        <!-- Welcome Card (Simplified) -->
+        <!-- Welcome Card -->
         <div class="welcome-card" id="welcomeCard">
             <h1 id="welcomeMessage">Welcome to Meal Craft!</h1>
             <p>Customize your perfect meal with fresh ingredients. Build it your way!</p>
         </div>
 
-        <!-- Browse Mode Banner (shown when not logged in) -->
+        <!-- Browse Mode Banner -->
         <div class="browse-banner" id="browseBanner" style="display: none;">
             <div class="browse-info">
                 <div class="browse-icon">
@@ -1072,7 +1472,7 @@
             <div class="hero-text">
                 <span class="badge">TODAY'S EXCLUSIVE</span>
                 <h1>Hungry? We've got you covered.</h1>
-                <p>Customizable meals for you. Skip the menu and pick up your favorites ingredients and get your meal.</p>
+                <p>Customizable meals for you. Pick your favorites and get your meal.</p>
                 <div class="hero-btns">
                     <button class="order-now" onclick="scrollToMeals()">Build Now</button>
                     <button class="view-menu" onclick="scrollToFavorites()">View Favorites</button>
@@ -1083,7 +1483,7 @@
             </div>
         </section>
 
-        <!-- What are you craving? (Meals from Admin) -->
+        <!-- What are you craving? -->
         <section class="section-container">
             <div class="section-header">
                 <h2><i class="fas fa-utensils"></i> What are you craving?</h2>
@@ -1097,7 +1497,7 @@
             </div>
         </section>
 
-        <!-- Top Ingredients (Horizontal Scroll) -->
+        <!-- Top Ingredients -->
         <section class="section-container">
             <div class="section-header">
                 <h2><i class="fas fa-leaf"></i> Top Ingredients</h2>
@@ -1146,13 +1546,13 @@
             </div>
             <div class="footer-col">
                 <h4>Hours & Location</h4>
-                <p><i class="fas fa-map-marker-alt"></i> Student Union Building</p>
-                <p><i class="fas fa-clock"></i> Mon-Fri: 7am - 10pm</p>
+                <p><i class="fas fa-map-marker-alt"></i> Student Union</p>
+                <p><i class="fas fa-clock"></i> Mon-Fri: 7am-10pm</p>
                 <p><i class="fas fa-phone"></i> (555) 123-4567</p>
             </div>
         </div>
         <div class="footer-bottom">
-            &copy; 2025 Meal Craft. All rights reserved. Built for Food Lovers.
+            &copy; 2025 Meal Craft. All rights reserved.
         </div>
     </footer>
 
@@ -1169,10 +1569,10 @@
             <p>Please login to add items to your cart and place orders.</p>
             <div class="modal-actions">
                 <button class="btn btn-secondary" onclick="hideLoginPrompt()">
-                    <i class="fas fa-times"></i> Continue Browsing
+                    Continue Browsing
                 </button>
                 <button class="btn btn-primary" onclick="goToLogin()">
-                    <i class="fas fa-sign-in-alt"></i> Login Now
+                    Login Now
                 </button>
             </div>
         </div>
@@ -1180,7 +1580,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getFirestore, collection, getDocs, query, where, doc, getDoc, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         // Firebase Config
@@ -1221,26 +1621,45 @@
                 const allCarts = JSON.parse(localStorage.getItem('carts')) || {};
                 const userCart = allCarts[currentUser.uid] || [];
                 cartCountSpan.textContent = userCart.length;
-                
-                console.log('Cart count updated:', userCart.length, 'for user:', currentUser.uid);
             } catch (error) {
                 console.error('Error updating cart count:', error);
                 cartCountSpan.textContent = '0';
             }
         };
 
-        // Listen for storage events (when cart is updated in another tab)
+        // Listen for storage events
         window.addEventListener('storage', (e) => {
             if (e.key === 'carts') {
                 updateCartCount();
             }
         });
 
+        // Check entry mode from splash screen
+        const checkEntryMode = () => {
+            const entryMode = sessionStorage.getItem('entryMode');
+            const continueAsUser = sessionStorage.getItem('continueAsUser');
+            
+            if (continueAsUser) {
+                console.log('Continuing as user:', continueAsUser);
+                // We'll still need to authenticate, but this helps with UX
+            }
+            
+            if (entryMode === 'guest') {
+                console.log('Guest mode enabled');
+                setupBrowseMode();
+            }
+        };
+
         // Check Authentication
         onAuthStateChanged(auth, async (user) => {
             if (!user) {
-                // User is not logged in - show browse mode
-                setupBrowseMode();
+                // Check if we came from splash with guest mode
+                const entryMode = sessionStorage.getItem('entryMode');
+                if (entryMode === 'guest') {
+                    setupBrowseMode();
+                } else {
+                    setupBrowseMode(); // Default to browse mode
+                }
                 await loadAllData();
                 updateCartCount();
                 return;
@@ -1272,7 +1691,7 @@
             await checkActiveOrders();
         });
 
-        // Check for active orders (not delivered)
+        // Check for active orders
         const checkActiveOrders = async () => {
             if (!currentUser) return;
             
@@ -1293,7 +1712,6 @@
                     document.getElementById('trackOrderStatus').textContent = 
                         `Order #${activeOrder.id.slice(-6)} is ${orderData.status}`;
                     
-                    // Store active order ID
                     localStorage.setItem('activeOrderId', activeOrder.id);
                 }
             } catch (error) {
@@ -1309,7 +1727,7 @@
             }
         };
 
-        // Setup Browse Mode (not logged in)
+        // Setup Browse Mode
         const setupBrowseMode = () => {
             browseBanner.style.display = 'flex';
             userNameSpan.textContent = 'Guest';
@@ -1326,7 +1744,6 @@
             cartBtn.style.opacity = '0.5';
             cartBtn.style.pointerEvents = 'none';
             
-            // Show info message
             showMessage('👋 Browse our menu. Login to order!', 'info');
         };
 
@@ -1355,7 +1772,7 @@
             }
         };
 
-        // Load Meals (from admin)
+        // Load Meals
         const loadMeals = async () => {
             try {
                 const snapshot = await getDocs(collection(db, 'meals'));
@@ -1363,7 +1780,7 @@
                 snapshot.forEach(doc => {
                     allMeals.push({ id: doc.id, ...doc.data() });
                 });
-                displayMeals(allMeals.slice(0, 3)); // Show only 3 meals
+                displayMeals(allMeals.slice(0, 3));
             } catch (error) {
                 console.error('Error loading meals:', error);
             }
@@ -1383,7 +1800,7 @@
             }
         };
 
-        // Load Crafted Meals (from customized_meals collection)
+        // Load Crafted Meals from customized_meals collection
         const loadCraftedMeals = async () => {
             try {
                 const q = query(
@@ -1393,13 +1810,35 @@
                 );
                 const snapshot = await getDocs(q);
                 craftedMeals = [];
-                snapshot.forEach(doc => {
-                    craftedMeals.push({ id: doc.id, ...doc.data() });
-                });
+                
+                // Get user names for each crafted meal
+                for (const doc of snapshot.docs) {
+                    const mealData = { id: doc.id, ...doc.data() };
+                    
+                    // Try to get creator's name
+                    if (mealData.userId) {
+                        try {
+                            const userDoc = await getDoc(doc(db, 'users', mealData.userId));
+                            if (userDoc.exists()) {
+                                const userData = userDoc.data();
+                                mealData.createdByName = userData.fullName || userData.username || 'Anonymous';
+                            } else {
+                                mealData.createdByName = 'Anonymous';
+                            }
+                        } catch (error) {
+                            console.error('Error fetching user:', error);
+                            mealData.createdByName = 'Anonymous';
+                        }
+                    } else {
+                        mealData.createdByName = 'Anonymous';
+                    }
+                    
+                    craftedMeals.push(mealData);
+                }
+                
                 displayCraftedMeals(craftedMeals);
             } catch (error) {
                 console.error('Error loading crafted meals:', error);
-                // If collection doesn't exist yet, show empty
                 displayCraftedMeals([]);
             }
         };
@@ -1419,11 +1858,11 @@
                     <div class="cat-card" onclick="viewMeal('${meal.id}')">
                         <div class="meal-image">
                             <i class="fas ${meal.category === 'Pizza' ? 'fa-pizza-slice' : meal.category === 'Burger' ? 'fa-hamburger' : 'fa-utensils'}"></i>
-                            <span class="meal-type">${meal.type === 'veg' ? '🌱 VEG' : '🍗 NON-VEG'}</span>
+                            <span class="meal-type">${meal.type === 'veg' ? '🌱' : '🍗'}</span>
                         </div>
                         <div class="cat-info">
                             <h3>${meal.name}</h3>
-                            <p>Starting from ₹${meal.price}</p>
+                            <p>From ₹${meal.price}</p>
                         </div>
                     </div>
                 `;
@@ -1432,7 +1871,7 @@
             grid.innerHTML = html;
         };
 
-        // Display Ingredients (Horizontal Scroll)
+        // Display Ingredients
         const displayIngredients = (ingredients) => {
             const grid = document.getElementById('ingredientsGrid');
             
@@ -1454,7 +1893,6 @@
                         </div>
                         <h4>${ing.name}</h4>
                         <div class="ingredient-price">₹${ing.price}</div>
-                        <div class="ingredient-category">${ing.category}</div>
                     </div>
                 `;
             });
@@ -1479,9 +1917,9 @@
                             <i class="fas fa-star"></i>
                         </div>
                         <div class="fav-info">
-                            <h4>${meal.customName}</h4>
+                            <h4>${meal.customName || 'Custom Meal'}</h4>
                             <span class="price">₹${meal.totalPrice}</span>
-                            <p style="color: #666; font-size: 0.8rem; margin-top: 5px;">by ${meal.createdBy || 'Anonymous'}</p>
+                            <div class="creator-name">by ${meal.createdByName || 'Anonymous'}</div>
                         </div>
                     </div>
                 `;
@@ -1531,23 +1969,6 @@
             window.location.href = `crafted-meal-detail.html?id=${mealId}`;
         };
 
-        window.searchMeals = () => {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            
-            if (!searchTerm) {
-                displayMeals(allMeals.slice(0, 3));
-                return;
-            }
-
-            const filtered = allMeals.filter(meal => 
-                meal.name?.toLowerCase().includes(searchTerm) ||
-                meal.description?.toLowerCase().includes(searchTerm) ||
-                meal.category?.toLowerCase().includes(searchTerm)
-            );
-            
-            displayMeals(filtered.slice(0, 3));
-        };
-
         window.scrollToMeals = () => {
             document.querySelector('.section-container').scrollIntoView({ behavior: 'smooth' });
         };
@@ -1577,16 +1998,11 @@
             }, 3000);
         };
 
+        // Check entry mode on load
+        checkEntryMode();
+        
         // Initial cart count update
         updateCartCount();
-
-        // Debug function to check cart
-        window.checkCart = () => {
-            const allCarts = JSON.parse(localStorage.getItem('carts')) || {};
-            console.log('All carts:', allCarts);
-            console.log('Current user cart:', currentUser ? allCarts[currentUser.uid] : 'No user');
-            return allCarts;
-        };
     </script>
 </body>
 </html>

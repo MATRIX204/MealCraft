@@ -64,15 +64,27 @@
 
         nav .login-link {
             text-decoration: none;
-            color: #000;
+            color: #f37021;
             font-weight: 700;
             font-size: 1rem;
             transition: all 0.3s;
+            padding: 8px 20px;
+            border: 2px solid #f37021;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         nav .login-link:hover {
+            background: #f37021;
+            color: white;
             transform: translateY(-2px);
-            color: #e6651a;
+            box-shadow: 0 5px 15px rgba(243, 112, 33, 0.3);
+        }
+
+        nav .login-link i {
+            font-size: 0.9rem;
         }
 
         /* Main Hero Content */
@@ -180,6 +192,42 @@
             transition: width 2s linear;
         }
 
+        /* Last User Info */
+        .last-user-info {
+            margin-top: 15px;
+            font-size: 0.85rem;
+            color: #666;
+            background: #fff3e0;
+            padding: 8px 20px;
+            border-radius: 30px;
+            display: inline-block;
+            border: 1px solid #ffe0b2;
+        }
+
+        .last-user-info i {
+            color: #f37021;
+            margin-right: 5px;
+        }
+
+        /* Guest Login Option */
+        .guest-option {
+            margin-top: 15px;
+        }
+
+        .guest-link {
+            color: #999;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.3s;
+            cursor: pointer;
+            border-bottom: 1px dashed #999;
+        }
+
+        .guest-link:hover {
+            color: #f37021;
+            border-bottom-color: #f37021;
+        }
+
         /* Footer */
         footer {
             padding: 30px;
@@ -225,6 +273,11 @@
                 width: 80%;
             }
 
+            nav .login-link {
+                padding: 6px 15px;
+                font-size: 0.9rem;
+            }
+
             footer {
                 margin-top: 100px;
             }
@@ -244,7 +297,9 @@
             <strong>Meal Craft</strong>
         </div>
         <nav>
-            <a href="home.html" class="login-link">Browse Menu</a>
+            <a href="login.html" class="login-link">
+                <i class="fas fa-sign-in-alt"></i> Login
+            </a>
         </nav>
     </header>
 
@@ -257,7 +312,16 @@
         <p class="tagline">Craft Your Perfect Meal.</p>
         
         <button class="order-btn" id="order-btn">Browse Menu →</button>
-        <p class="disclaimer">Explore our delicious meals. Login to order.</p>
+        
+        <!-- Last User Info (will be populated by JS) -->
+        <div id="lastUserInfo" class="last-user-info" style="display: none;"></div>
+        
+        <!-- Guest Option -->
+        <div class="guest-option">
+            <a class="guest-link" id="guestLink">Continue as Guest</a>
+        </div>
+        
+        <p class="disclaimer">Explore our delicious meals. Login to save your orders.</p>
     </main>
 
     <div id="loading-wrapper" class="loading-wrapper">

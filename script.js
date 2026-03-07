@@ -1,9 +1,50 @@
 // ===== SPLASH SCREEN SCRIPT =====
+
 // DOM Elements
 const orderBtn = document.getElementById('order-btn');
 const loadingWrapper = document.getElementById('loading-wrapper');
 const loadingBar = document.getElementById('loading-bar');
 const progressPercent = document.getElementById('progress-percent');
+const lastUserInfo = document.getElementById('lastUserInfo');
+const guestLink = document.getElementById('guestLink');
+
+// Check for last logged in user (not admin)
+const checkLastUser = () => {
+    try {
+        const lastUser = localStorage.getItem('lastLoggedInUser');
+        const lastUserName = localStorage.getItem('lastUserName');
+        
+        if (lastUser && lastUser !== 'admin@mealcraft.com') {
+            // Show last user info
+            lastUserInfo.style.display = 'inline-block';
+            lastUserInfo.innerHTML = `<i class="fas fa-history"></i> Last login: <strong>${lastUserName || lastUser}</strong>`;
+            
+            // Change button text to reflect last user
+            orderBtn.innerHTML = `Continue as ${lastUserName || 'User'} →`;
+        } else {
+            lastUserInfo.style.display = 'none';
+            orderBtn.innerHTML = 'Browse Menu →';
+        }
+    } catch (error) {
+        console.error('Error checking last user:', error);
+    }
+};
+
+// Save guest mode preference
+const setGuestMode = () => {
+    localStorage.setItem('browseMode', 'guest');
+    localStorage.removeItem('lastLoggedInUser'); // Clear any previous login
+};
+
+// Clear admin data if present
+const clearAdminData = () => {
+    const lastUser = localStorage.getItem('lastLoggedInUser');
+    if (lastUser === 'admin@mealcraft.com') {
+        localStorage.removeItem('lastLoggedInUser');
+        localStorage.removeItem('lastUserName');
+        localStorage.removeItem('lastUserRole');
+    }
+};
 
 // Loading animation
 const animateLoading = () => {
@@ -21,8 +62,8 @@ const animateLoading = () => {
     });
 };
 
-// Order button click handler - Redirect to home page
-orderBtn.addEventListener('click', async () => {
+// Redirect to home with mode
+const goToHome = (mode = 'guest') => {
     // Show loading bar
     loadingWrapper.style.display = 'block';
     orderBtn.style.opacity = '0.5';
@@ -34,11 +75,43 @@ orderBtn.addEventListener('click', async () => {
     }, 10);
     
     // Animate percentage
-    await animateLoading();
+    animateLoading().then(() => {
+        // Store the mode in session storage for the home page
+        sessionStorage.setItem('entryMode', mode);
+        
+        // Redirect to home page
+        window.location.href = 'pages/home.html';
+    });
+};
+
+// Order button click handler
+orderBtn.addEventListener('click', async () => {
+    const lastUser = localStorage.getItem('lastLoggedInUser');
     
-    // Redirect to home page (browse mode)
-    window.location.href = 'pages/home.html';
+    // If there's a last user (not admin), try to auto-login
+    if (lastUser && lastUser !== 'admin@mealcraft.com') {
+        // Store that we're continuing as this user
+        sessionStorage.setItem('continueAsUser', lastUser);
+        goToHome('returning');
+    } else {
+        // No last user, go as guest
+        setGuestMode();
+        goToHome('guest');
+    }
 });
+
+// Guest link click handler
+guestLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    setGuestMode();
+    goToHome('guest');
+});
+
+// Clear any admin data on load
+clearAdminData();
+
+// Check for last user on load
+checkLastUser();
 
 // Smooth entrance animation
 document.addEventListener('DOMContentLoaded', () => {
