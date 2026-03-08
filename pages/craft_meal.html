@@ -279,6 +279,12 @@
             position: relative;
         }
 
+        .meal-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
         .meal-image i {
             font-size: 5rem;
             color: rgba(255,255,255,0.9);
@@ -295,7 +301,7 @@
             position: absolute;
             top: 12px;
             right: 12px;
-            background: rgba(255,255,255,0.2);
+            background: rgba(0,0,0,0.5);
             backdrop-filter: blur(5px);
             padding: 4px 12px;
             border-radius: 40px;
@@ -701,7 +707,7 @@
             }
         }
 
-        /* Ingredients Grid */
+        /* Ingredients Grid - UPDATED: Vertical only, no horizontal scroll */
         .ingredients-section {
             margin-bottom: 20px;
         }
@@ -735,30 +741,16 @@
         }
 
         .ingredients-grid {
-            display: grid;
-            grid-template-columns: 1fr;
+            display: flex;
+            flex-direction: column;
             gap: 10px;
-            max-height: 350px;
+            max-height: 500px;
             overflow-y: auto;
-            padding-right: 4px;
-        }
-
-        @media (min-width: 640px) {
-            .ingredients-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 12px;
-                max-height: 400px;
-            }
+            padding-right: 8px;
         }
 
         .ingredients-grid::-webkit-scrollbar {
-            width: 3px;
-        }
-
-        @media (min-width: 768px) {
-            .ingredients-grid::-webkit-scrollbar {
-                width: 4px;
-            }
+            width: 4px;
         }
 
         .ingredients-grid::-webkit-scrollbar-track {
@@ -778,22 +770,24 @@
             padding: 12px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             cursor: pointer;
             transition: all 0.3s;
+            width: 100%;
         }
 
         @media (min-width: 768px) {
             .ingredient-item {
                 border-radius: 16px;
                 padding: 15px;
-                gap: 12px;
+                gap: 15px;
             }
         }
 
         .ingredient-item:hover {
             border-color: #f97316;
             background: #fff7ed;
+            transform: translateX(5px);
         }
 
         .ingredient-item.selected {
@@ -833,6 +827,45 @@
             color: white;
         }
 
+        /* Ingredient Image */
+        .ingredient-image {
+            width: 45px;
+            height: 45px;
+            border-radius: 10px;
+            overflow: hidden;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            border: 1px solid #e2e8f0;
+        }
+
+        @media (min-width: 768px) {
+            .ingredient-image {
+                width: 55px;
+                height: 55px;
+                border-radius: 12px;
+            }
+        }
+
+        .ingredient-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .ingredient-image i {
+            font-size: 1.5rem;
+            color: #f97316;
+        }
+
+        @media (min-width: 768px) {
+            .ingredient-image i {
+                font-size: 1.8rem;
+            }
+        }
+
         .ingredient-info {
             flex: 1;
             min-width: 0;
@@ -841,8 +874,8 @@
         .ingredient-name {
             font-weight: 600;
             color: #1e293b;
-            margin-bottom: 2px;
-            font-size: 0.85rem;
+            margin-bottom: 4px;
+            font-size: 0.9rem;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -850,13 +883,13 @@
 
         @media (min-width: 768px) {
             .ingredient-name {
-                font-size: 0.95rem;
-                margin-bottom: 4px;
+                font-size: 1rem;
+                margin-bottom: 5px;
             }
         }
 
         .ingredient-category {
-            font-size: 0.6rem;
+            font-size: 0.7rem;
             color: #94a3b8;
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -864,21 +897,25 @@
 
         @media (min-width: 768px) {
             .ingredient-category {
-                font-size: 0.7rem;
+                font-size: 0.75rem;
             }
         }
 
         .ingredient-price {
             font-weight: 700;
             color: #f97316;
-            font-size: 0.9rem;
+            font-size: 1rem;
             white-space: nowrap;
             flex-shrink: 0;
+            background: #fff3e0;
+            padding: 4px 10px;
+            border-radius: 20px;
         }
 
         @media (min-width: 768px) {
             .ingredient-price {
-                font-size: 1rem;
+                font-size: 1.1rem;
+                padding: 6px 12px;
             }
         }
 
@@ -1222,6 +1259,7 @@
                 <div class="preview-content">
                     <div class="meal-image-wrapper">
                         <div class="meal-image" id="previewImage">
+                            <img id="previewImageSrc" src="" alt="Meal" style="display: none;">
                             <i class="fas fa-utensils"></i>
                             <span class="meal-type-badge" id="mealTypeBadge">🌱 VEG</span>
                         </div>
@@ -1423,16 +1461,34 @@
                 document.getElementById('basePriceValue').textContent = `₹${basePrice}`;
                 
                 // Set preview image
-                const previewImage = document.getElementById('previewImage').querySelector('i');
-                if (currentMeal.category === 'Pizza') {
-                    previewImage.className = 'fas fa-pizza-slice';
-                } else if (currentMeal.category === 'Burger') {
-                    previewImage.className = 'fas fa-hamburger';
-                } else if (currentMeal.category === 'Pasta') {
-                    previewImage.className = 'fas fa-utensils';
-                } else {
-                    previewImage.className = 'fas fa-utensils';
-                }
+                const previewImage = document.getElementById('previewImage');
+                const previewImg = document.getElementById('previewImageSrc');
+                const previewIcon = previewImage.querySelector('i:not(#mealTypeBadge)');
+                
+                // Create image path from meal name
+                const imageName = currentMeal.name.toLowerCase().replace(/\s+/g, '_');
+                const imagePath = `../assets/meals/${imageName}.png`;
+                
+                previewImg.src = imagePath;
+                previewImg.onload = () => {
+                    previewImg.style.display = 'block';
+                    previewIcon.style.display = 'none';
+                };
+                previewImg.onerror = () => {
+                    previewImg.style.display = 'none';
+                    previewIcon.style.display = 'flex';
+                    
+                    // Set appropriate icon
+                    if (currentMeal.category === 'Pizza') {
+                        previewIcon.className = 'fas fa-pizza-slice';
+                    } else if (currentMeal.category === 'Burger') {
+                        previewIcon.className = 'fas fa-hamburger';
+                    } else if (currentMeal.category === 'Pasta') {
+                        previewIcon.className = 'fas fa-utensils';
+                    } else {
+                        previewIcon.className = 'fas fa-utensils';
+                    }
+                };
 
                 // Load all ingredients
                 const ingredientsSnapshot = await getDocs(collection(db, 'ingredients'));
@@ -1471,7 +1527,7 @@
             }
         };
 
-        // Display ingredients
+        // Display ingredients with images - VERTICAL ONLY
         const displayIngredients = (ingredients) => {
             const container = document.getElementById('ingredientsGrid');
             
@@ -1482,10 +1538,30 @@
 
             let html = '';
             ingredients.forEach(ing => {
+                // Create ingredient image path
+                const ingImageName = ing.name.toLowerCase().replace(/\s+/g, '_');
+                const ingImagePath = `../assets/Ingredients/${ingImageName}.png`;
+                
+                // Determine icon based on category
+                let iconClass = 'fa-leaf';
+                if (ing.category) {
+                    const category = ing.category.toLowerCase();
+                    if (category.includes('cheese')) iconClass = 'fa-cheese';
+                    else if (category.includes('vegetable')) iconClass = 'fa-carrot';
+                    else if (category.includes('meat') || category.includes('chicken')) iconClass = 'fa-drumstick-bite';
+                    else if (category.includes('sauce')) iconClass = 'fa-pepper-hot';
+                }
+                
                 html += `
                     <div class="ingredient-item" id="ingredient-${ing.id}" onclick="toggleIngredient('${ing.id}')">
                         <div class="ingredient-check" id="check-${ing.id}">
                             <i class="fas fa-check" style="opacity: 0;"></i>
+                        </div>
+                        <div class="ingredient-image">
+                            <img src="${ingImagePath}" alt="${ing.name}" 
+                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                                 onload="this.style.display='block'">
+                            <i class="fas ${iconClass}" style="display: none;"></i>
                         </div>
                         <div class="ingredient-info">
                             <div class="ingredient-name">${ing.name}</div>
@@ -1609,17 +1685,23 @@
             const addonsTotal = selectedIngs.reduce((sum, ing) => sum + ing.price, 0);
             const totalPrice = basePrice + addonsTotal;
 
+            // Create image path for meal
+            const imageName = currentMeal.name.toLowerCase().replace(/\s+/g, '_');
+            const mealImagePath = `../assets/meals/${imageName}.png`;
+
             const customizedMeal = {
                 id: 'cart_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
                 mealId: mealId,
                 mealName: currentMeal.name,
+                mealImage: mealImagePath,
                 customName: customName,
                 basePrice: basePrice,
                 selectedIngredients: selectedIngs.map(ing => ({
                     id: ing.id,
                     name: ing.name,
                     price: ing.price,
-                    category: ing.category
+                    category: ing.category,
+                    image: `../assets/Ingredients/${ing.name.toLowerCase().replace(/\s+/g, '_')}.png`
                 })),
                 addonsTotal: addonsTotal,
                 specialInstructions: specialInstructions,

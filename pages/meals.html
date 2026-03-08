@@ -352,14 +352,30 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2rem;
-            color: white;
             position: relative;
+            overflow: hidden;
         }
 
         @media (min-width: 768px) {
             .meal-image {
                 height: 150px;
+            }
+        }
+
+        .meal-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .meal-image i {
+            font-size: 2rem;
+            color: white;
+            opacity: 0.9;
+        }
+
+        @media (min-width: 768px) {
+            .meal-image i {
                 font-size: 2.5rem;
             }
         }
@@ -372,7 +388,7 @@
             border-radius: 20px;
             font-size: 0.6rem;
             font-weight: 600;
-            background: rgba(255,255,255,0.2);
+            background: rgba(0,0,0,0.5);
             color: white;
         }
 
@@ -688,7 +704,7 @@
             }
         };
 
-        // Display meals
+        // Display meals with images
         const displayMeals = (meals) => {
             const grid = document.getElementById('mealsGrid');
             
@@ -705,14 +721,30 @@
 
             let html = '';
             meals.forEach(meal => {
-                const icon = meal.category === 'Pizza' ? 'fa-pizza-slice' : 
-                            meal.category === 'Burger' ? 'fa-hamburger' : 
-                            meal.category === 'Pasta' ? 'fa-utensils' : 'fa-utensils';
+                // Create image path from meal name (lowercase, underscores)
+                const imageName = meal.name.toLowerCase().replace(/\s+/g, '_');
+                const imagePath = `../assets/meals/${imageName}.png`;
+                
+                // Determine icon based on meal name or category
+                let iconClass = 'fa-utensils';
+                const mealNameLower = meal.name.toLowerCase();
+                if (mealNameLower.includes('pizza')) iconClass = 'fa-pizza-slice';
+                else if (mealNameLower.includes('burger')) iconClass = 'fa-hamburger';
+                else if (mealNameLower.includes('pasta')) iconClass = 'fa-utensils';
+                else if (mealNameLower.includes('salad')) iconClass = 'fa-leaf';
+                else if (mealNameLower.includes('sandwich')) iconClass = 'fa-bread-slice';
+                else if (meal.category === 'Pizza') iconClass = 'fa-pizza-slice';
+                else if (meal.category === 'Burger') iconClass = 'fa-hamburger';
+                else if (meal.category === 'Pasta') iconClass = 'fa-utensils';
+                else if (meal.category === 'Salad') iconClass = 'fa-leaf';
                 
                 html += `
                     <div class="meal-card" onclick="viewMeal('${meal.id}')">
                         <div class="meal-image">
-                            <i class="fas ${icon}"></i>
+                            <img src="${imagePath}" alt="${meal.name}" 
+                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                                 onload="this.style.display='block'">
+                            <i class="fas ${iconClass}" style="display: none;"></i>
                             <span class="meal-type">${meal.type === 'veg' ? '🌱' : '🍗'}</span>
                         </div>
                         <div class="meal-content">

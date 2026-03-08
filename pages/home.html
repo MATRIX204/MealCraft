@@ -649,25 +649,40 @@
             box-shadow: 0 10px 20px rgba(243, 112, 33, 0.1);
         }
 
-        .ingredient-icon {
+        .ingredient-image {
             width: 45px;
             height: 45px;
-            background: #fff3e0;
+            margin: 0 auto 10px;
             border-radius: 50%;
+            overflow: hidden;
+            background: #fff3e0;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 10px;
-            color: #f37021;
-            font-size: 1.3rem;
         }
 
         @media (min-width: 768px) {
-            .ingredient-icon {
+            .ingredient-image {
                 width: 60px;
                 height: 60px;
-                font-size: 1.8rem;
                 margin: 0 auto 15px;
+            }
+        }
+
+        .ingredient-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .ingredient-image i {
+            font-size: 1.3rem;
+            color: #f37021;
+        }
+
+        @media (min-width: 768px) {
+            .ingredient-image i {
+                font-size: 1.8rem;
             }
         }
 
@@ -755,13 +770,58 @@
             box-shadow: 0 15px 30px rgba(0,0,0,0.1);
         }
 
-        .cat-card .meal-image {
+        .meal-image {
             height: 120px;
+            background: linear-gradient(135deg, #e67e22, #d35400);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
         }
 
         @media (min-width: 768px) {
-            .cat-card .meal-image {
+            .meal-image {
                 height: 150px;
+            }
+        }
+
+        .meal-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .meal-image i {
+            font-size: 2rem;
+            color: white;
+            opacity: 0.9;
+        }
+
+        @media (min-width: 768px) {
+            .meal-image i {
+                font-size: 2.5rem;
+            }
+        }
+
+        .meal-type {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 3px 8px;
+            border-radius: 20px;
+            font-size: 0.6rem;
+            font-weight: 600;
+            background: rgba(0,0,0,0.5);
+            color: white;
+        }
+
+        @media (min-width: 768px) {
+            .meal-type {
+                top: 15px;
+                right: 15px;
+                padding: 4px 10px;
+                font-size: 0.7rem;
             }
         }
 
@@ -794,45 +854,6 @@
             transition: all 0.3s;
             cursor: pointer;
             box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-        }
-
-        .meal-image {
-            height: 120px;
-            background: linear-gradient(135deg, #e67e22, #d35400);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            color: white;
-            position: relative;
-        }
-
-        @media (min-width: 768px) {
-            .meal-image {
-                height: 150px;
-                font-size: 2.5rem;
-            }
-        }
-
-        .meal-type {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            padding: 3px 8px;
-            border-radius: 20px;
-            font-size: 0.6rem;
-            font-weight: 600;
-            background: rgba(255,255,255,0.2);
-            color: white;
-        }
-
-        @media (min-width: 768px) {
-            .meal-type {
-                top: 15px;
-                right: 15px;
-                padding: 4px 10px;
-                font-size: 0.7rem;
-            }
         }
 
         .meal-content {
@@ -893,14 +914,19 @@
 
         .fav-card .meal-image {
             height: 100px;
-            font-size: 1.8rem;
+            background: linear-gradient(135deg, #f37021, #e67e22);
         }
 
         @media (min-width: 768px) {
             .fav-card .meal-image {
                 height: 150px;
-                font-size: 2.5rem;
             }
+        }
+
+        .fav-card .meal-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .fav-info { 
@@ -941,6 +967,14 @@
             color: #666;
             font-size: 0.7rem;
             margin-top: 5px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .creator-name i {
+            color: #f37021;
+            font-size: 0.6rem;
         }
 
         /* Loading State */
@@ -1641,7 +1675,6 @@
             
             if (continueAsUser) {
                 console.log('Continuing as user:', continueAsUser);
-                // We'll still need to authenticate, but this helps with UX
             }
             
             if (entryMode === 'guest') {
@@ -1653,23 +1686,20 @@
         // Check Authentication
         onAuthStateChanged(auth, async (user) => {
             if (!user) {
-                // Check if we came from splash with guest mode
                 const entryMode = sessionStorage.getItem('entryMode');
                 if (entryMode === 'guest') {
                     setupBrowseMode();
                 } else {
-                    setupBrowseMode(); // Default to browse mode
+                    setupBrowseMode();
                 }
                 await loadAllData();
                 updateCartCount();
                 return;
             }
             
-            // User is logged in
             currentUser = user;
             setupLoggedInMode();
             
-            // Load user data
             try {
                 const userDoc = await getDoc(doc(db, 'users', user.uid));
                 const userData = userDoc.data();
@@ -1681,13 +1711,8 @@
                 console.error('Error loading user data:', error);
             }
             
-            // Update cart count
             updateCartCount();
-            
-            // Load all data
             await loadAllData();
-            
-            // Check for active orders
             await checkActiveOrders();
         });
 
@@ -1735,11 +1760,9 @@
             
             document.getElementById('welcomeMessage').textContent = 'Welcome to Meal Craft!';
             
-            // Change profile link behavior
             profileLink.href = 'javascript:void(0)';
             profileLink.onclick = showLoginPrompt;
             
-            // Disable cart button
             const cartBtn = document.querySelector('.cart-btn');
             cartBtn.style.opacity = '0.5';
             cartBtn.style.pointerEvents = 'none';
@@ -1800,7 +1823,7 @@
             }
         };
 
-        // Load Crafted Meals from customized_meals collection
+        // Load Crafted Meals
         const loadCraftedMeals = async () => {
             try {
                 const q = query(
@@ -1811,17 +1834,16 @@
                 const snapshot = await getDocs(q);
                 craftedMeals = [];
                 
-                // Get user names for each crafted meal
                 for (const doc of snapshot.docs) {
                     const mealData = { id: doc.id, ...doc.data() };
                     
-                    // Try to get creator's name
                     if (mealData.userId) {
                         try {
                             const userDoc = await getDoc(doc(db, 'users', mealData.userId));
                             if (userDoc.exists()) {
                                 const userData = userDoc.data();
                                 mealData.createdByName = userData.fullName || userData.username || 'Anonymous';
+                                mealData.createdByPhoto = userData.photoURL || null;
                             } else {
                                 mealData.createdByName = 'Anonymous';
                             }
@@ -1843,7 +1865,7 @@
             }
         };
 
-        // Display Meals
+        // Display Meals with Images
         const displayMeals = (meals) => {
             const grid = document.getElementById('mealsGrid');
             
@@ -1854,10 +1876,31 @@
 
             let html = '';
             meals.forEach(meal => {
+                // Use meal name directly for the image filename (lowercase)
+                // Example: "Pizza" -> "pizza.png", "Chicken Burger" -> "chicken_burger.png"
+                const imageName = meal.name.toLowerCase().replace(/\s+/g, '_');
+                const imagePath = `../assets/meals/${imageName}.png`;
+                
+                // Determine icon based on meal name or category
+                let iconClass = 'fa-utensils';
+                const mealNameLower = meal.name.toLowerCase();
+                if (mealNameLower.includes('pizza')) iconClass = 'fa-pizza-slice';
+                else if (mealNameLower.includes('burger')) iconClass = 'fa-hamburger';
+                else if (mealNameLower.includes('pasta')) iconClass = 'fa-utensils';
+                else if (mealNameLower.includes('salad')) iconClass = 'fa-leaf';
+                else if (mealNameLower.includes('sandwich')) iconClass = 'fa-bread-slice';
+                else if (meal.category === 'Pizza') iconClass = 'fa-pizza-slice';
+                else if (meal.category === 'Burger') iconClass = 'fa-hamburger';
+                else if (meal.category === 'Pasta') iconClass = 'fa-utensils';
+                else if (meal.category === 'Salad') iconClass = 'fa-leaf';
+                
                 html += `
                     <div class="cat-card" onclick="viewMeal('${meal.id}')">
                         <div class="meal-image">
-                            <i class="fas ${meal.category === 'Pizza' ? 'fa-pizza-slice' : meal.category === 'Burger' ? 'fa-hamburger' : 'fa-utensils'}"></i>
+                            <img src="${imagePath}" alt="${meal.name}" 
+                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                                 onload="this.style.display='block'">
+                            <i class="fas ${iconClass}" style="display: none;"></i>
                             <span class="meal-type">${meal.type === 'veg' ? '🌱' : '🍗'}</span>
                         </div>
                         <div class="cat-info">
@@ -1871,7 +1914,7 @@
             grid.innerHTML = html;
         };
 
-        // Display Ingredients
+        // Display Ingredients with Images - CORRECTED PATH: ../assets/Ingredients/ingredient_name.png
         const displayIngredients = (ingredients) => {
             const grid = document.getElementById('ingredientsGrid');
             
@@ -1882,17 +1925,35 @@
 
             let html = '';
             ingredients.slice(0, 8).forEach(ing => {
-                const icon = ing.category === 'Cheese' ? 'fa-cheese' : 
-                            ing.category === 'Vegetable' ? 'fa-carrot' :
-                            ing.category === 'Meat' ? 'fa-drumstick-bite' : 'fa-pepper-hot';
+                // Use ingredient name directly for the image filename (lowercase)
+                // Example: "Mozzarella Cheese" -> "mozzarella_cheese.png"
+                const imageName = ing.name.toLowerCase().replace(/\s+/g, '_');
+                // CORRECTED PATH: ../assets/Ingredients/ with capital I
+                const imagePath = `../assets/Ingredients/${imageName}.png`;
+                
+                // Determine icon based on category
+                let iconClass = 'fa-leaf';
+                if (ing.category) {
+                    const category = ing.category.toLowerCase();
+                    if (category.includes('cheese')) iconClass = 'fa-cheese';
+                    else if (category.includes('vegetable')) iconClass = 'fa-carrot';
+                    else if (category.includes('meat') || category.includes('chicken')) iconClass = 'fa-drumstick-bite';
+                    else if (category.includes('sauce')) iconClass = 'fa-pepper-hot';
+                    else if (category.includes('spice')) iconClass = 'fa-seedling';
+                    else if (category.includes('bread')) iconClass = 'fa-bread-slice';
+                }
                 
                 html += `
                     <div class="ingredient-card">
-                        <div class="ingredient-icon">
-                            <i class="fas ${icon}"></i>
+                        <div class="ingredient-image">
+                            <img src="${imagePath}" alt="${ing.name}" 
+                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                                 onload="this.style.display='block'">
+                            <i class="fas ${iconClass}" style="display: none;"></i>
                         </div>
                         <h4>${ing.name}</h4>
                         <div class="ingredient-price">₹${ing.price}</div>
+                        <div class="ingredient-category">${ing.category || 'Ingredient'}</div>
                     </div>
                 `;
             });
@@ -1900,7 +1961,7 @@
             grid.innerHTML = html;
         };
 
-        // Display Crafted Meals
+        // Display Crafted Meals with Creator Names
         const displayCraftedMeals = (meals) => {
             const grid = document.getElementById('craftedMealsGrid');
             
@@ -1911,15 +1972,25 @@
 
             let html = '';
             meals.forEach(meal => {
+                // Try to use custom image if available, otherwise use crafted meals folder with ID
+                const imagePath = meal.imagePath || `../assets/crafted_meals/${meal.id}.png`;
+                const mealName = meal.customName || 'Custom Meal';
+                const creatorName = meal.createdByName || 'Anonymous';
+                
                 html += `
                     <div class="fav-card" onclick="viewCraftedMeal('${meal.id}')">
-                        <div class="meal-image" style="background: linear-gradient(135deg, #f37021, #e67e22);">
-                            <i class="fas fa-star"></i>
+                        <div class="meal-image">
+                            <img src="${imagePath}" alt="${mealName}" 
+                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                                 onload="this.style.display='block'">
+                            <i class="fas fa-star" style="display: none;"></i>
                         </div>
                         <div class="fav-info">
-                            <h4>${meal.customName || 'Custom Meal'}</h4>
+                            <h4>${mealName}</h4>
                             <span class="price">₹${meal.totalPrice}</span>
-                            <div class="creator-name">by ${meal.createdByName || 'Anonymous'}</div>
+                            <div class="creator-name">
+                                <i class="fas fa-user-circle"></i> ${creatorName}
+                            </div>
                         </div>
                     </div>
                 `;

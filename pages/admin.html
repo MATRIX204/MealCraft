@@ -24,6 +24,7 @@
             min-height: 100vh;
         }
 
+        /* Sidebar Styles */
         .sidebar {
             width: 280px;
             background: #0f172a;
@@ -33,6 +34,7 @@
             overflow-y: auto;
             transition: all 0.3s;
             box-shadow: 4px 0 20px rgba(0,0,0,0.1);
+            z-index: 100;
         }
 
         .sidebar-header {
@@ -68,13 +70,14 @@
         .admin-avatar {
             width: 50px;
             height: 50px;
-            background: #ef4444;
+            background: linear-gradient(135deg, #ef4444, #f87171);
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.5rem;
             font-weight: 600;
+            box-shadow: 0 4px 10px rgba(239,68,68,0.3);
         }
 
         .admin-info h4 {
@@ -92,30 +95,34 @@
         }
 
         .nav-item {
-            padding: 15px 25px;
+            padding: 12px 20px;
+            margin: 4px 10px;
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
             color: rgba(255,255,255,0.7);
             cursor: pointer;
             transition: all 0.3s;
+            border-radius: 10px;
             border-left: 4px solid transparent;
         }
 
         .nav-item:hover {
             background: rgba(255,255,255,0.1);
             color: white;
+            transform: translateX(5px);
         }
 
         .nav-item.active {
-            background: rgba(239,68,68,0.2);
-            color: #ef4444;
-            border-left-color: #ef4444;
+            background: linear-gradient(135deg, #ef4444, #f87171);
+            color: white;
+            box-shadow: 0 4px 15px rgba(239,68,68,0.3);
         }
 
         .nav-item i {
             width: 24px;
             font-size: 1.2rem;
+            text-align: center;
         }
 
         .nav-item span {
@@ -124,19 +131,24 @@
         }
 
         .nav-item .badge {
-            background: #ef4444;
+            background: rgba(255,255,255,0.2);
             color: white;
-            padding: 3px 8px;
+            padding: 4px 10px;
             border-radius: 20px;
             font-size: 0.7rem;
+            font-weight: 600;
+            min-width: 30px;
+            text-align: center;
         }
 
+        /* Main Content */
         .main-content {
             flex: 1;
             margin-left: 280px;
             padding: 30px;
         }
 
+        /* Top Bar */
         .top-bar {
             background: white;
             padding: 20px 30px;
@@ -145,41 +157,45 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
 
         .page-title h1 {
             font-size: 1.8rem;
             font-weight: 700;
             color: #0f172a;
+            margin-bottom: 5px;
         }
 
         .page-title p {
             color: #64748b;
             font-size: 0.9rem;
-            margin-top: 5px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
 
         .logout-btn {
-            background: #ef4444;
+            background: linear-gradient(135deg, #ef4444, #f87171);
             color: white;
             border: none;
             padding: 12px 25px;
-            border-radius: 10px;
+            border-radius: 12px;
             font-weight: 600;
             cursor: pointer;
             display: flex;
             align-items: center;
             gap: 10px;
             transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(239,68,68,0.3);
         }
 
         .logout-btn:hover {
-            background: #dc2626;
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(239,68,68,0.3);
+            box-shadow: 0 8px 20px rgba(239,68,68,0.4);
         }
 
+        /* Stats Grid */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -191,8 +207,14 @@
             background: white;
             padding: 25px;
             border-radius: 16px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
             border-left: 4px solid #ef4444;
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(239,68,68,0.15);
         }
 
         .stat-card h3 {
@@ -200,6 +222,7 @@
             font-size: 0.9rem;
             margin-bottom: 10px;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .stat-number {
@@ -214,12 +237,13 @@
             font-size: 0.85rem;
         }
 
+        /* Section Styles */
         .section {
             background: white;
             border-radius: 20px;
             padding: 30px;
             margin-bottom: 30px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
 
         .section-header {
@@ -244,26 +268,35 @@
             color: #ef4444;
         }
 
+        /* Button Styles - Properly Aligned */
         .add-btn {
-            background: #ef4444;
+            background: linear-gradient(135deg, #ef4444, #f87171);
             color: white;
             border: none;
-            padding: 12px 25px;
-            border-radius: 10px;
+            padding: 12px 24px;
+            border-radius: 12px;
             font-weight: 600;
             cursor: pointer;
-            display: flex;
+            display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 8px;
             transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(239,68,68,0.3);
+            min-width: 160px;
+            font-size: 0.95rem;
+        }
+
+        .add-btn i {
+            font-size: 1rem;
         }
 
         .add-btn:hover {
-            background: #dc2626;
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(239,68,68,0.3);
+            box-shadow: 0 8px 20px rgba(239,68,68,0.4);
         }
 
+        /* Filter Bar */
         .filter-bar {
             display: flex;
             gap: 15px;
@@ -275,26 +308,42 @@
             flex: 1;
             padding: 12px 20px;
             border: 2px solid #e2e8f0;
-            border-radius: 10px;
+            border-radius: 12px;
             font-family: 'Inter', sans-serif;
             min-width: 250px;
+            transition: all 0.3s;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: #ef4444;
+            box-shadow: 0 0 0 3px rgba(239,68,68,0.1);
         }
 
         .filter-select {
             padding: 12px 20px;
             border: 2px solid #e2e8f0;
-            border-radius: 10px;
+            border-radius: 12px;
             font-family: 'Inter', sans-serif;
             min-width: 180px;
             background: white;
+            cursor: pointer;
+            transition: all 0.3s;
         }
 
+        .filter-select:focus {
+            outline: none;
+            border-color: #ef4444;
+        }
+
+        /* Grid Layout */
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
             gap: 25px;
         }
 
+        /* Orders List */
         .orders-list {
             display: flex;
             flex-direction: column;
@@ -304,19 +353,20 @@
         .order-row {
             background: #f8fafc;
             border: 1px solid #e2e8f0;
-            border-radius: 12px;
+            border-radius: 16px;
             padding: 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
-            gap: 15px;
+            gap: 20px;
             transition: all 0.3s;
         }
 
         .order-row:hover {
             border-color: #ef4444;
-            box-shadow: 0 5px 15px rgba(239,68,68,0.1);
+            box-shadow: 0 5px 20px rgba(239,68,68,0.1);
+            transform: translateX(5px);
         }
 
         .order-info {
@@ -330,8 +380,8 @@
             font-weight: 700;
             color: #ef4444;
             background: #fee2e2;
-            padding: 5px 12px;
-            border-radius: 20px;
+            padding: 6px 14px;
+            border-radius: 30px;
             font-size: 0.9rem;
         }
 
@@ -339,6 +389,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            color: #475569;
         }
 
         .order-customer i {
@@ -349,96 +400,103 @@
         .order-amount {
             font-weight: 700;
             color: #10b981;
+            font-size: 1.2rem;
         }
 
         .order-status-badge {
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.75rem;
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 0.8rem;
             font-weight: 600;
             display: inline-block;
         }
 
-        .status-pending {
-            background: #fff3cd;
-            color: #856404;
-        }
+        .status-pending { background: #fff3cd; color: #856404; }
+        .status-preparing { background: #cce5ff; color: #004085; }
+        .status-out-for-delivery { background: #d4edda; color: #155724; }
+        .status-delivered { background: #d1e7dd; color: #0f5132; }
+        .status-cancelled { background: #f8d7da; color: #721c24; }
 
-        .status-preparing {
-            background: #cce5ff;
-            color: #004085;
-        }
-
-        .status-out-for-delivery {
-            background: #d4edda;
-            color: #155724;
-        }
-
-        .status-delivered {
-            background: #d1e7dd;
-            color: #0f5132;
-        }
-
-        .status-cancelled {
-            background: #f8d7da;
-            color: #721c24;
-        }
-
+        /* Order Actions - Properly Aligned */
         .order-actions {
             display: flex;
-            gap: 10px;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
         }
 
+        /* Button Styles - Properly Aligned */
         .btn {
-            padding: 8px 15px;
+            padding: 10px 18px;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             font-weight: 500;
             cursor: pointer;
             font-family: 'Inter', sans-serif;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             transition: all 0.3s;
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            gap: 5px;
+            justify-content: center;
+            gap: 6px;
+            min-width: 90px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .btn i {
+            font-size: 0.9rem;
         }
 
         .btn-primary {
-            background: #3b82f6;
+            background: linear-gradient(135deg, #3b82f6, #60a5fa);
             color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59,130,246,0.3);
         }
 
         .btn-success {
-            background: #10b981;
+            background: linear-gradient(135deg, #10b981, #34d399);
             color: white;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(16,185,129,0.3);
         }
 
         .btn-warning {
-            background: #f59e0b;
+            background: linear-gradient(135deg, #f59e0b, #fbbf24);
             color: white;
+        }
+
+        .btn-warning:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(245,158,11,0.3);
         }
 
         .btn-danger {
-            background: #ef4444;
+            background: linear-gradient(135deg, #ef4444, #f87171);
             color: white;
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(239,68,68,0.3);
         }
 
         .btn-secondary {
-            background: #64748b;
+            background: linear-gradient(135deg, #64748b, #94a3b8);
             color: white;
         }
 
-        .btn:hover {
+        .btn-secondary:hover {
             transform: translateY(-2px);
-            filter: brightness(1.1);
         }
 
-        .btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-
+        /* Meal Card */
         .meal-card {
             background: #f8fafc;
             border-radius: 16px;
@@ -450,7 +508,7 @@
         .meal-card:hover {
             transform: translateY(-5px);
             border-color: #ef4444;
-            box-shadow: 0 10px 20px rgba(239,68,68,0.1);
+            box-shadow: 0 10px 25px rgba(239,68,68,0.1);
         }
 
         .meal-header {
@@ -470,12 +528,35 @@
         .meal-price {
             font-size: 1.3rem;
             font-weight: 700;
+            background: rgba(255,255,255,0.2);
+            padding: 6px 15px;
+            border-radius: 30px;
         }
 
         .meal-body {
             padding: 20px;
         }
 
+        .meal-desc {
+            color: #64748b;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        /* Meal Actions - Properly Aligned */
+        .meal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: flex-end;
+        }
+
+        .meal-actions .btn {
+            flex: 0 1 auto;
+            min-width: 100px;
+        }
+
+        /* User Card */
         .user-card {
             background: #f8fafc;
             padding: 20px;
@@ -497,21 +578,42 @@
 
         .user-status {
             padding: 4px 12px;
-            border-radius: 20px;
+            border-radius: 30px;
             font-size: 0.75rem;
             font-weight: 600;
         }
 
-        .status-active {
-            background: #d1fae5;
-            color: #065f46;
+        .status-active { background: #d1fae5; color: #065f46; }
+        .status-inactive { background: #fee2e2; color: #991b1b; }
+        .status-blocked { background: #fee2e2; color: #991b1b; }
+
+        .user-details {
+            margin-bottom: 15px;
         }
 
-        .status-inactive {
-            background: #fee2e2;
-            color: #991b1b;
+        .detail-row {
+            display: flex;
+            padding: 8px 0;
+            border-bottom: 1px solid #e2e8f0;
         }
 
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            width: 100px;
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .detail-value {
+            flex: 1;
+            color: #0f172a;
+            font-weight: 500;
+        }
+
+        /* City Card */
         .city-card {
             background: #f8fafc;
             padding: 20px;
@@ -520,6 +622,12 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            transition: all 0.3s;
+        }
+
+        .city-card:hover {
+            border-color: #ef4444;
+            transform: translateX(5px);
         }
 
         .city-info h4 {
@@ -538,6 +646,7 @@
             gap: 8px;
         }
 
+        /* Modal Styles */
         .modal {
             display: none;
             position: fixed;
@@ -546,6 +655,7 @@
             width: 100%;
             height: 100%;
             background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
             z-index: 1000;
             align-items: center;
             justify-content: center;
@@ -553,17 +663,35 @@
 
         .modal.active {
             display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .modal-content {
             background: white;
-            border-radius: 20px;
+            border-radius: 24px;
             padding: 40px;
             max-width: 500px;
             width: 90%;
             max-height: 85vh;
             overflow-y: auto;
             box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
         .modal-content h3 {
@@ -580,12 +708,13 @@
         .modal-content select,
         .modal-content textarea {
             width: 100%;
-            padding: 12px 15px;
+            padding: 14px 18px;
             margin-bottom: 15px;
             border: 2px solid #e2e8f0;
-            border-radius: 10px;
+            border-radius: 12px;
             font-family: 'Inter', sans-serif;
             font-size: 0.95rem;
+            transition: all 0.3s;
         }
 
         .modal-content input:focus,
@@ -593,13 +722,14 @@
         .modal-content textarea:focus {
             outline: none;
             border-color: #ef4444;
+            box-shadow: 0 0 0 3px rgba(239,68,68,0.1);
         }
 
         .checkbox-group {
             max-height: 300px;
             overflow-y: auto;
-            border: 1px solid #e2e8f0;
-            border-radius: 10px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
             padding: 15px;
             margin-bottom: 15px;
         }
@@ -607,8 +737,14 @@
         .checkbox-item {
             display: flex;
             align-items: center;
-            padding: 8px;
+            padding: 10px;
             border-bottom: 1px solid #f1f5f9;
+            transition: all 0.3s;
+        }
+
+        .checkbox-item:hover {
+            background: #f8fafc;
+            border-radius: 8px;
         }
 
         .checkbox-item:last-child {
@@ -616,34 +752,61 @@
         }
 
         .checkbox-item input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            margin-right: 12px;
+            width: 20px;
+            height: 20px;
+            margin-right: 15px;
+            accent-color: #ef4444;
         }
 
         .checkbox-item label {
             flex: 1;
             cursor: pointer;
+            font-weight: 500;
+        }
+
+        /* Modal Actions - Properly Aligned */
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .modal-actions .add-btn,
+        .modal-actions .close-modal {
+            flex: 1;
+            min-width: 120px;
         }
 
         .close-modal {
-            background: #e2e8f0;
-            color: #475569;
+            background: linear-gradient(135deg, #64748b, #94a3b8);
+            color: white;
             border: none;
-            padding: 12px;
-            border-radius: 10px;
+            padding: 14px;
+            border-radius: 12px;
             cursor: pointer;
             width: 100%;
             font-weight: 600;
             margin-top: 10px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
+        .close-modal:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.1);
+            box-shadow: 0 4px 12px rgba(100,116,139,0.3);
+        }
+
+        /* Message Toast */
         .message {
             position: fixed;
             top: 30px;
             right: 30px;
             padding: 15px 25px;
-            border-radius: 10px;
+            border-radius: 12px;
             background: white;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             display: none;
@@ -666,19 +829,23 @@
 
         .message.success {
             border-left-color: #10b981;
+            background: linear-gradient(135deg, #f0fff4, #ffffff);
             color: #065f46;
         }
 
         .message.error {
             border-left-color: #ef4444;
+            background: linear-gradient(135deg, #fff5f5, #ffffff);
             color: #991b1b;
         }
 
         .message.info {
             border-left-color: #f59e0b;
+            background: linear-gradient(135deg, #fffbeb, #ffffff);
             color: #92400e;
         }
 
+        /* Empty State */
         .empty-state {
             text-align: center;
             padding: 60px;
@@ -697,6 +864,11 @@
             margin-bottom: 10px;
         }
 
+        .empty-state p {
+            color: #64748b;
+        }
+
+        /* Loading Spinner */
         .loading-spinner {
             display: inline-block;
             width: 40px;
@@ -712,6 +884,35 @@
             100% { transform: rotate(360deg); }
         }
 
+        /* Dashboard Recent Items */
+        .recent-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: white;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s;
+        }
+
+        .recent-item:hover {
+            border-color: #ef4444;
+            transform: translateX(5px);
+        }
+
+        .recent-item span:first-child {
+            font-weight: 500;
+            color: #0f172a;
+        }
+
+        .recent-item span:last-child {
+            color: #ef4444;
+            font-weight: 600;
+        }
+
+        /* Responsive Design */
         @media (max-width: 1024px) {
             .sidebar {
                 width: 80px;
@@ -721,6 +922,13 @@
             .admin-info,
             .nav-item span {
                 display: none;
+            }
+            .nav-item {
+                justify-content: center;
+                padding: 15px;
+            }
+            .nav-item i {
+                margin-right: 0;
             }
             .main-content {
                 margin-left: 80px;
@@ -739,6 +947,15 @@
                 height: auto;
                 position: relative;
             }
+            .sidebar-header h2,
+            .sidebar-header p,
+            .admin-info,
+            .nav-item span {
+                display: block;
+            }
+            .nav-item {
+                justify-content: flex-start;
+            }
             .main-content {
                 margin-left: 0;
             }
@@ -753,14 +970,25 @@
                 align-items: flex-start;
                 gap: 10px;
             }
+            .order-actions {
+                width: 100%;
+                justify-content: flex-start;
+            }
+            .meal-actions {
+                flex-direction: column;
+            }
+            .meal-actions .btn {
+                width: 100%;
+            }
         }
     </style>
 </head>
 <body>
     <div class="admin-container">
+        <!-- Sidebar -->
         <div class="sidebar">
             <div class="sidebar-header">
-                <div class="logo">🍳</div>
+                <!-- <div class="logo">🍳</div> -->
                 <h2>MealCraft</h2>
                 <p>Admin Panel</p>
             </div>
@@ -819,17 +1047,19 @@
             </div>
         </div>
 
+        <!-- Main Content -->
         <div class="main-content">
             <div class="top-bar">
                 <div class="page-title">
                     <h1 id="pageTitle">Dashboard</h1>
-                    <p id="currentDateTime"></p>
+                    <p><i class="fas fa-clock"></i> <span id="currentDateTime"></span></p>
                 </div>
                 <button class="logout-btn" onclick="logout()">
                     <i class="fas fa-sign-out-alt"></i> Logout
                 </button>
             </div>
 
+            <!-- Stats Grid -->
             <div class="stats-grid">
                 <div class="stat-card">
                     <h3>Total Meals</h3>
@@ -853,22 +1083,30 @@
                 </div>
             </div>
 
+            <!-- Dashboard Section -->
             <div id="dashboardSection" class="section">
-                <h2><i class="fas fa-chart-line"></i> Welcome back, Admin!</h2>
-                <p style="color: #64748b; margin-top: 10px;">Manage your meals, ingredients, and orders from here.</p>
+                <div class="section-header">
+                    <h2><i class="fas fa-chart-line"></i> Welcome back, Admin!</h2>
+                </div>
+                <p style="color: #64748b; margin-top: 10px; margin-bottom: 30px;">Manage your meals, ingredients, and orders from here.</p>
                 
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 30px;">
-                    <div style="background: #f8fafc; padding: 20px; border-radius: 16px;">
-                        <h3 style="margin-bottom: 15px;">Recent Meals</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px;">
+                    <div style="background: #f8fafc; padding: 25px; border-radius: 16px; border: 1px solid #e2e8f0;">
+                        <h3 style="margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-utensils" style="color: #ef4444;"></i> Recent Meals
+                        </h3>
                         <div id="recentMealsList"></div>
                     </div>
-                    <div style="background: #f8fafc; padding: 20px; border-radius: 16px;">
-                        <h3 style="margin-bottom: 15px;">Recent Orders</h3>
+                    <div style="background: #f8fafc; padding: 25px; border-radius: 16px; border: 1px solid #e2e8f0;">
+                        <h3 style="margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-shopping-bag" style="color: #ef4444;"></i> Recent Orders
+                        </h3>
                         <div id="recentOrdersList"></div>
                     </div>
                 </div>
             </div>
 
+            <!-- Meals Section -->
             <div id="mealsSection" class="section" style="display: none;">
                 <div class="section-header">
                     <h2><i class="fas fa-utensils"></i> All Meals</h2>
@@ -882,6 +1120,7 @@
                 <div id="mealsGrid" class="grid"></div>
             </div>
 
+            <!-- Add Meal Section -->
             <div id="addMealSection" class="section" style="display: none;">
                 <div class="section-header">
                     <h2><i class="fas fa-plus-circle"></i> Add New Meal</h2>
@@ -921,12 +1160,18 @@
                         </select>
                     </div>
 
-                    <button type="submit" class="add-btn" style="width: 100%;">
-                        <i class="fas fa-check-circle"></i> Create Meal
-                    </button>
+                    <div class="modal-actions">
+                        <button type="button" class="close-modal" onclick="switchSection('meals', event)" style="margin:0;">
+                            <i class="fas fa-times"></i> Cancel
+                        </button>
+                        <button type="submit" class="add-btn" style="margin:0;">
+                            <i class="fas fa-check-circle"></i> Create Meal
+                        </button>
+                    </div>
                 </form>
             </div>
 
+            <!-- Ingredients Section -->
             <div id="ingredientsSection" class="section" style="display: none;">
                 <div class="section-header">
                     <h2><i class="fas fa-carrot"></i> Ingredients</h2>
@@ -940,6 +1185,7 @@
                 <div id="ingredientsGrid" class="grid"></div>
             </div>
 
+            <!-- Add Ingredient Section -->
             <div id="addIngredientSection" class="section" style="display: none;">
                 <div class="section-header">
                     <h2><i class="fas fa-leaf"></i> Add New Ingredient</h2>
@@ -979,12 +1225,18 @@
                         <p style="color: #94a3b8; text-align: center;">Loading meals...</p>
                     </div>
 
-                    <button type="submit" class="add-btn" style="width: 100%;">
-                        <i class="fas fa-check-circle"></i> Add Ingredient
-                    </button>
+                    <div class="modal-actions">
+                        <button type="button" class="close-modal" onclick="switchSection('ingredients', event)" style="margin:0;">
+                            <i class="fas fa-times"></i> Cancel
+                        </button>
+                        <button type="submit" class="add-btn" style="margin:0;">
+                            <i class="fas fa-check-circle"></i> Add Ingredient
+                        </button>
+                    </div>
                 </form>
             </div>
 
+            <!-- Delivery Boys Section -->
             <div id="deliverySection" class="section" style="display: none;">
                 <div class="section-header">
                     <h2><i class="fas fa-motorcycle"></i> Delivery Boys</h2>
@@ -998,6 +1250,7 @@
                 <div id="deliveryGrid" class="grid"></div>
             </div>
 
+            <!-- Users Section -->
             <div id="usersSection" class="section" style="display: none;">
                 <div class="section-header">
                     <h2><i class="fas fa-users"></i> Users</h2>
@@ -1013,6 +1266,7 @@
                 <div id="usersGrid" class="grid"></div>
             </div>
 
+            <!-- Outlets Section -->
             <div id="outletsSection" class="section" style="display: none;">
                 <div class="section-header">
                     <h2><i class="fas fa-store"></i> Outlets</h2>
@@ -1032,6 +1286,7 @@
                 </div>
             </div>
 
+            <!-- Orders Section -->
             <div id="ordersSection" class="section" style="display: none;">
                 <div class="section-header">
                     <h2><i class="fas fa-shopping-bag"></i> Orders Management</h2>
@@ -1057,12 +1312,13 @@
         </div>
     </div>
 
+    <!-- Modals -->
     <div class="modal" id="deliveryModal">
         <div class="modal-content">
             <h3><i class="fas fa-user-plus"></i> Add Delivery Boy</h3>
             <form onsubmit="event.preventDefault(); addDeliveryBoy()">
                 <input type="text" id="deliveryFullName" placeholder="Full Name *" required>
-                <div class="input-group" style="margin-bottom: 15px;">
+                <div style="margin-bottom: 15px;">
                     <label style="display: block; margin-bottom: 5px; font-weight: 500;">Email will be: <span id="emailPreview" style="color: #ef4444;">name@mealcraft.delivery</span></label>
                 </div>
                 <input type="tel" id="deliveryPhone" placeholder="Phone Number *" required>
@@ -1073,11 +1329,15 @@
                     <option value="active">🟢 Active</option>
                     <option value="inactive">🔴 Inactive</option>
                 </select>
-                <button type="submit" class="add-btn" style="width:100%;">
-                    <i class="fas fa-check"></i> Add Delivery Boy
-                </button>
+                <div class="modal-actions">
+                    <button type="button" class="close-modal" onclick="closeModal('deliveryModal')">
+                        <i class="fas fa-times"></i> Cancel
+                    </button>
+                    <button type="submit" class="add-btn">
+                        <i class="fas fa-check"></i> Add
+                    </button>
+                </div>
             </form>
-            <button class="close-modal" onclick="closeModal('deliveryModal')">Cancel</button>
         </div>
     </div>
 
@@ -1094,11 +1354,15 @@
                 <select id="outletStateId" style="display: none;">
                     <option value="">Select State</option>
                 </select>
-                <button type="submit" class="add-btn" style="width:100%;">
-                    <i class="fas fa-check"></i> Add
-                </button>
+                <div class="modal-actions">
+                    <button type="button" class="close-modal" onclick="closeModal('outletModal')">
+                        <i class="fas fa-times"></i> Cancel
+                    </button>
+                    <button type="submit" class="add-btn">
+                        <i class="fas fa-check"></i> Add
+                    </button>
+                </div>
             </form>
-            <button class="close-modal" onclick="closeModal('outletModal')">Cancel</button>
         </div>
     </div>
 
@@ -1120,8 +1384,14 @@
                 <option value="veg">🌱 Veg</option>
                 <option value="nonveg">🍗 Non-Veg</option>
             </select>
-            <button class="add-btn" onclick="updateMeal()" style="width:100%;">Update Meal</button>
-            <button class="close-modal" onclick="closeModal('editMealModal')">Cancel</button>
+            <div class="modal-actions">
+                <button type="button" class="close-modal" onclick="closeModal('editMealModal')">
+                    <i class="fas fa-times"></i> Cancel
+                </button>
+                <button class="add-btn" onclick="updateMeal()">
+                    <i class="fas fa-check"></i> Update
+                </button>
+            </div>
         </div>
     </div>
 
@@ -1142,8 +1412,14 @@
                 <option value="veg">🌱 Veg</option>
                 <option value="nonveg">🍗 Non-Veg</option>
             </select>
-            <button class="add-btn" onclick="updateIngredient()" style="width:100%;">Update Ingredient</button>
-            <button class="close-modal" onclick="closeModal('editIngredientModal')">Cancel</button>
+            <div class="modal-actions">
+                <button type="button" class="close-modal" onclick="closeModal('editIngredientModal')">
+                    <i class="fas fa-times"></i> Cancel
+                </button>
+                <button class="add-btn" onclick="updateIngredient()">
+                    <i class="fas fa-check"></i> Update
+                </button>
+            </div>
         </div>
     </div>
 
@@ -1161,8 +1437,14 @@
                 <option value="active">🟢 Active</option>
                 <option value="inactive">🔴 Inactive</option>
             </select>
-            <button class="add-btn" onclick="updateDeliveryBoy()" style="width:100%;">Update</button>
-            <button class="close-modal" onclick="closeModal('editDeliveryModal')">Cancel</button>
+            <div class="modal-actions">
+                <button type="button" class="close-modal" onclick="closeModal('editDeliveryModal')">
+                    <i class="fas fa-times"></i> Cancel
+                </button>
+                <button class="add-btn" onclick="updateDeliveryBoy()">
+                    <i class="fas fa-check"></i> Update
+                </button>
+            </div>
         </div>
     </div>
 
@@ -1182,9 +1464,15 @@
                 <select id="assignDeliveryBoy" style="width:100%; padding:12px; margin-bottom:10px; display: none;">
                     <option value="">Assign Delivery Boy</option>
                 </select>
-                <button class="add-btn" onclick="updateOrder()" style="width:100%;">Update Order</button>
+                <div class="modal-actions">
+                    <button type="button" class="close-modal" onclick="closeModal('orderDetailsModal')">
+                        <i class="fas fa-times"></i> Close
+                    </button>
+                    <button class="add-btn" onclick="updateOrder()">
+                        <i class="fas fa-check"></i> Update
+                    </button>
+                </div>
             </div>
-            <button class="close-modal" onclick="closeModal('orderDetailsModal')">Close</button>
         </div>
     </div>
 
@@ -1196,8 +1484,14 @@
             <select id="assignDeliveryBoySelect" style="width:100%; padding:12px; margin-bottom:15px;">
                 <option value="">Select Delivery Boy</option>
             </select>
-            <button class="add-btn" onclick="confirmAssignDelivery()" style="width:100%;">Assign & Start Delivery</button>
-            <button class="close-modal" onclick="closeModal('assignDeliveryModal')">Cancel</button>
+            <div class="modal-actions">
+                <button type="button" class="close-modal" onclick="closeModal('assignDeliveryModal')">
+                    <i class="fas fa-times"></i> Cancel
+                </button>
+                <button class="add-btn" onclick="confirmAssignDelivery()">
+                    <i class="fas fa-check"></i> Assign
+                </button>
+            </div>
         </div>
     </div>
 
@@ -1223,8 +1517,7 @@
             orderBy,
             onSnapshot,
             Timestamp,
-            getDoc,  // Add this line
-            increment  // Add this if you want to use increment
+            getDoc
         } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
@@ -1261,6 +1554,7 @@
             CITIES: 'cities'
         };
 
+        // Update date time
         function updateDateTime() {
             const now = new Date();
             const options = { 
@@ -1276,6 +1570,7 @@
         setInterval(updateDateTime, 1000);
         updateDateTime();
 
+        // Email preview for delivery boy
         document.getElementById('deliveryFullName')?.addEventListener('input', function(e) {
             const name = e.target.value.trim().toLowerCase().replace(/\s+/g, '.');
             if (name) {
@@ -1285,6 +1580,7 @@
             }
         });
 
+        // Auth state listener
         onAuthStateChanged(auth, async (user) => {
             if (!user) {
                 window.location.replace("../login.html");
@@ -1304,6 +1600,7 @@
             setupRealtimeListeners();
         });
 
+        // Setup realtime listeners
         function setupRealtimeListeners() {
             onSnapshot(collection(db, COLLECTIONS.MEALS), (snapshot) => {
                 meals = [];
@@ -1378,6 +1675,7 @@
             });
         }
 
+        // Update state dropdown
         function updateStateDropdown() {
             const stateSelect = document.getElementById('outletStateId');
             if (!stateSelect) return;
@@ -1388,6 +1686,7 @@
             });
         }
 
+        // Update delivery boy dropdowns
         function updateDeliveryBoyDropdowns() {
             const assignSelect = document.getElementById('assignDeliveryBoy');
             const assignSelect2 = document.getElementById('assignDeliveryBoySelect');
@@ -1407,6 +1706,7 @@
             }
         }
 
+        // Toggle state select
         window.toggleStateSelect = () => {
             const type = document.getElementById('outletType').value;
             const stateSelect = document.getElementById('outletStateId');
@@ -1418,6 +1718,7 @@
             }
         };
 
+        // Update stats
         function updateStats() {
             document.getElementById('totalMeals').textContent = meals.length;
             document.getElementById('totalIngredients').textContent = ingredients.length;
@@ -1433,6 +1734,7 @@
             document.getElementById('outletsBadge').textContent = states.length + cities.length;
         }
 
+        // Display meals
         function displayMeals(mealsList) {
             const grid = document.getElementById('mealsGrid');
             if (!grid) return;
@@ -1461,12 +1763,9 @@
                                 ${mealIngs.slice(0, 5).map(mi => {
                                     const ing = ingredients.find(i => i.id === mi.ingredientId);
                                     return ing ? `
-                                        <div class="ingredient-item">
-                                            <span class="ingredient-name">
-                                                ${ing.name}
-                                                <span class="ingredient-type">${mi.type}</span>
-                                            </span>
-                                            ${mi.price ? `<span class="ingredient-price">+₹${mi.price}</span>` : ''}
+                                        <div style="display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px dashed #e2e8f0;">
+                                            <span>${ing.name}</span>
+                                            <span style="color: #10b981;">+₹${ing.price}</span>
                                         </div>
                                     ` : '';
                                 }).join('')}
@@ -1491,7 +1790,7 @@
             const recentList = document.getElementById('recentMealsList');
             if (recentList) {
                 recentList.innerHTML = mealsList.slice(0, 5).map(meal => `
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px; padding: 8px; background: white; border-radius: 8px;">
+                    <div class="recent-item">
                         <span><strong>${meal.name}</strong></span>
                         <span>₹${meal.price}</span>
                     </div>
@@ -1499,6 +1798,7 @@
             }
         }
 
+        // Display ingredients
         function displayIngredients(ingredientsList) {
             const grid = document.getElementById('ingredientsGrid');
             if (!grid) return;
@@ -1526,10 +1826,12 @@
                             
                             <div style="margin: 15px 0;">
                                 <h4 style="margin-bottom: 10px;">Used in ${usedIn.length} meals</h4>
-                                ${usedIn.slice(0, 3).map(meal => `
-                                    <span class="ingredient-type" style="margin-right: 5px;">${meal.name}</span>
-                                `).join('')}
-                                ${usedIn.length > 3 ? `<span>+${usedIn.length - 3} more</span>` : ''}
+                                <div style="display: flex; flex-wrap: wrap; gap: 5px;">
+                                    ${usedIn.slice(0, 3).map(meal => `
+                                        <span style="background: #e2e8f0; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem;">${meal.name}</span>
+                                    `).join('')}
+                                    ${usedIn.length > 3 ? `<span style="color: #64748b;">+${usedIn.length - 3} more</span>` : ''}
+                                </div>
                             </div>
 
                             <div class="meal-actions">
@@ -1548,6 +1850,7 @@
             grid.innerHTML = html;
         }
 
+        // Display delivery boys
         function displayDeliveryBoys(boys) {
             const grid = document.getElementById('deliveryGrid');
             if (!grid) return;
@@ -1608,6 +1911,7 @@
             grid.innerHTML = html;
         }
 
+        // Display users
         function displayUsers(userList) {
             const grid = document.getElementById('usersGrid');
             if (!grid) return;
@@ -1658,6 +1962,7 @@
             grid.innerHTML = html;
         }
 
+        // Display states
         function displayStates(statesList) {
             const grid = document.getElementById('statesGrid');
             if (!grid) return;
@@ -1687,6 +1992,7 @@
             grid.innerHTML = html;
         }
 
+        // Display cities
         function displayCities(citiesList) {
             const grid = document.getElementById('citiesGrid');
             if (!grid) return;
@@ -1717,6 +2023,7 @@
             grid.innerHTML = html;
         }
 
+        // Display orders
         function displayOrders(ordersList) {
             const list = document.getElementById('ordersList');
             if (!list) return;
@@ -1756,12 +2063,12 @@
                             </button>
                             ${order.status === 'pending' ? `
                                 <button class="btn btn-success" onclick="updateOrderStatus('${order.id}', 'preparing')">
-                                    <i class="fas fa-fire"></i> Start Preparing
+                                    <i class="fas fa-fire"></i> Prepare
                                 </button>
                             ` : ''}
                             ${order.status === 'preparing' ? `
                                 <button class="btn btn-warning" onclick="showAssignDeliveryModal('${order.id}')">
-                                    <i class="fas fa-motorcycle"></i> Assign Delivery
+                                    <i class="fas fa-motorcycle"></i> Assign
                                 </button>
                             ` : ''}
                             ${order.status === 'pending' || order.status === 'preparing' ? `
@@ -1779,7 +2086,7 @@
             const recentList = document.getElementById('recentOrdersList');
             if (recentList) {
                 recentList.innerHTML = ordersList.slice(0, 5).map(order => `
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px; padding: 8px; background: white; border-radius: 8px;">
+                    <div class="recent-item">
                         <span>Order #${order.id.slice(-6)}</span>
                         <span class="order-status-badge status-${order.status || 'pending'}">${order.status || 'pending'}</span>
                     </div>
@@ -1787,6 +2094,7 @@
             }
         }
 
+        // View order details
         window.viewOrderDetails = (orderId) => {
             const order = orders.find(o => o.id === orderId);
             if (!order) return;
@@ -1796,35 +2104,37 @@
             
             const items = order.items || [];
             const itemsHtml = items.map(item => `
-                <div style="background: #f8fafc; padding: 10px; margin-bottom: 10px; border-radius: 8px;">
+                <div style="background: #f8fafc; padding: 15px; margin-bottom: 10px; border-radius: 12px; border: 1px solid #e2e8f0;">
                     <p><strong>${item.customName || item.mealName}</strong></p>
-                    <p style="color: #666; font-size: 0.85rem;">
+                    <p style="color: #666; font-size: 0.85rem; margin-top: 5px;">
                         ${item.selectedIngredients?.map(ing => ing.name).join(', ') || 'No extras'}
                     </p>
-                    <p style="text-align: right; font-weight: 600;">₹${item.totalPrice}</p>
+                    <p style="text-align: right; font-weight: 600; color: #ef4444; margin-top: 5px;">₹${item.totalPrice}</p>
                 </div>
             `).join('');
 
             const deliveryBoy = order.deliveryBoyId ? deliveryBoys.find(b => b.id === order.deliveryBoyId) : null;
 
             content.innerHTML = `
-                <div style="max-height: 400px; overflow-y: auto;">
-                    <p><strong>Order ID:</strong> ${order.id}</p>
-                    <p><strong>Date:</strong> ${order.createdAt?.toDate ? new Date(order.createdAt.toDate()).toLocaleString() : 'N/A'}</p>
-                    <p><strong>Customer:</strong> ${order.customerName || 'N/A'}</p>
-                    <p><strong>Phone:</strong> ${order.phone || 'N/A'}</p>
-                    <p><strong>Address:</strong> ${order.address || 'N/A'}</p>
-                    <p><strong>Payment:</strong> ${order.paymentMethod || 'N/A'} (${order.paymentStatus || 'pending'})</p>
-                    ${order.cancellationReason ? `<p><strong>Cancellation Reason:</strong> ${order.cancellationReason}</p>` : ''}
-                    ${deliveryBoy ? `<p><strong>Delivery Boy:</strong> ${deliveryBoy.fullName} (${deliveryBoy.phone})</p>` : ''}
+                <div style="max-height: 400px; overflow-y: auto; padding-right: 10px;">
+                    <div style="background: #f8fafc; padding: 15px; border-radius: 12px; margin-bottom: 15px;">
+                        <p><strong>Order ID:</strong> ${order.id}</p>
+                        <p><strong>Date:</strong> ${order.createdAt?.toDate ? new Date(order.createdAt.toDate()).toLocaleString() : 'N/A'}</p>
+                        <p><strong>Customer:</strong> ${order.customerName || 'N/A'}</p>
+                        <p><strong>Phone:</strong> ${order.phone || 'N/A'}</p>
+                        <p><strong>Address:</strong> ${order.address || 'N/A'}</p>
+                        <p><strong>Payment:</strong> ${order.paymentMethod || 'N/A'} (${order.paymentStatus || 'pending'})</p>
+                        ${order.cancellationReason ? `<p><strong>Cancellation Reason:</strong> ${order.cancellationReason}</p>` : ''}
+                        ${deliveryBoy ? `<p><strong>Delivery Boy:</strong> ${deliveryBoy.fullName} (${deliveryBoy.phone})</p>` : ''}
+                    </div>
                     
                     <h4 style="margin: 15px 0 10px;">Items:</h4>
                     ${itemsHtml}
                     
-                    <div style="border-top: 1px solid #eee; margin-top: 15px; padding-top: 15px;">
+                    <div style="background: #f8fafc; padding: 15px; border-radius: 12px; margin-top: 15px;">
                         <p><strong>Subtotal:</strong> ₹${order.subtotal || 0}</p>
                         <p><strong>Delivery Fee:</strong> ₹${order.deliveryFee || 40}</p>
-                        <p><strong>Total:</strong> ₹${order.total || 0}</p>
+                        <p style="font-size: 1.2rem; font-weight: 700; color: #ef4444; margin-top: 10px;"><strong>Total:</strong> ₹${order.total || 0}</p>
                     </div>
                 </div>
             `;
@@ -1836,6 +2146,7 @@
             modal.classList.add('active');
         };
 
+        // Update order status change handler
         document.getElementById('updateOrderStatus').addEventListener('change', function() {
             const reasonDiv = document.getElementById('cancellationReasonDiv');
             if (this.value === 'cancelled') {
@@ -1847,6 +2158,7 @@
             }
         });
 
+        // Update order
         window.updateOrder = async () => {
             const orderId = document.getElementById('orderDetailsModal').dataset.orderId;
             const newStatus = document.getElementById('updateOrderStatus').value;
@@ -1879,65 +2191,65 @@
             }
         };
 
+        // Show assign delivery modal
         window.showAssignDeliveryModal = (orderId) => {
             document.getElementById('assignOrderId').value = orderId;
             updateDeliveryBoyDropdowns();
             document.getElementById('assignDeliveryModal').classList.add('active');
         };
 
-        // Fix the confirmAssignDelivery function
-// Fix the confirmAssignDelivery function
-window.confirmAssignDelivery = async () => {
-    const orderId = document.getElementById('assignOrderId').value;
-    const deliveryBoyId = document.getElementById('assignDeliveryBoySelect').value;
+        // Confirm assign delivery
+        window.confirmAssignDelivery = async () => {
+            const orderId = document.getElementById('assignOrderId').value;
+            const deliveryBoyId = document.getElementById('assignDeliveryBoySelect').value;
 
-    if (!deliveryBoyId) {
-        showMessage('Please select a delivery boy', 'error');
-        return;
-    }
+            if (!deliveryBoyId) {
+                showMessage('Please select a delivery boy', 'error');
+                return;
+            }
 
-    try {
-        // Get the delivery boy document using getDoc
-        const deliveryBoyRef = doc(db, COLLECTIONS.DELIVERY_BOYS, deliveryBoyId);
-        const deliveryBoySnap = await getDoc(deliveryBoyRef);
-        
-        if (!deliveryBoySnap.exists()) {
-            showMessage('Delivery boy not found', 'error');
-            return;
-        }
-        
-        const boy = deliveryBoySnap.data();
-        
-        // Generate 5-digit OTP
-        const otpCode = Math.floor(10000 + Math.random() * 90000).toString();
+            try {
+                const deliveryBoyRef = doc(db, COLLECTIONS.DELIVERY_BOYS, deliveryBoyId);
+                const deliveryBoySnap = await getDoc(deliveryBoyRef);
+                
+                if (!deliveryBoySnap.exists()) {
+                    showMessage('Delivery boy not found', 'error');
+                    return;
+                }
+                
+                const boy = deliveryBoySnap.data();
+                
+                // Generate 5-digit OTP
+                const otpCode = Math.floor(10000 + Math.random() * 90000).toString();
 
-        // Update the order with delivery boy info
-        await updateDoc(doc(db, COLLECTIONS.ORDERS, orderId), {
-            deliveryBoyId: deliveryBoyId,
-            deliveryBoyName: boy.fullName,
-            deliveryBoyPhone: boy.phone,
-            deliveryBoyMobile: boy.mobile || boy.phone,
-            deliveryVehicle: boy.vehicle || '',
-            status: 'out-for-delivery',
-            outForDeliveryAt: Timestamp.now(),
-            otpCode: otpCode,
-            updatedAt: Timestamp.now()
-        });
+                await updateDoc(doc(db, COLLECTIONS.ORDERS, orderId), {
+                    deliveryBoyId: deliveryBoyId,
+                    deliveryBoyName: boy.fullName,
+                    deliveryBoyPhone: boy.phone,
+                    deliveryBoyMobile: boy.mobile || boy.phone,
+                    deliveryVehicle: boy.vehicle || '',
+                    status: 'out-for-delivery',
+                    outForDeliveryAt: Timestamp.now(),
+                    otpCode: otpCode,
+                    updatedAt: Timestamp.now()
+                });
 
-        showMessage(`✅ Order assigned! OTP: ${otpCode}`, 'success');
-        closeModal('assignDeliveryModal');
-    } catch (error) {
-        console.error('Error assigning delivery:', error);
-        showMessage('Error assigning delivery boy: ' + error.message, 'error');
-    }
-};
+                showMessage(`✅ Order assigned! OTP: ${otpCode}`, 'success');
+                closeModal('assignDeliveryModal');
+            } catch (error) {
+                console.error('Error assigning delivery:', error);
+                showMessage('Error assigning delivery boy: ' + error.message, 'error');
+            }
+        };
 
+        // Show cancel order modal
         window.showCancelOrderModal = (orderId) => {
             viewOrderDetails(orderId);
             document.getElementById('updateOrderStatus').value = 'cancelled';
             document.getElementById('cancellationReasonDiv').style.display = 'block';
         };
 
+        // Update order status
         window.updateOrderStatus = async (orderId, newStatus) => {
             try {
                 const updates = {
@@ -1957,6 +2269,7 @@ window.confirmAssignDelivery = async () => {
             }
         };
 
+        // Update meal checkboxes
         function updateMealCheckboxes() {
             const container = document.getElementById('ingredientMealsList');
             if (!container) return;
@@ -1978,6 +2291,7 @@ window.confirmAssignDelivery = async () => {
             container.innerHTML = html;
         }
 
+        // Save new meal
         window.saveNewMeal = async () => {
             const name = document.getElementById('newMealName')?.value;
             const desc = document.getElementById('newMealDesc')?.value;
@@ -2015,6 +2329,7 @@ window.confirmAssignDelivery = async () => {
             }
         };
 
+        // Save new ingredient
         window.saveNewIngredient = async () => {
             const name = document.getElementById('newIngredientName')?.value;
             const price = parseFloat(document.getElementById('newIngredientPrice')?.value);
@@ -2060,67 +2375,64 @@ window.confirmAssignDelivery = async () => {
             }
         };
 
+        // Add delivery boy
         window.addDeliveryBoy = async () => {
-    const name = document.getElementById('deliveryFullName')?.value;
-    const phone = document.getElementById('deliveryPhone')?.value;
-    const mobile = document.getElementById('deliveryMobile')?.value;
-    const vehicle = document.getElementById('deliveryVehicle')?.value;
-    const address = document.getElementById('deliveryAddress')?.value;
-    const status = document.getElementById('deliveryStatus')?.value;
+            const name = document.getElementById('deliveryFullName')?.value;
+            const phone = document.getElementById('deliveryPhone')?.value;
+            const mobile = document.getElementById('deliveryMobile')?.value;
+            const vehicle = document.getElementById('deliveryVehicle')?.value;
+            const address = document.getElementById('deliveryAddress')?.value;
+            const status = document.getElementById('deliveryStatus')?.value;
 
-    if (!name || !phone || !mobile || !address) {
-        showMessage('Please fill all required fields', 'error');
-        return;
-    }
+            if (!name || !phone || !mobile || !address) {
+                showMessage('Please fill all required fields', 'error');
+                return;
+            }
 
-    try {
-        const emailName = name.trim().toLowerCase().replace(/\s+/g, '.');
-        const email = `${emailName}@mealcraft.delivery`;
-        
-        const existingQuery = query(collection(db, COLLECTIONS.DELIVERY_BOYS), where('email', '==', email));
-        const existingSnapshot = await getDocs(existingQuery);
-        
-        if (!existingSnapshot.empty) {
-            showMessage('❌ Delivery boy with this name already exists', 'error');
-            return;
-        }
+            try {
+                const emailName = name.trim().toLowerCase().replace(/\s+/g, '.');
+                const email = `${emailName}@mealcraft.delivery`;
+                
+                const existingQuery = query(collection(db, COLLECTIONS.DELIVERY_BOYS), where('email', '==', email));
+                const existingSnapshot = await getDocs(existingQuery);
+                
+                if (!existingSnapshot.empty) {
+                    showMessage('❌ Delivery boy with this name already exists', 'error');
+                    return;
+                }
 
-        const deliveryId = 'del_' + Date.now().toString();
-        
-        // Get the current user's UID if this is the delivery boy logging in
-        // For admin adding delivery boys, we don't have the UID yet
-        // The delivery boy will get their UID when they login first time
-        
-        await setDoc(doc(db, COLLECTIONS.DELIVERY_BOYS, deliveryId), {
-            fullName: name,
-            email: email,
-            phone: phone,
-            mobile: mobile,
-            vehicle: vehicle || '',
-            address: address,
-            status: status,
-            totalDeliveries: 0,
-            createdAt: Timestamp.now(),
-            // Store a placeholder UID that will be updated when delivery boy logs in
-            uid: '' 
-        });
+                const deliveryId = 'del_' + Date.now().toString();
+                
+                await setDoc(doc(db, COLLECTIONS.DELIVERY_BOYS, deliveryId), {
+                    fullName: name,
+                    email: email,
+                    phone: phone,
+                    mobile: mobile,
+                    vehicle: vehicle || '',
+                    address: address,
+                    status: status,
+                    totalDeliveries: 0,
+                    createdAt: Timestamp.now(),
+                    uid: '' 
+                });
 
-        showMessage('✅ Delivery boy added successfully!', 'success');
-        closeModal('deliveryModal');
-        
-        document.getElementById('deliveryFullName').value = '';
-        document.getElementById('deliveryPhone').value = '';
-        document.getElementById('deliveryMobile').value = '';
-        document.getElementById('deliveryVehicle').value = '';
-        document.getElementById('deliveryAddress').value = '';
-        document.getElementById('emailPreview').textContent = 'name@mealcraft.delivery';
-        
-    } catch (error) {
-        console.error('Error adding delivery boy:', error);
-        showMessage('Error: ' + error.message, 'error');
-    }
-};
+                showMessage('✅ Delivery boy added successfully!', 'success');
+                closeModal('deliveryModal');
+                
+                document.getElementById('deliveryFullName').value = '';
+                document.getElementById('deliveryPhone').value = '';
+                document.getElementById('deliveryMobile').value = '';
+                document.getElementById('deliveryVehicle').value = '';
+                document.getElementById('deliveryAddress').value = '';
+                document.getElementById('emailPreview').textContent = 'name@mealcraft.delivery';
+                
+            } catch (error) {
+                console.error('Error adding delivery boy:', error);
+                showMessage('Error: ' + error.message, 'error');
+            }
+        };
 
+        // Add outlet
         window.addOutlet = async () => {
             const type = document.getElementById('outletType')?.value;
             const name = document.getElementById('outletName')?.value;
@@ -2164,6 +2476,7 @@ window.confirmAssignDelivery = async () => {
             }
         };
 
+        // Edit meal
         window.editMeal = (id) => {
             const meal = meals.find(m => m.id === id);
             if (!meal) return;
@@ -2178,6 +2491,7 @@ window.confirmAssignDelivery = async () => {
             document.getElementById('editMealModal').classList.add('active');
         };
 
+        // Update meal
         window.updateMeal = async () => {
             const id = document.getElementById('editMealId').value;
             const name = document.getElementById('editMealName').value;
@@ -2203,6 +2517,7 @@ window.confirmAssignDelivery = async () => {
             }
         };
 
+        // Edit ingredient
         window.editIngredient = (id) => {
             const ing = ingredients.find(i => i.id === id);
             if (!ing) return;
@@ -2216,6 +2531,7 @@ window.confirmAssignDelivery = async () => {
             document.getElementById('editIngredientModal').classList.add('active');
         };
 
+        // Update ingredient
         window.updateIngredient = async () => {
             const id = document.getElementById('editIngredientId').value;
             const name = document.getElementById('editIngredientName').value;
@@ -2239,6 +2555,7 @@ window.confirmAssignDelivery = async () => {
             }
         };
 
+        // Edit delivery boy
         window.editDeliveryBoy = (id) => {
             const boy = deliveryBoys.find(b => b.id === id);
             if (!boy) return;
@@ -2255,6 +2572,7 @@ window.confirmAssignDelivery = async () => {
             document.getElementById('editDeliveryModal').classList.add('active');
         };
 
+        // Update delivery boy
         window.updateDeliveryBoy = async () => {
             const id = document.getElementById('editDeliveryId').value;
             const name = document.getElementById('editDeliveryName').value;
@@ -2282,6 +2600,7 @@ window.confirmAssignDelivery = async () => {
             }
         };
 
+        // Update user status
         window.updateUserStatus = async (userId, status) => {
             try {
                 await updateDoc(doc(db, COLLECTIONS.USERS, userId), {
@@ -2294,6 +2613,7 @@ window.confirmAssignDelivery = async () => {
             }
         };
 
+        // Delete meal
         window.deleteMeal = async (id) => {
             if (!confirm('Delete this meal?')) return;
             try {
@@ -2304,6 +2624,7 @@ window.confirmAssignDelivery = async () => {
             }
         };
 
+        // Delete ingredient
         window.deleteIngredient = async (id) => {
             if (!confirm('Delete this ingredient?')) return;
             try {
@@ -2314,6 +2635,7 @@ window.confirmAssignDelivery = async () => {
             }
         };
 
+        // Delete delivery boy
         window.deleteDeliveryBoy = async (id) => {
             if (!confirm('Delete this delivery boy?')) return;
             try {
@@ -2324,6 +2646,7 @@ window.confirmAssignDelivery = async () => {
             }
         };
 
+        // Delete state
         window.deleteState = async (id) => {
             if (!confirm('Delete this state?')) return;
             try {
@@ -2334,6 +2657,7 @@ window.confirmAssignDelivery = async () => {
             }
         };
 
+        // Delete city
         window.deleteCity = async (id) => {
             if (!confirm('Delete this city?')) return;
             try {
@@ -2344,6 +2668,7 @@ window.confirmAssignDelivery = async () => {
             }
         };
 
+        // Filter users
         window.filterUsers = () => {
             const filter = document.getElementById('userStatusFilter')?.value;
             if (filter === 'all') {
@@ -2354,6 +2679,7 @@ window.confirmAssignDelivery = async () => {
             }
         };
 
+        // Filter orders
         window.filterOrders = () => {
             const status = document.getElementById('orderStatusFilter')?.value;
             const date = document.getElementById('orderDateFilter')?.value;
@@ -2390,6 +2716,7 @@ window.confirmAssignDelivery = async () => {
             displayOrders(filtered);
         };
 
+        // Search meals
         window.searchMeals = () => {
             const term = document.getElementById('mealSearch')?.value.toLowerCase() || '';
             const filtered = meals.filter(meal => 
@@ -2399,6 +2726,7 @@ window.confirmAssignDelivery = async () => {
             displayMeals(filtered);
         };
 
+        // Search ingredients
         window.searchIngredients = () => {
             const term = document.getElementById('ingredientSearch')?.value.toLowerCase() || '';
             const filtered = ingredients.filter(ing => 
@@ -2407,6 +2735,7 @@ window.confirmAssignDelivery = async () => {
             displayIngredients(filtered);
         };
 
+        // Search delivery boys
         window.searchDeliveryBoys = () => {
             const term = document.getElementById('deliverySearch')?.value.toLowerCase() || '';
             const filtered = deliveryBoys.filter(boy => 
@@ -2417,6 +2746,7 @@ window.confirmAssignDelivery = async () => {
             displayDeliveryBoys(filtered);
         };
 
+        // Search users
         window.searchUsers = () => {
             const term = document.getElementById('userSearch')?.value.toLowerCase() || '';
             const filtered = users.filter(user => 
@@ -2427,6 +2757,7 @@ window.confirmAssignDelivery = async () => {
             displayUsers(filtered);
         };
 
+        // Switch section
         window.switchSection = (section, event) => {
             currentSection = section;
             
@@ -2471,19 +2802,23 @@ window.confirmAssignDelivery = async () => {
             }
         };
 
+        // Show add delivery modal
         window.showAddDeliveryModal = () => {
             document.getElementById('deliveryModal').classList.add('active');
         };
 
+        // Show add outlet modal
         window.showAddOutletModal = () => {
             updateStateDropdown();
             document.getElementById('outletModal').classList.add('active');
         };
 
+        // Close modal
         window.closeModal = (modalId) => {
             document.getElementById(modalId).classList.remove('active');
         };
 
+        // Logout
         window.logout = async () => {
             try {
                 await signOut(auth);
@@ -2493,6 +2828,7 @@ window.confirmAssignDelivery = async () => {
             }
         };
 
+        // Show message
         const showMessage = (message, type) => {
             const msgDiv = document.getElementById('message');
             if (!msgDiv) return;
@@ -2509,6 +2845,7 @@ window.confirmAssignDelivery = async () => {
             }, 3000);
         };
 
+        // Click outside modal to close
         window.onclick = (event) => {
             if (event.target.classList.contains('modal')) {
                 event.target.classList.remove('active');
