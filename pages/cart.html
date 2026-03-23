@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>Your Cart - Meal Craft</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -16,10 +16,12 @@
 
         body {
             background-color: #F9F7F5;
-            background-image: 
-                radial-gradient(circle at 0% 0%, rgba(255, 140, 50, 0.1) 0%, transparent 40%),
-                radial-gradient(circle at 100% 100%, rgba(255, 140, 50, 0.1) 0%, transparent 40%);
+            background-image: radial-gradient(circle at 0% 0%, rgba(255, 140, 50, 0.1) 0%, transparent 40%),
+                              radial-gradient(circle at 100% 100%, rgba(255, 140, 50, 0.1) 0%, transparent 40%);
             color: #1a1a1a;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
         header {
@@ -32,6 +34,14 @@
             top: 0;
             z-index: 100;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 15px 20px;
+            }
         }
 
         .logo-top { 
@@ -40,13 +50,14 @@
             gap: 10px; 
             font-weight: 900; 
             cursor: pointer;
+            font-size: 1.1rem;
         }
         
         .mini-logo-card {
             background: linear-gradient(135deg, #e67e22, #d35400);
             width: 32px; 
             height: 32px; 
-            border-radius: 6px;
+            border-radius: 8px;
             display: flex; 
             justify-content: center; 
             align-items: center;
@@ -75,6 +86,31 @@
             color: #f37021;
         }
 
+        .profile-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .profile-btn {
+            background: #f5f5f5;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 40px;
+            font-weight: 600;
+            color: #666;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .profile-btn:hover {
+            background: #f37021;
+            color: white;
+        }
+
         .content-wrapper {
             max-width: 1200px;
             margin: 40px auto;
@@ -82,6 +118,14 @@
             display: grid;
             grid-template-columns: 1fr 0.8fr;
             gap: 30px;
+            flex: 1;
+        }
+
+        @media (max-width: 900px) {
+            .content-wrapper {
+                grid-template-columns: 1fr;
+                margin: 20px auto;
+            }
         }
 
         .cart-items {
@@ -115,7 +159,14 @@
 
         .cart-item:hover {
             background: #fafafa;
-            transform: translateX(5px);
+        }
+
+        @media (max-width: 768px) {
+            .cart-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
         }
 
         .cart-item:last-child {
@@ -144,7 +195,6 @@
         .item-image i {
             font-size: 2rem;
             color: white;
-            opacity: 0.9;
         }
 
         .item-info {
@@ -162,17 +212,6 @@
             color: #666;
             font-size: 0.9rem;
             margin-bottom: 5px;
-        }
-
-        .item-extras {
-            color: #f37021;
-            font-size: 0.85rem;
-            margin-top: 5px;
-        }
-
-        .item-extras i {
-            color: #27ae60;
-            margin-right: 5px;
         }
 
         .ingredient-tags {
@@ -193,15 +232,17 @@
             gap: 4px;
         }
 
-        .ingredient-tag i {
-            color: #27ae60;
-            font-size: 0.6rem;
-        }
-
         .item-price-section {
             display: flex;
             align-items: center;
             gap: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .item-price-section {
+                width: 100%;
+                justify-content: space-between;
+            }
         }
 
         .item-price {
@@ -286,11 +327,6 @@
             margin-bottom: 10px;
         }
 
-        .incomplete-profile p {
-            color: #e67e22;
-            margin-bottom: 15px;
-        }
-
         .incomplete-profile a {
             display: inline-block;
             padding: 10px 25px;
@@ -300,11 +336,6 @@
             border-radius: 8px;
             font-weight: 600;
             transition: all 0.3s;
-        }
-
-        .incomplete-profile a:hover {
-            background: #e6651a;
-            transform: translateY(-2px);
         }
 
         .payment-section {
@@ -321,10 +352,6 @@
             display: flex;
             align-items: center;
             gap: 8px;
-        }
-
-        .payment-section h3 i {
-            color: #f37021;
         }
 
         .payment-options {
@@ -455,19 +482,13 @@
             font-size: 2.2rem;
             font-weight: 800;
             margin-bottom: 15px;
-            color: #1a1a1a;
-        }
-
-        .guest-cart p {
-            color: #666;
-            margin-bottom: 30px;
-            font-size: 1.1rem;
         }
 
         .guest-buttons {
             display: flex;
             gap: 20px;
             justify-content: center;
+            flex-wrap: wrap;
         }
 
         .guest-btn {
@@ -489,20 +510,9 @@
             color: white;
         }
 
-        .guest-btn-primary:hover {
-            background: #e6651a;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(243, 112, 33, 0.2);
-        }
-
         .guest-btn-secondary {
             background: #f5f5f5;
             color: #666;
-        }
-
-        .guest-btn-secondary:hover {
-            background: #e0e0e0;
-            transform: translateY(-2px);
         }
 
         .empty-cart {
@@ -517,15 +527,6 @@
             opacity: 0.3;
         }
 
-        .empty-cart h3 {
-            color: #666;
-            margin-bottom: 10px;
-        }
-
-        .empty-cart p {
-            margin-bottom: 20px;
-        }
-
         .shop-btn {
             display: inline-block;
             padding: 12px 30px;
@@ -535,11 +536,6 @@
             border-radius: 10px;
             font-weight: 600;
             transition: all 0.3s;
-        }
-
-        .shop-btn:hover {
-            background: #e6651a;
-            transform: translateY(-2px);
         }
 
         .message {
@@ -558,54 +554,77 @@
         }
 
         @keyframes slideIn {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
 
-        .message.success {
-            border-left-color: #2ecc71;
-            color: #27ae60;
+        .message.success { border-left-color: #2ecc71; color: #27ae60; }
+        .message.error { border-left-color: #e74c3c; color: #c0392b; }
+
+        .main-footer {
+            background: white;
+            padding: 48px 24px 24px;
+            margin-top: 60px;
+            border-top: 1px solid #eee;
         }
 
-        .message.error {
-            border-left-color: #e74c3c;
-            color: #c0392b;
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 32px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-bottom: 40px;
+            border-bottom: 1px solid #f0f0f0;
         }
 
-        .message.info {
-            border-left-color: #f39c12;
-            color: #e67e22;
+        .footer-brand h3 {
+            font-size: 1.4rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #f37021, #d35400);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
 
-        @media (max-width: 900px) {
-            .content-wrapper {
-                grid-template-columns: 1fr;
-            }
-            
-            header {
-                padding: 15px 20px;
-            }
-            
-            .guest-buttons {
-                flex-direction: column;
-            }
-            
-            .cart-item {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 15px;
-            }
-            
-            .item-price-section {
-                width: 100%;
-                justify-content: space-between;
-            }
+        .footer-brand p {
+            color: #666;
+            line-height: 1.6;
+            font-size: 0.9rem;
+            margin-top: 12px;
+        }
+
+        .footer-col h4 {
+            margin-bottom: 18px;
+            font-weight: 800;
+            color: #1a1a1a;
+        }
+
+        .footer-col a, .footer-col p {
+            display: block;
+            text-decoration: none;
+            color: #777;
+            margin-bottom: 10px;
+            font-size: 0.85rem;
+            transition: color 0.2s;
+        }
+
+        .footer-col a:hover {
+            color: #f37021;
+        }
+
+        .footer-col p i {
+            color: #f37021;
+            margin-right: 8px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding: 28px 0 0;
+            color: #aaa;
+            font-size: 0.75rem;
+            max-width: 1200px;
+            margin: 0 auto;
         }
     </style>
 </head>
@@ -620,15 +639,63 @@
         <nav class="nav-links">
             <a href="home.html">Home</a>
             <a href="meals.html">Meals</a>
-            <a href="profile.html">Profile</a>
+            <a href="crafted-meals.html">Crafted</a>
         </nav>
+        <div class="profile-section">
+            <button class="profile-btn" id="profileBtn" onclick="handleProfileClick()">
+                <i class="fas fa-user"></i>
+                <span id="userName">Guest</span>
+            </button>
+        </div>
     </header>
 
     <main class="content-wrapper" id="mainContent">
-        <!-- Content will be dynamically loaded based on auth state -->
+        <div class="loading-spinner" style="grid-column: 1/-1; text-align: center; padding: 60px;">
+            <div class="spinner" style="width: 50px; height: 50px; border: 4px solid #f0f0f0; border-top-color: #f37021; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px;"></div>
+            <p>Loading your cart...</p>
+        </div>
     </main>
 
+    <footer class="main-footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <h3>Meal Craft</h3>
+                <p>Fueling people with fresh, custom meals since 2023. Build your perfect meal today!</p>
+            </div>
+            <div class="footer-col">
+                <h4>Discover</h4>
+                <a href="meals.html">All Meals</a>
+                <a href="ingredients.html">Ingredients</a>
+                <a href="crafted-meals.html">Crafted Meals</a>
+            </div>
+            <div class="footer-col">
+                <h4>Support</h4>
+                <a href="#">Help Center</a>
+                <a href="#">Contact Us</a>
+                <a href="#">FAQs</a>
+            </div>
+            <div class="footer-col">
+                <h4>Hours & Location</h4>
+                <p><i class="fas fa-map-marker-alt"></i> Student Union</p>
+                <p><i class="fas fa-clock"></i> Mon-Fri: 7am-10pm</p>
+                <p><i class="fas fa-phone"></i> (555) 123-4567</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2025 Meal Craft. All rights reserved.
+        </div>
+    </footer>
+
     <div id="message" class="message"></div>
+
+    <style>
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .loading-spinner .spinner {
+            animation: spin 1s linear infinite;
+        }
+    </style>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -652,42 +719,52 @@
         let cart = [];
         let selectedPayment = 'cod';
 
-        // Check authentication
-        onAuthStateChanged(auth, async (user) => {
+        const userNameSpan = document.getElementById('userName');
+
+        const goToHome = () => window.location.href = 'home.html';
+        const handleProfileClick = () => currentUser ? window.location.href = 'profile.html' : showLoginPrompt();
+        window.goToHome = goToHome;
+        window.handleProfileClick = handleProfileClick;
+
+        const showMessage = (message, type) => {
+            const msgDiv = document.getElementById('message');
+            msgDiv.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i> ${message}`;
+            msgDiv.className = `message ${type}`;
+            msgDiv.style.display = 'block';
+            setTimeout(() => msgDiv.style.display = 'none', 3000);
+        };
+
+        const showLoginPrompt = () => {
             const mainContent = document.getElementById('mainContent');
-            
-            if (!user) {
-                // Show guest message
-                mainContent.innerHTML = `
-                    <div class="guest-cart">
-                        <i class="fas fa-lock"></i>
-                        <h2>Login to View Your Cart</h2>
-                        <p>Please login to add items to your cart and place orders.</p>
-                        <div class="guest-buttons">
-                            <a href="../login.html" class="guest-btn guest-btn-primary">
-                                <i class="fas fa-sign-in-alt"></i> Login Now
-                            </a>
-                            <a href="home.html" class="guest-btn guest-btn-secondary">
-                                <i class="fas fa-home"></i> Continue Browsing
-                            </a>
-                        </div>
+            mainContent.innerHTML = `
+                <div class="guest-cart">
+                    <i class="fas fa-lock"></i>
+                    <h2>Login to View Your Cart</h2>
+                    <p>Please login to add items to your cart and place orders.</p>
+                    <div class="guest-buttons">
+                        <a href="../login.html" class="guest-btn guest-btn-primary">
+                            <i class="fas fa-sign-in-alt"></i> Login Now
+                        </a>
+                        <a href="home.html" class="guest-btn guest-btn-secondary">
+                            <i class="fas fa-home"></i> Continue Browsing
+                        </a>
                     </div>
-                `;
-                return;
-            }
+                </div>
+            `;
+        };
 
-            currentUser = user;
-            
-            // Load user data
-            const userDoc = await getDoc(doc(db, 'users', user.uid));
-            if (userDoc.exists()) {
-                userData = userDoc.data();
+        // Helper function to safely get price from cart item
+        const getItemPrice = (item) => {
+            // Try multiple possible price fields
+            if (typeof item.totalPrice === 'number' && !isNaN(item.totalPrice) && item.totalPrice > 0) return item.totalPrice;
+            if (typeof item.price === 'number' && !isNaN(item.price) && item.price > 0) return item.price;
+            if (typeof item.basePrice === 'number' && !isNaN(item.basePrice)) {
+                const addons = typeof item.addonsTotal === 'number' ? item.addonsTotal : 0;
+                return item.basePrice + addons;
             }
-            
-            loadCart();
-        });
+            return 0;
+        };
 
-        // Load cart from localStorage
         const loadCart = () => {
             try {
                 const allCarts = JSON.parse(localStorage.getItem('carts')) || {};
@@ -706,7 +783,6 @@
             }
         };
 
-        // Show empty cart
         const showEmptyCart = () => {
             const mainContent = document.getElementById('mainContent');
             mainContent.innerHTML = `
@@ -721,7 +797,6 @@
             `;
         };
 
-        // Display cart items with images
         const displayCart = () => {
             const mainContent = document.getElementById('mainContent');
             
@@ -729,60 +804,36 @@
             let subtotal = 0;
 
             cart.forEach((item, index) => {
-                const extras = item.selectedIngredients || item.selectedExtras || [];
-                const extrasText = extras.length > 0 
-                    ? extras.slice(0, 3).map(e => e.name).join(', ') + (extras.length > 3 ? ` +${extras.length-3} more` : '')
-                    : 'No extras';
-                
-                const itemPrice = item.totalPrice || (item.basePrice + (item.addonsTotal || 0));
+                const itemPrice = getItemPrice(item);
                 subtotal += itemPrice;
-
-                // Determine image to show
-                const imagePath = item.mealImage || `../assets/meals/${item.mealName?.toLowerCase().replace(/\s+/g, '_')}.png`;
                 
-                // Determine icon based on meal name
-                let iconClass = 'fa-utensils';
-                if (item.mealName) {
-                    const mealLower = item.mealName.toLowerCase();
-                    if (mealLower.includes('pizza')) iconClass = 'fa-pizza-slice';
-                    else if (mealLower.includes('burger')) iconClass = 'fa-hamburger';
-                    else if (mealLower.includes('pasta')) iconClass = 'fa-utensils';
-                }
-
-                // Create ingredient tags
-                let ingredientTags = '';
-                if (extras.length > 0) {
-                    extras.slice(0, 5).forEach(ing => {
-                        ingredientTags += `
-                            <span class="ingredient-tag">
-                                <i class="fas fa-check-circle"></i> ${ing.name}
-                            </span>
-                        `;
-                    });
-                }
-
+                const mealName = item.mealName || item.baseMeal || 'Custom Meal';
+                const displayName = item.customName || item.name || mealName;
+                
+                // Get ingredients list for display
+                const ingredients = item.ingredients || item.selectedExtras || [];
+                const ingredientTags = ingredients.slice(0, 5).map(ing => `
+                    <span class="ingredient-tag">
+                        <i class="fas fa-check-circle"></i> ${ing.name || ing}
+                    </span>
+                `).join('');
+                
+                const imagePath = item.image || item.mealImage || `assets/meals/${mealName.toLowerCase().replace(/\s+/g, '_')}.png`;
+                
                 cartItemsHtml += `
                     <div class="cart-item" data-index="${index}">
                         <div class="item-image">
-                            <img src="${imagePath}" alt="${item.mealName}" 
-                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-                                 onload="this.style.display='block'">
-                            <i class="fas ${iconClass}" style="display: none;"></i>
+                            <img src="${imagePath}" alt="${displayName}" 
+                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <i class="fas fa-utensils" style="display: none;"></i>
                         </div>
                         <div class="item-info">
-                            <h3>${item.customName || item.name || 'Custom Meal'}</h3>
-                            <p>Based on: ${item.mealName || 'Custom Creation'}</p>
-                            <div class="ingredient-tags">
-                                ${ingredientTags}
-                            </div>
-                            ${item.specialInstructions ? `
-                                <p class="item-extras">
-                                    <i class="fas fa-utensil-spoon"></i> Note: ${item.specialInstructions.substring(0, 30)}${item.specialInstructions.length > 30 ? '...' : ''}
-                                </p>
-                            ` : ''}
+                            <h3>${escapeHtml(displayName)}</h3>
+                            <p>Based on: ${escapeHtml(mealName)}</p>
+                            ${ingredientTags ? `<div class="ingredient-tags">${ingredientTags}</div>` : ''}
                         </div>
                         <div class="item-price-section">
-                            <span class="item-price">₹${itemPrice}</span>
+                            <span class="item-price">₹${itemPrice.toFixed(2)}</span>
                             <button class="remove-btn" onclick="removeItem(${index})">
                                 <i class="fas fa-trash"></i>
                             </button>
@@ -840,7 +891,7 @@
                     <div class="price-breakdown">
                         <div class="price-row">
                             <span>Subtotal</span>
-                            <span>₹${subtotal}</span>
+                            <span>₹${subtotal.toFixed(2)}</span>
                         </div>
                         <div class="price-row">
                             <span>Delivery Fee</span>
@@ -850,7 +901,7 @@
                     
                     <div class="total-row">
                         <span>Total</span>
-                        <span>₹${total}</span>
+                        <span>₹${total.toFixed(2)}</span>
                     </div>
 
                     <button class="place-order-btn" onclick="placeOrder()" ${!userData?.address ? 'disabled' : ''}>
@@ -863,30 +914,26 @@
             displayAddress();
         };
 
-        // Display delivery address
+        const escapeHtml = (str) => {
+            if (!str) return '';
+            return String(str).replace(/[&<>]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            });
+        };
+
         const displayAddress = () => {
             const addressDiv = document.getElementById('deliveryAddress');
-            
             if (!addressDiv) return;
 
             if (userData?.address) {
                 addressDiv.innerHTML = `
-                    <p>
-                        <i class="fas fa-user"></i>
-                        <strong>${userData.fullName || userData.username || 'Customer'}</strong>
-                    </p>
-                    <p>
-                        <i class="fas fa-map-marker-alt"></i>
-                        ${userData.address}
-                    </p>
-                    <p>
-                        <i class="fas fa-city"></i>
-                        ${userData.city || ''}, ${userData.state || ''} - ${userData.pincode || ''}
-                    </p>
-                    <p>
-                        <i class="fas fa-phone"></i>
-                        ${userData.mobile || 'Not provided'}
-                    </p>
+                    <p><i class="fas fa-user"></i> <strong>${escapeHtml(userData.fullName || userData.username || 'Customer')}</strong></p>
+                    <p><i class="fas fa-map-marker-alt"></i> ${escapeHtml(userData.address)}</p>
+                    <p><i class="fas fa-city"></i> ${escapeHtml(userData.city || '')} ${escapeHtml(userData.state || '')} - ${escapeHtml(userData.pincode || '')}</p>
+                    <p><i class="fas fa-phone"></i> ${escapeHtml(userData.mobile || 'Not provided')}</p>
                 `;
             } else {
                 addressDiv.innerHTML = `
@@ -899,17 +946,14 @@
             }
         };
 
-        // Select payment method
         window.selectPayment = (method) => {
             selectedPayment = method;
-            displayCart(); // Refresh to show selected state
+            displayCart();
         };
 
-        // Remove item from cart
         window.removeItem = (index) => {
             try {
                 cart.splice(index, 1);
-                
                 const allCarts = JSON.parse(localStorage.getItem('carts')) || {};
                 allCarts[currentUser.uid] = cart;
                 localStorage.setItem('carts', JSON.stringify(allCarts));
@@ -920,7 +964,6 @@
                     displayCart();
                     displayAddress();
                 }
-                
                 showMessage('Item removed from cart', 'success');
             } catch (error) {
                 console.error('Error removing item:', error);
@@ -928,7 +971,6 @@
             }
         };
 
-        // Place order
         window.placeOrder = async () => {
             if (cart.length === 0) {
                 showMessage('Your cart is empty', 'error');
@@ -946,7 +988,7 @@
                 placeOrderBtn.disabled = true;
                 placeOrderBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Placing Order...';
 
-                const subtotal = cart.reduce((sum, item) => sum + (item.totalPrice || (item.basePrice + (item.addonsTotal || 0))), 0);
+                const subtotal = cart.reduce((sum, item) => sum + getItemPrice(item), 0);
                 const deliveryFee = 40;
                 const total = subtotal + deliveryFee;
                 
@@ -961,8 +1003,9 @@
                     pincode: userData.pincode || '',
                     items: cart.map(item => ({
                         ...item,
-                        id: item.id || item.mealId,
-                        name: item.customName || item.name || 'Custom Meal'
+                        id: item.id,
+                        name: item.customName || item.name || 'Custom Meal',
+                        price: getItemPrice(item)
                     })),
                     subtotal: subtotal,
                     deliveryFee: deliveryFee,
@@ -974,7 +1017,7 @@
                     orderNumber: 'ORD' + Date.now().toString().slice(-8)
                 };
 
-                const orderRef = await addDoc(collection(db, 'orders'), orderData);
+                await addDoc(collection(db, 'orders'), orderData);
 
                 const allCarts = JSON.parse(localStorage.getItem('carts')) || {};
                 delete allCarts[currentUser.uid];
@@ -982,38 +1025,40 @@
                 
                 showMessage('✅ Order placed successfully!', 'success');
                 
-                sessionStorage.setItem('lastOrderId', orderRef.id);
-                
                 setTimeout(() => {
-                    window.location.href = 'order-confirmation.html?id=' + orderRef.id;
+                    window.location.href = 'home.html';
                 }, 2000);
 
             } catch (error) {
                 console.error('Error placing order:', error);
                 showMessage('Error placing order: ' + error.message, 'error');
-                
                 const placeOrderBtn = document.querySelector('.place-order-btn');
                 placeOrderBtn.disabled = false;
                 placeOrderBtn.innerHTML = '<i class="fas fa-check-circle"></i> Place Order';
             }
         };
 
-        // Go to home
-        window.goToHome = () => {
-            window.location.href = 'home.html';
-        };
+        // Authentication check
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) {
+                showLoginPrompt();
+                return;
+            }
 
-        // Show message
-        const showMessage = (message, type) => {
-            const msgDiv = document.getElementById('message');
-            msgDiv.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i> ${message}`;
-            msgDiv.className = `message ${type}`;
-            msgDiv.style.display = 'block';
+            currentUser = user;
             
-            setTimeout(() => {
-                msgDiv.style.display = 'none';
-            }, 3000);
-        };
+            try {
+                const userDoc = await getDoc(doc(db, 'users', user.uid));
+                if (userDoc.exists()) {
+                    userData = userDoc.data();
+                    userNameSpan.textContent = userData?.fullName?.split(' ')[0] || 'Profile';
+                }
+            } catch (error) {
+                console.error('Error loading user data:', error);
+            }
+            
+            loadCart();
+        });
     </script>
 </body>
 </html>

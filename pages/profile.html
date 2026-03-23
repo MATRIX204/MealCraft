@@ -576,6 +576,8 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
+            max-height: 500px;
+            overflow-y: auto;
         }
 
         @media (min-width: 768px) {
@@ -606,7 +608,6 @@
 
         .order-item:hover {
             border-color: #f37021;
-            transform: translateX(5px);
         }
 
         .order-info h4 {
@@ -939,6 +940,74 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        /* Footer */
+        .main-footer {
+            background: white;
+            padding: 48px 24px 24px;
+            margin-top: 60px;
+            border-top: 1px solid #eee;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 32px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-bottom: 40px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .footer-brand h3 {
+            font-size: 1.4rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #f37021, #d35400);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .footer-brand p {
+            color: #666;
+            line-height: 1.6;
+            font-size: 0.9rem;
+            margin-top: 12px;
+        }
+
+        .footer-col h4 {
+            margin-bottom: 18px;
+            font-weight: 800;
+            color: #1a1a1a;
+        }
+
+        .footer-col a,
+        .footer-col p {
+            display: block;
+            text-decoration: none;
+            color: #777;
+            margin-bottom: 10px;
+            font-size: 0.85rem;
+            transition: color 0.2s;
+        }
+
+        .footer-col a:hover {
+            color: #f37021;
+        }
+
+        .footer-col p i {
+            color: #f37021;
+            margin-right: 8px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding: 28px 0 0;
+            color: #aaa;
+            font-size: 0.75rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
     </style>
 </head>
 <body>
@@ -1142,7 +1211,10 @@
                         </div>
 
                         <div id="ordersList" class="orders-list">
-                            <!-- Orders will be loaded here -->
+                            <div style="text-align: center; padding: 40px;">
+                                <div class="loading-spinner" style="width: 30px; height: 30px;"></div>
+                                <p style="margin-top: 10px; color: #666;">Loading orders...</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1152,6 +1224,36 @@
         <!-- Message -->
         <div id="message" class="message"></div>
     </main>
+
+    <footer class="main-footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <h3>Meal Craft</h3>
+                <p>Fueling people with fresh, custom meals since 2023. Build your perfect meal today!</p>
+            </div>
+            <div class="footer-col">
+                <h4>Discover</h4>
+                <a href="meals.html">All Meals</a>
+                <a href="ingredients.html">Ingredients</a>
+                <a href="crafted-meals.html">Crafted Meals</a>
+            </div>
+            <div class="footer-col">
+                <h4>Support</h4>
+                <a href="#">Help Center</a>
+                <a href="#">Contact Us</a>
+                <a href="#">FAQs</a>
+            </div>
+            <div class="footer-col">
+                <h4>Hours & Location</h4>
+                <p><i class="fas fa-map-marker-alt"></i> Student Union</p>
+                <p><i class="fas fa-clock"></i> Mon-Fri: 7am-10pm</p>
+                <p><i class="fas fa-phone"></i> (555) 123-4567</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2025 Meal Craft. All rights reserved.
+        </div>
+    </footer>
 
     <!-- Logout Confirmation Modal -->
     <div class="modal" id="logoutModal">
@@ -1189,8 +1291,7 @@
             doc, 
             getDoc, 
             updateDoc,
-            serverTimestamp,
-            orderBy 
+            serverTimestamp
         } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         // Firebase Config
@@ -1236,21 +1337,18 @@
         // Load States and Cities from Admin
         const loadStatesAndCities = async () => {
             try {
-                // Load states
                 const statesSnapshot = await getDocs(collection(db, 'states'));
                 states = [];
                 statesSnapshot.forEach(doc => {
                     states.push({ id: doc.id, ...doc.data() });
                 });
 
-                // Load cities
                 const citiesSnapshot = await getDocs(collection(db, 'cities'));
                 cities = [];
                 citiesSnapshot.forEach(doc => {
                     cities.push({ id: doc.id, ...doc.data() });
                 });
 
-                // Populate state dropdown
                 stateSelect.innerHTML = '<option value="">Select State</option>';
                 states.forEach(state => {
                     stateSelect.innerHTML += `<option value="${state.name}">${state.name}</option>`;
@@ -1284,17 +1382,14 @@
                 if (userDoc.exists()) {
                     userData = userDoc.data();
                     
-                    // Update display name and username
                     document.getElementById('displayName').textContent = 
                         userData.fullName || currentUser.displayName || 'User';
                     document.getElementById('username').textContent = 
                         userData.username || currentUser.email?.split('@')[0] || 'user';
                     document.getElementById('email').textContent = currentUser.email;
                     
-                    // Set avatar
                     avatarText.textContent = (userData.fullName || 'U').charAt(0).toUpperCase();
 
-                    // Format dates
                     const joinedDate = userData.createdAt?.toDate 
                         ? new Date(userData.createdAt.toDate()).toLocaleDateString('en-US', { 
                             year: 'numeric', 
@@ -1313,13 +1408,11 @@
                         : 'Never';
                     document.getElementById('updated').textContent = updatedDate;
 
-                    // Update profile details
                     updateDetailField('mobile', userData.mobile);
                     updateDetailField('state', userData.state);
                     updateDetailField('city', userData.city);
                     updateDetailField('address', userData.address);
 
-                    // Fill edit form
                     document.getElementById('editFullName').value = userData.fullName || '';
                     document.getElementById('editMobile').value = userData.mobile || '';
                     document.getElementById('editState').value = userData.state || '';
@@ -1327,7 +1420,6 @@
                     document.getElementById('editAddress').value = userData.address || '';
 
                 } else {
-                    // New user
                     document.getElementById('displayName').textContent = currentUser.displayName || 'User';
                     document.getElementById('username').textContent = currentUser.email?.split('@')[0] || 'user';
                     avatarText.textContent = (currentUser.displayName || 'U').charAt(0).toUpperCase();
@@ -1348,164 +1440,169 @@
             }
         };
 
-        // Load User Orders
-        // Load User Orders
-const loadUserOrders = async () => {
-    try {
-        console.log('Loading orders for user:', currentUser.uid);
-        console.log('User email:', currentUser.email);
-        
-        // Try multiple query approaches
-        let ordersQuery;
-        let ordersSnapshot;
-        
-        // Approach 1: Query by userId (standard)
-        ordersQuery = query(
-            collection(db, 'orders'),
-            where('userId', '==', currentUser.uid),
-            orderBy('createdAt', 'desc')
-        );
-        
-        ordersSnapshot = await getDocs(ordersQuery);
-        userOrders = [];
-        
-        ordersSnapshot.forEach(doc => {
-            const orderData = { id: doc.id, ...doc.data() };
-            userOrders.push(orderData);
-            console.log('Found order by userId:', orderData);
-        });
-        
-        // If no orders found by userId, try by email
-        if (userOrders.length === 0) {
-            console.log('No orders by userId, trying by email');
-            ordersQuery = query(
-                collection(db, 'orders'),
-                where('customerEmail', '==', currentUser.email),
-                orderBy('createdAt', 'desc')
-            );
+        // Load User Orders - FIXED: No orderBy to avoid index requirement
+        const loadUserOrders = async () => {
+            const ordersList = document.getElementById('ordersList');
             
-            ordersSnapshot = await getDocs(ordersQuery);
-            ordersSnapshot.forEach(doc => {
-                const orderData = { id: doc.id, ...doc.data() };
-                userOrders.push(orderData);
-                console.log('Found order by email:', orderData);
-            });
-        }
-        
-        // If still no orders, try by userEmail field
-        if (userOrders.length === 0) {
-            console.log('No orders by email, trying by userEmail');
-            ordersQuery = query(
-                collection(db, 'orders'),
-                where('userEmail', '==', currentUser.email),
-                orderBy('createdAt', 'desc')
-            );
-            
-            ordersSnapshot = await getDocs(ordersQuery);
-            ordersSnapshot.forEach(doc => {
-                const orderData = { id: doc.id, ...doc.data() };
-                userOrders.push(orderData);
-                console.log('Found order by userEmail:', orderData);
-            });
-        }
-        
-        console.log('Total orders found:', userOrders.length);
-        console.log('Orders data:', userOrders);
+            try {
+                console.log('Loading orders for user:', currentUser.uid);
+                
+                let allOrders = [];
+                
+                // Try multiple query approaches without orderBy to avoid index requirements
+                
+                // Approach 1: Query by userId
+                try {
+                    const q1 = query(
+                        collection(db, 'orders'),
+                        where('userId', '==', currentUser.uid)
+                    );
+                    const snapshot1 = await getDocs(q1);
+                    snapshot1.forEach(doc => {
+                        allOrders.push({ id: doc.id, ...doc.data() });
+                    });
+                    console.log('Found orders by userId:', allOrders.length);
+                } catch (err) {
+                    console.log('Error in userId query:', err);
+                }
+                
+                // Approach 2: Query by email
+                if (allOrders.length === 0) {
+                    try {
+                        const q2 = query(
+                            collection(db, 'orders'),
+                            where('customerEmail', '==', currentUser.email)
+                        );
+                        const snapshot2 = await getDocs(q2);
+                        snapshot2.forEach(doc => {
+                            allOrders.push({ id: doc.id, ...doc.data() });
+                        });
+                        console.log('Found orders by customerEmail:', allOrders.length);
+                    } catch (err) {
+                        console.log('Error in customerEmail query:', err);
+                    }
+                }
+                
+                // Approach 3: Query by userEmail
+                if (allOrders.length === 0) {
+                    try {
+                        const q3 = query(
+                            collection(db, 'orders'),
+                            where('userEmail', '==', currentUser.email)
+                        );
+                        const snapshot3 = await getDocs(q3);
+                        snapshot3.forEach(doc => {
+                            allOrders.push({ id: doc.id, ...doc.data() });
+                        });
+                        console.log('Found orders by userEmail:', allOrders.length);
+                    } catch (err) {
+                        console.log('Error in userEmail query:', err);
+                    }
+                }
+                
+                // Sort manually by createdAt (descending)
+                if (allOrders.length > 0) {
+                    allOrders.sort((a, b) => {
+                        const dateA = a.createdAt?.toDate ? a.createdAt.toDate() : new Date(0);
+                        const dateB = b.createdAt?.toDate ? b.createdAt.toDate() : new Date(0);
+                        return dateB - dateA;
+                    });
+                }
+                
+                userOrders = allOrders;
+                console.log('Total orders found:', userOrders.length);
+                
+                // Update order stats
+                const totalOrders = userOrders.length;
+                const totalSpent = userOrders.reduce((sum, order) => sum + (order.total || 0), 0);
+                const avgOrder = totalOrders > 0 ? totalSpent / totalOrders : 0;
 
-        // Update order stats
-        const totalOrders = userOrders.length;
-        const totalSpent = userOrders.reduce((sum, order) => sum + (order.total || 0), 0);
-        const avgOrder = totalOrders > 0 ? totalSpent / totalOrders : 0;
+                document.getElementById('totalOrders').textContent = totalOrders;
+                document.getElementById('orderCount').textContent = totalOrders;
+                document.getElementById('totalSpent').textContent = `₹${totalSpent}`;
+                document.getElementById('totalSpentAmount').textContent = `₹${totalSpent}`;
+                document.getElementById('avgOrder').textContent = `₹${Math.round(avgOrder)}`;
 
-        document.getElementById('totalOrders').textContent = totalOrders;
-        document.getElementById('orderCount').textContent = totalOrders;
-        document.getElementById('totalSpent').textContent = `₹${totalSpent}`;
-        document.getElementById('totalSpentAmount').textContent = `₹${totalSpent}`;
-        document.getElementById('avgOrder').textContent = `₹${Math.round(avgOrder)}`;
-
-        // Display orders
-        displayOrders();
-    } catch (error) {
-        console.error('Error loading orders:', error);
-        showMessage('Error loading orders', 'error');
-    }
-};
-
-        // Display Orders with proper formatting
-        // Display Orders with proper formatting
-const displayOrders = () => {
-    const ordersList = document.getElementById('ordersList');
-    
-    if (userOrders.length === 0) {
-        ordersList.innerHTML = `
-            <div class="empty-orders">
-                <i class="fas fa-shopping-bag"></i>
-                <h3>No orders yet</h3>
-                <p>Start building your perfect meal!</p>
-            </div>
-        `;
-        return;
-    }
-
-    let html = '';
-    userOrders.forEach(order => {
-        const orderDate = order.createdAt?.toDate 
-            ? new Date(order.createdAt.toDate()).toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-            })
-            : 'Just now';
-
-        // Get status class
-        const statusClass = `status-${order.status || 'pending'}`;
-        const statusText = order.status ? order.status.replace(/-/g, ' ') : 'pending';
-
-        // Get items summary - handle different possible structures
-        const items = order.items || order.orderItems || [];
-        let itemsSummary = '';
-        
-        if (items.length > 0) {
-            if (typeof items[0] === 'string') {
-                // If items are just strings
-                itemsSummary = items.join(', ');
-            } else {
-                // If items are objects
-                itemsSummary = items.map(item => 
-                    item.customName || item.mealName || item.name || 'Item'
-                ).join(', ');
+                // Display orders
+                displayOrders();
+            } catch (error) {
+                console.error('Error loading orders:', error);
+                ordersList.innerHTML = `
+                    <div class="empty-orders">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <h3>Unable to Load Orders</h3>
+                        <p>There was an error loading your order history. Please try again later.</p>
+                    </div>
+                `;
+                showMessage('Error loading orders', 'error');
             }
-        }
+        };
 
-        // Get payment method
-        const paymentMethod = order.paymentMethod || order.paymentType || 'N/A';
+        // Display Orders
+        const displayOrders = () => {
+            const ordersList = document.getElementById('ordersList');
+            
+            if (userOrders.length === 0) {
+                ordersList.innerHTML = `
+                    <div class="empty-orders">
+                        <i class="fas fa-shopping-bag"></i>
+                        <h3>No orders yet</h3>
+                        <p>Start building your perfect meal!</p>
+                        <button onclick="goToHome()" style="margin-top: 15px; padding: 10px 20px; background: #f37021; color: white; border: none; border-radius: 8px; cursor: pointer;">
+                            Browse Meals
+                        </button>
+                    </div>
+                `;
+                return;
+            }
 
-        html += `
-            <div class="order-item">
-                <div class="order-info">
-                    <h4>Order #${order.id.slice(-8)}</h4>
-                    <div class="order-meta">
-                        <span><i class="fas fa-calendar"></i> ${orderDate}</span>
-                        <span><i class="fas fa-box"></i> ${items.length} item${items.length !== 1 ? 's' : ''}</span>
-                        <span><i class="fas fa-credit-card"></i> ${paymentMethod}</span>
+            let html = '';
+            userOrders.forEach(order => {
+                const orderDate = order.createdAt?.toDate 
+                    ? new Date(order.createdAt.toDate()).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    })
+                    : 'Just now';
+
+                const statusClass = `status-${order.status || 'pending'}`;
+                const statusText = order.status ? order.status.replace(/-/g, ' ') : 'Pending';
+
+                const items = order.items || order.orderItems || [];
+                let itemsSummary = '';
+                
+                if (items.length > 0) {
+                    itemsSummary = items.map(item => 
+                        item.customName || item.mealName || item.name || 'Item'
+                    ).join(', ');
+                }
+
+                const paymentMethod = order.paymentMethod || order.paymentType || 'Cash on Delivery';
+
+                html += `
+                    <div class="order-item">
+                        <div class="order-info">
+                            <h4>Order #${order.id.slice(-8).toUpperCase()}</h4>
+                            <div class="order-meta">
+                                <span><i class="fas fa-calendar"></i> ${orderDate}</span>
+                                <span><i class="fas fa-box"></i> ${items.length} item${items.length !== 1 ? 's' : ''}</span>
+                                <span><i class="fas fa-credit-card"></i> ${paymentMethod}</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 8px;">
+                                <span class="order-status-badge ${statusClass}">${statusText}</span>
+                                ${itemsSummary ? `<span style="color: #666; font-size: 0.75rem;"><i class="fas fa-utensils"></i> ${itemsSummary.substring(0, 60)}${itemsSummary.length > 60 ? '...' : ''}</span>` : ''}
+                            </div>
+                        </div>
+                        <div class="order-price">₹${order.total || order.orderTotal || 0}</div>
                     </div>
-                    <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 8px;">
-                        <span class="order-status-badge ${statusClass}">${statusText}</span>
-                        <span style="color: #666; font-size: 0.8rem;">
-                            <i class="fas fa-utensils"></i> 
-                            ${itemsSummary.substring(0, 50)}${itemsSummary.length > 50 ? '...' : ''}
-                        </span>
-                    </div>
-                </div>
-                <div class="order-price">₹${order.total || order.orderTotal || 0}</div>
-            </div>
-        `;
-    });
-    
-    ordersList.innerHTML = html;
-};
+                `;
+            });
+            
+            ordersList.innerHTML = html;
+        };
 
         // Toggle Edit Section
         window.toggleEdit = () => {
@@ -1538,7 +1635,6 @@ const displayOrders = () => {
             const city = document.getElementById('editCity').value;
             const address = document.getElementById('editAddress').value.trim();
 
-            // Validation
             let isValid = true;
 
             if (!fullName) {
@@ -1557,7 +1653,7 @@ const displayOrders = () => {
             try {
                 const saveBtn = event.currentTarget;
                 saveBtn.disabled = true;
-                saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+                saveBtn.innerHTML = '<span class="loading-spinner"></span> Saving...';
 
                 const updates = {
                     fullName,
@@ -1569,12 +1665,10 @@ const displayOrders = () => {
                     updatedAt: serverTimestamp()
                 };
 
-                // Update auth profile
                 if (fullName && fullName !== currentUser.displayName) {
                     await updateProfile(currentUser, { displayName: fullName });
                 }
 
-                // Update Firestore
                 await updateDoc(doc(db, 'users', currentUser.uid), updates);
 
                 showMessage('Profile updated successfully!', 'success');

@@ -20,7 +20,6 @@
             min-height: 100vh;
         }
 
-        /* Header - Mobile First */
         header {
             background: white;
             padding: 12px 16px;
@@ -81,12 +80,6 @@
             filter: brightness(0) invert(1);
         }
 
-        @media (min-width: 768px) {
-            .mini-logo-card img { 
-                width: 16px; 
-            }
-        }
-
         .cart-btn {
             background: linear-gradient(135deg, #f97316, #e67e22);
             color: white;
@@ -103,30 +96,11 @@
             box-shadow: 0 4px 12px rgba(249, 115, 22, 0.2);
         }
 
-        @media (min-width: 768px) {
-            .cart-btn {
-                padding: 10px 22px;
-                font-size: 0.95rem;
-                gap: 8px;
-            }
-        }
-
         .cart-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 20px rgba(249, 115, 22, 0.3);
         }
 
-        .cart-btn i {
-            font-size: 0.8rem;
-        }
-
-        @media (min-width: 768px) {
-            .cart-btn i {
-                font-size: 0.9rem;
-            }
-        }
-
-        /* Main Content */
         .content-wrapper {
             max-width: 1400px;
             margin: 0 auto;
@@ -139,7 +113,6 @@
             }
         }
 
-        /* Craft Container */
         .craft-container {
             display: flex;
             flex-direction: column;
@@ -154,7 +127,6 @@
             }
         }
 
-        /* Loading State */
         .loading-state {
             grid-column: 1 / -1;
             text-align: center;
@@ -162,12 +134,6 @@
             background: white;
             border-radius: 24px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.03);
-        }
-
-        @media (min-width: 768px) {
-            .loading-state {
-                padding: 60px 20px;
-            }
         }
 
         .spinner {
@@ -180,20 +146,11 @@
             margin: 0 auto 15px;
         }
 
-        @media (min-width: 768px) {
-            .spinner {
-                width: 50px;
-                height: 50px;
-                margin: 0 auto 20px;
-            }
-        }
-
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
 
-        /* Preview Card */
         .preview-card {
             background: white;
             border-radius: 20px;
@@ -216,12 +173,6 @@
             border-bottom: 1px solid #f1f5f9;
         }
 
-        @media (min-width: 768px) {
-            .preview-header {
-                padding: 20px;
-            }
-        }
-
         .preview-header h2 {
             font-size: 1.2rem;
             font-weight: 700;
@@ -229,12 +180,6 @@
             display: flex;
             align-items: center;
             gap: 8px;
-        }
-
-        @media (min-width: 768px) {
-            .preview-header h2 {
-                font-size: 1.3rem;
-            }
         }
 
         .preview-header h2 i {
@@ -251,7 +196,6 @@
             }
         }
 
-        /* Meal Image */
         .meal-image-wrapper {
             position: relative;
             width: 100%;
@@ -291,12 +235,6 @@
             filter: drop-shadow(0 10px 20px rgba(0,0,0,0.2));
         }
 
-        @media (min-width: 768px) {
-            .meal-image i {
-                font-size: 6rem;
-            }
-        }
-
         .meal-type-badge {
             position: absolute;
             top: 12px;
@@ -311,24 +249,8 @@
             border: 1px solid rgba(255,255,255,0.3);
         }
 
-        @media (min-width: 768px) {
-            .meal-type-badge {
-                top: 15px;
-                right: 15px;
-                padding: 6px 14px;
-                font-size: 0.8rem;
-            }
-        }
-
-        /* Meal Info */
         .meal-info {
             margin-bottom: 16px;
-        }
-
-        @media (min-width: 768px) {
-            .meal-info {
-                margin-bottom: 20px;
-            }
         }
 
         .meal-name {
@@ -339,40 +261,17 @@
             line-height: 1.2;
         }
 
-        @media (min-width: 768px) {
-            .meal-name {
-                font-size: 1.8rem;
-                margin-bottom: 8px;
-            }
-        }
-
         .meal-description {
             color: #64748b;
             font-size: 0.85rem;
             line-height: 1.5;
         }
 
-        @media (min-width: 768px) {
-            .meal-description {
-                font-size: 0.95rem;
-                line-height: 1.6;
-            }
-        }
-
-        /* Price Summary */
         .price-summary {
             background: #f8fafc;
             border-radius: 16px;
             padding: 16px;
             margin-bottom: 16px;
-        }
-
-        @media (min-width: 768px) {
-            .price-summary {
-                border-radius: 20px;
-                padding: 20px;
-                margin-bottom: 20px;
-            }
         }
 
         .price-row {
@@ -381,12 +280,6 @@
             align-items: center;
             padding: 8px 0;
             border-bottom: 1px dashed #e2e8f0;
-        }
-
-        @media (min-width: 768px) {
-            .price-row {
-                padding: 12px 0;
-            }
         }
 
         .price-row:last-child {
@@ -399,33 +292,15 @@
             font-size: 0.9rem;
         }
 
-        @media (min-width: 768px) {
-            .price-label {
-                font-size: 1rem;
-            }
-        }
-
         .price-value {
             font-weight: 700;
             color: #1e293b;
             font-size: 1rem;
         }
 
-        @media (min-width: 768px) {
-            .price-value {
-                font-size: 1.1rem;
-            }
-        }
-
         .price-value.highlight {
             color: #f97316;
             font-size: 1.1rem;
-        }
-
-        @media (min-width: 768px) {
-            .price-value.highlight {
-                font-size: 1.2rem;
-            }
         }
 
         .total-row {
@@ -434,23 +309,10 @@
             border-top: 2px solid #e2e8f0;
         }
 
-        @media (min-width: 768px) {
-            .total-row {
-                margin-top: 10px;
-                padding-top: 15px;
-            }
-        }
-
         .total-label {
             font-size: 1rem;
             font-weight: 700;
             color: #1e293b;
-        }
-
-        @media (min-width: 768px) {
-            .total-label {
-                font-size: 1.1rem;
-            }
         }
 
         .total-value {
@@ -459,24 +321,10 @@
             color: #f97316;
         }
 
-        @media (min-width: 768px) {
-            .total-value {
-                font-size: 1.8rem;
-            }
-        }
-
-        /* Selected Ingredients */
         .selected-section {
             background: #fff7ed;
             border-radius: 16px;
             padding: 16px;
-        }
-
-        @media (min-width: 768px) {
-            .selected-section {
-                border-radius: 20px;
-                padding: 20px;
-            }
         }
 
         .selected-header {
@@ -486,22 +334,9 @@
             margin-bottom: 12px;
         }
 
-        @media (min-width: 768px) {
-            .selected-header {
-                gap: 8px;
-                margin-bottom: 15px;
-            }
-        }
-
         .selected-header i {
             color: #f97316;
             font-size: 1rem;
-        }
-
-        @media (min-width: 768px) {
-            .selected-header i {
-                font-size: 1.2rem;
-            }
         }
 
         .selected-header h3 {
@@ -510,24 +345,11 @@
             font-size: 1rem;
         }
 
-        @media (min-width: 768px) {
-            .selected-header h3 {
-                font-size: 1.1rem;
-            }
-        }
-
         .selected-tags {
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
             min-height: 36px;
-        }
-
-        @media (min-width: 768px) {
-            .selected-tags {
-                gap: 10px;
-                min-height: 40px;
-            }
         }
 
         .selected-tag {
@@ -544,23 +366,9 @@
             box-shadow: 0 2px 8px rgba(249, 115, 22, 0.1);
         }
 
-        @media (min-width: 768px) {
-            .selected-tag {
-                padding: 6px 14px;
-                gap: 8px;
-                font-size: 0.85rem;
-            }
-        }
-
         .selected-tag i.fa-check-circle {
             color: #10b981;
             font-size: 0.7rem;
-        }
-
-        @media (min-width: 768px) {
-            .selected-tag i.fa-check-circle {
-                font-size: 0.8rem;
-            }
         }
 
         .selected-tag .tag-price {
@@ -582,15 +390,6 @@
             border-radius: 50%;
         }
 
-        @media (min-width: 768px) {
-            .remove-tag {
-                font-size: 0.75rem;
-                width: 18px;
-                height: 18px;
-                margin-left: 4px;
-            }
-        }
-
         .remove-tag:hover {
             background: #fee2e2;
         }
@@ -601,13 +400,6 @@
             font-style: italic;
         }
 
-        @media (min-width: 768px) {
-            .empty-selected {
-                font-size: 0.9rem;
-            }
-        }
-
-        /* Customization Card */
         .customization-card {
             background: white;
             border-radius: 20px;
@@ -616,22 +408,10 @@
             border: 1px solid rgba(0,0,0,0.05);
         }
 
-        @media (min-width: 768px) {
-            .customization-card {
-                border-radius: 24px;
-            }
-        }
-
         .customization-header {
             padding: 16px;
             border-bottom: 1px solid #f1f5f9;
             background: #f8fafc;
-        }
-
-        @media (min-width: 768px) {
-            .customization-header {
-                padding: 20px;
-            }
         }
 
         .customization-header h2 {
@@ -643,12 +423,6 @@
             gap: 8px;
         }
 
-        @media (min-width: 768px) {
-            .customization-header h2 {
-                font-size: 1.3rem;
-            }
-        }
-
         .customization-header h2 i {
             color: #f97316;
         }
@@ -657,13 +431,6 @@
             padding: 16px;
         }
 
-        @media (min-width: 768px) {
-            .customization-content {
-                padding: 20px;
-            }
-        }
-
-        /* Base Info */
         .base-info-card {
             background: linear-gradient(135deg, #f8fafc, #ffffff);
             border: 1px solid #e2e8f0;
@@ -675,24 +442,10 @@
             align-items: center;
         }
 
-        @media (min-width: 768px) {
-            .base-info-card {
-                border-radius: 16px;
-                padding: 15px 20px;
-                margin-bottom: 25px;
-            }
-        }
-
         .base-info-label {
             font-weight: 600;
             color: #64748b;
             font-size: 0.9rem;
-        }
-
-        @media (min-width: 768px) {
-            .base-info-label {
-                font-size: 1rem;
-            }
         }
 
         .base-info-value {
@@ -701,21 +454,8 @@
             font-size: 1.2rem;
         }
 
-        @media (min-width: 768px) {
-            .base-info-value {
-                font-size: 1.3rem;
-            }
-        }
-
-        /* Ingredients Grid - UPDATED: Vertical only, no horizontal scroll */
         .ingredients-section {
             margin-bottom: 20px;
-        }
-
-        @media (min-width: 768px) {
-            .ingredients-section {
-                margin-bottom: 25px;
-            }
         }
 
         .section-subtitle {
@@ -726,14 +466,6 @@
             align-items: center;
             gap: 6px;
             color: #1e293b;
-        }
-
-        @media (min-width: 768px) {
-            .section-subtitle {
-                font-size: 1.1rem;
-                margin-bottom: 15px;
-                gap: 8px;
-            }
         }
 
         .section-subtitle i {
@@ -763,6 +495,39 @@
             border-radius: 10px;
         }
 
+        .ingredient-category-group {
+            margin-bottom: 18px;
+            border-left: 3px solid #f97316;
+            padding-left: 12px;
+        }
+
+        .category-group-title {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: #f97316;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .category-select-limit {
+            font-size: 0.7rem;
+            background: #f1f5f9;
+            padding: 2px 8px;
+            border-radius: 20px;
+            color: #64748b;
+            font-weight: normal;
+        }
+
+        .category-select-limit.multiple {
+            background: #e6f7e6;
+            color: #10b981;
+        }
+
         .ingredient-item {
             background: #f8fafc;
             border: 2px solid #e2e8f0;
@@ -774,14 +539,7 @@
             cursor: pointer;
             transition: all 0.3s;
             width: 100%;
-        }
-
-        @media (min-width: 768px) {
-            .ingredient-item {
-                border-radius: 16px;
-                padding: 15px;
-                gap: 15px;
-            }
+            margin-bottom: 8px;
         }
 
         .ingredient-item:hover {
@@ -809,15 +567,6 @@
             flex-shrink: 0;
         }
 
-        @media (min-width: 768px) {
-            .ingredient-check {
-                width: 24px;
-                height: 24px;
-                border-radius: 8px;
-                font-size: 0.8rem;
-            }
-        }
-
         .ingredient-item.selected .ingredient-check {
             background: #f97316;
             border-color: #f97316;
@@ -827,7 +576,6 @@
             color: white;
         }
 
-        /* Ingredient Image */
         .ingredient-image {
             width: 45px;
             height: 45px;
@@ -841,14 +589,6 @@
             border: 1px solid #e2e8f0;
         }
 
-        @media (min-width: 768px) {
-            .ingredient-image {
-                width: 55px;
-                height: 55px;
-                border-radius: 12px;
-            }
-        }
-
         .ingredient-image img {
             width: 100%;
             height: 100%;
@@ -858,12 +598,6 @@
         .ingredient-image i {
             font-size: 1.5rem;
             color: #f97316;
-        }
-
-        @media (min-width: 768px) {
-            .ingredient-image i {
-                font-size: 1.8rem;
-            }
         }
 
         .ingredient-info {
@@ -881,24 +615,11 @@
             text-overflow: ellipsis;
         }
 
-        @media (min-width: 768px) {
-            .ingredient-name {
-                font-size: 1rem;
-                margin-bottom: 5px;
-            }
-        }
-
         .ingredient-category {
             font-size: 0.7rem;
             color: #94a3b8;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-        }
-
-        @media (min-width: 768px) {
-            .ingredient-category {
-                font-size: 0.75rem;
-            }
         }
 
         .ingredient-price {
@@ -912,92 +633,23 @@
             border-radius: 20px;
         }
 
-        @media (min-width: 768px) {
-            .ingredient-price {
-                font-size: 1.1rem;
-                padding: 6px 12px;
-            }
-        }
-
-        /* Special Instructions */
-        .instructions-section {
-            margin-bottom: 20px;
-        }
-
-        @media (min-width: 768px) {
-            .instructions-section {
-                margin-bottom: 25px;
-            }
-        }
-
-        .instructions-input {
+        .instructions-section, .name-section { margin-bottom: 20px; }
+        .instructions-input, .name-input {
             width: 100%;
             padding: 12px;
             border: 2px solid #e2e8f0;
             border-radius: 12px;
             font-size: 0.85rem;
-            resize: vertical;
-            min-height: 80px;
             transition: all 0.3s;
             background: #f8fafc;
         }
-
-        @media (min-width: 768px) {
-            .instructions-input {
-                padding: 15px;
-                border-radius: 16px;
-                font-size: 0.95rem;
-                min-height: 100px;
-            }
-        }
-
-        .instructions-input:focus {
+        .instructions-input:focus, .name-input:focus {
             outline: none;
             border-color: #f97316;
             background: white;
             box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.1);
         }
-
-        /* Name Section */
-        .name-section {
-            margin-bottom: 20px;
-        }
-
-        @media (min-width: 768px) {
-            .name-section {
-                margin-bottom: 25px;
-            }
-        }
-
-        .name-input {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
-            font-size: 0.9rem;
-            transition: all 0.3s;
-            background: #f8fafc;
-        }
-
-        @media (min-width: 768px) {
-            .name-input {
-                padding: 15px;
-                border-radius: 16px;
-                font-size: 1rem;
-            }
-        }
-
-        .name-input:focus {
-            outline: none;
-            border-color: #f97316;
-            background: white;
-            box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.1);
-        }
-
-        .name-input.error {
-            border-color: #ef4444;
-        }
-
+        .name-input.error { border-color: #ef4444; }
         .name-hint {
             font-size: 0.7rem;
             color: #94a3b8;
@@ -1006,34 +658,13 @@
             align-items: center;
             gap: 4px;
         }
-
-        @media (min-width: 768px) {
-            .name-hint {
-                font-size: 0.8rem;
-                margin-top: 5px;
-                gap: 4px;
-            }
-        }
-
-        .name-hint i {
-            color: #f97316;
-        }
-
-        /* Action Buttons */
         .action-buttons {
             display: flex;
             flex-direction: column;
             gap: 10px;
             margin-top: 20px;
         }
-
-        @media (min-width: 480px) {
-            .action-buttons {
-                flex-direction: row;
-                gap: 12px;
-            }
-        }
-
+        @media (min-width: 480px) { .action-buttons { flex-direction: row; } }
         .btn {
             padding: 12px 16px;
             border: none;
@@ -1048,59 +679,11 @@
             gap: 8px;
             flex: 1;
         }
-
-        @media (min-width: 768px) {
-            .btn {
-                padding: 14px 20px;
-                font-size: 0.95rem;
-            }
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #f97316, #e67e22);
-            color: white;
-            box-shadow: 0 8px 20px rgba(249, 115, 22, 0.3);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 30px rgba(249, 115, 22, 0.4);
-        }
-
-        .btn-secondary {
-            background: #f1f5f9;
-            color: #64748b;
-        }
-
-        .btn-secondary:hover {
-            background: #e2e8f0;
-            transform: translateY(-2px);
-        }
-
-        .btn-success {
-            background: linear-gradient(135deg, #10b981, #059669);
-            color: white;
-            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
-        }
-
-        .btn-success:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 30px rgba(16, 185, 129, 0.4);
-        }
-
-        .btn-large {
-            padding: 14px 20px;
-            font-size: 0.95rem;
-        }
-
-        @media (min-width: 768px) {
-            .btn-large {
-                padding: 16px 24px;
-                font-size: 1.1rem;
-            }
-        }
-
-        /* Success Actions */
+        .btn-primary { background: linear-gradient(135deg, #f97316, #e67e22); color: white; box-shadow: 0 8px 20px rgba(249, 115, 22, 0.3); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(249, 115, 22, 0.4); }
+        .btn-secondary { background: #f1f5f9; color: #64748b; }
+        .btn-secondary:hover { background: #e2e8f0; transform: translateY(-2px); }
+        .btn-success { background: linear-gradient(135deg, #10b981, #059669); color: white; box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3); }
         .success-actions {
             grid-column: 1 / -1;
             display: flex;
@@ -1112,44 +695,9 @@
             box-shadow: 0 20px 40px rgba(0,0,0,0.03);
             text-align: center;
         }
-
-        @media (min-width: 480px) {
-            .success-actions {
-                flex-direction: row;
-                justify-content: center;
-                padding: 30px;
-                border-radius: 24px;
-            }
-        }
-
-        .success-icon {
-            font-size: 2.5rem;
-            color: #10b981;
-            margin-bottom: 10px;
-        }
-
-        @media (min-width: 768px) {
-            .success-icon {
-                font-size: 3rem;
-                margin-bottom: 15px;
-            }
-        }
-
-        .success-message {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: #1e293b;
-            margin-bottom: 15px;
-        }
-
-        @media (min-width: 768px) {
-            .success-message {
-                font-size: 1.3rem;
-                margin-bottom: 20px;
-            }
-        }
-
-        /* Message Toast */
+        @media (min-width: 480px) { .success-actions { flex-direction: row; justify-content: center; } }
+        .success-icon { font-size: 2.5rem; color: #10b981; }
+        .success-message { font-size: 1.1rem; font-weight: 700; color: #1e293b; }
         .message {
             position: fixed;
             top: 16px;
@@ -1166,592 +714,304 @@
             font-weight: 600;
             font-size: 0.85rem;
         }
-
-        @media (min-width: 768px) {
-            .message {
-                top: 30px;
-                right: 30px;
-                left: auto;
-                padding: 15px 25px;
-                font-size: 0.95rem;
-            }
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
-        .message.success {
-            border-left-color: #10b981;
-            color: #065f46;
-        }
-
-        .message.error {
-            border-left-color: #ef4444;
-            color: #991b1b;
-        }
-
-        .message.info {
-            border-left-color: #f97316;
-            color: #9a3412;
-        }
-
-        /* Empty States */
-        .empty-state {
-            text-align: center;
-            padding: 30px 16px;
-            color: #94a3b8;
-        }
-
-        @media (min-width: 768px) {
-            .empty-state {
-                padding: 40px 20px;
-            }
-        }
-
-        .empty-state i {
-            font-size: 2.5rem;
-            margin-bottom: 12px;
-            opacity: 0.3;
-        }
-
-        @media (min-width: 768px) {
-            .empty-state i {
-                font-size: 3rem;
-                margin-bottom: 15px;
-            }
-        }
+        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        .message.success { border-left-color: #10b981; color: #065f46; }
+        .message.error { border-left-color: #ef4444; color: #991b1b; }
+        .message.info { border-left-color: #f97316; color: #9a3412; }
+        .empty-state { text-align: center; padding: 30px 16px; color: #94a3b8; }
     </style>
 </head>
 <body>
     <header>
         <div class="logo-top" onclick="goToHome()">
-            <div class="mini-logo-card">
-                <img src="https://img.icons8.com/ios-filled/50/ffffff/cutlery.png" alt="Logo">
-            </div>
+            <div class="mini-logo-card"><img src="https://img.icons8.com/ios-filled/50/ffffff/cutlery.png" alt="Logo"></div>
             <strong>Meal Craft</strong>
         </div>
-        <button class="cart-btn" onclick="goToCart()">
-            <i class="fas fa-shopping-cart"></i> <span id="cartCount">0</span>
-        </button>
+        <button class="cart-btn" onclick="goToCart()"><i class="fas fa-shopping-cart"></i> <span id="cartCount">0</span></button>
     </header>
-
     <main class="content-wrapper">
         <div class="craft-container">
-            <!-- Loading State -->
-            <div id="loadingState" class="loading-state">
-                <div class="spinner"></div>
-                <p style="color: #64748b;">Preparing your meal...</p>
-            </div>
-
-            <!-- Preview Card -->
+            <div id="loadingState" class="loading-state"><div class="spinner"></div><p>Preparing your meal...</p></div>
             <div id="previewCard" class="preview-card" style="display: none;">
-                <div class="preview-header">
-                    <h2><i class="fas fa-eye"></i> Your Creation</h2>
-                </div>
+                <div class="preview-header"><h2><i class="fas fa-eye"></i> Your Creation</h2></div>
                 <div class="preview-content">
-                    <div class="meal-image-wrapper">
-                        <div class="meal-image" id="previewImage">
-                            <img id="previewImageSrc" src="" alt="Meal" style="display: none;">
-                            <i class="fas fa-utensils"></i>
-                            <span class="meal-type-badge" id="mealTypeBadge">🌱 VEG</span>
-                        </div>
-                    </div>
-
-                    <div class="meal-info">
-                        <h1 class="meal-name" id="previewMealName">Loading...</h1>
-                        <p class="meal-description" id="previewMealDesc"></p>
-                    </div>
-
-                    <div class="price-summary">
-                        <div class="price-row">
-                            <span class="price-label">Base Price</span>
-                            <span class="price-value" id="basePriceDisplay">₹0</span>
-                        </div>
-                        <div class="price-row">
-                            <span class="price-label">Add-ons Total</span>
-                            <span class="price-value highlight" id="addonsTotalDisplay">+₹0</span>
-                        </div>
-                        <div class="price-row total-row">
-                            <span class="total-label">Total</span>
-                            <span class="total-value" id="previewTotalPrice">₹0</span>
-                        </div>
-                    </div>
-
-                    <div class="selected-section">
-                        <div class="selected-header">
-                            <i class="fas fa-check-circle"></i>
-                            <h3>Selected Ingredients</h3>
-                        </div>
-                        <div id="selectedIngredientsPreview" class="selected-tags">
-                            <span class="empty-selected">No ingredients selected yet</span>
-                        </div>
-                    </div>
-
-                    <div id="specialInstructionsPreview" style="margin-top: 15px; display: none;">
-                        <div class="selected-header">
-                            <i class="fas fa-utensil-spoon"></i>
-                            <h3>Special Instructions</h3>
-                        </div>
-                        <div style="background: #f8fafc; padding: 12px; border-radius: 10px; color: #64748b; font-size: 0.85rem;" id="previewInstructions"></div>
-                    </div>
+                    <div class="meal-image-wrapper"><div class="meal-image" id="previewImage"><img id="previewImageSrc" src="" alt="Meal" style="display: none;"><i class="fas fa-utensils"></i><span class="meal-type-badge" id="mealTypeBadge">🌱 VEG</span></div></div>
+                    <div class="meal-info"><h1 class="meal-name" id="previewMealName">Loading...</h1><p class="meal-description" id="previewMealDesc"></p></div>
+                    <div class="price-summary"><div class="price-row"><span class="price-label">Base Price</span><span class="price-value" id="basePriceDisplay">₹0</span></div><div class="price-row"><span class="price-label">Add-ons Total</span><span class="price-value highlight" id="addonsTotalDisplay">+₹0</span></div><div class="price-row total-row"><span class="total-label">Total</span><span class="total-value" id="previewTotalPrice">₹0</span></div></div>
+                    <div class="selected-section"><div class="selected-header"><i class="fas fa-check-circle"></i><h3>Selected Ingredients <span style="font-size:0.7rem; font-weight:normal;">(1 per category, except Other)</span></h3></div><div id="selectedIngredientsPreview" class="selected-tags"><span class="empty-selected">No ingredients selected yet</span></div></div>
+                    <div id="specialInstructionsPreview" style="margin-top: 15px; display: none;"><div class="selected-header"><i class="fas fa-utensil-spoon"></i><h3>Special Instructions</h3></div><div style="background: #f8fafc; padding: 12px; border-radius: 10px; color: #64748b; font-size: 0.85rem;" id="previewInstructions"></div></div>
                 </div>
             </div>
-
-            <!-- Customization Card -->
             <div id="customizationCard" class="customization-card" style="display: none;">
-                <div class="customization-header">
-                    <h2><i class="fas fa-magic"></i> Customize Your Meal</h2>
-                </div>
+                <div class="customization-header"><h2><i class="fas fa-magic"></i> Customize Your Meal</h2></div>
                 <div class="customization-content">
-                    <div class="base-info-card">
-                        <span class="base-info-label">Base Price</span>
-                        <span class="base-info-value" id="basePriceValue">₹0</span>
-                    </div>
-
-                    <div class="ingredients-section">
-                        <h3 class="section-subtitle">
-                            <i class="fas fa-carrot"></i>
-                            Add Ingredients
-                        </h3>
-                        <div id="ingredientsGrid" class="ingredients-grid">
-                            <!-- Ingredients will be loaded here -->
-                        </div>
-                    </div>
-
-                    <div class="instructions-section">
-                        <h3 class="section-subtitle">
-                            <i class="fas fa-utensil-spoon"></i>
-                            Special Instructions
-                        </h3>
-                        <textarea id="specialInstructions" class="instructions-input" 
-                            placeholder="E.g., Extra crispy, less spicy, no onions, etc."></textarea>
-                    </div>
-
-                    <div class="name-section">
-                        <h3 class="section-subtitle">
-                            <i class="fas fa-tag"></i>
-                            Name Your Creation
-                        </h3>
-                        <input type="text" id="customName" class="name-input" 
-                            placeholder="e.g., My Special Pizza" maxlength="50">
-                        <div class="name-hint">
-                            <i class="fas fa-info-circle"></i>
-                            Give your creation a unique name
-                        </div>
-                    </div>
-
-                    <div class="action-buttons">
-                        <button class="btn btn-secondary" onclick="goToHome()">
-                            <i class="fas fa-times"></i> Cancel
-                        </button>
-                        <button class="btn btn-primary" onclick="addToCart()">
-                            <i class="fas fa-shopping-cart"></i> Add to Cart
-                        </button>
-                    </div>
+                    <div class="base-info-card"><span class="base-info-label">Base Price</span><span class="base-info-value" id="basePriceValue">₹0</span></div>
+                    <div class="ingredients-section"><h3 class="section-subtitle"><i class="fas fa-carrot"></i> Add Ingredients <span style="font-size:0.8rem; color:#f97316;">(1 per category, "Other" allows multiple)</span></h3><div id="ingredientsGrid" class="ingredients-grid"></div></div>
+                    <div class="instructions-section"><h3 class="section-subtitle"><i class="fas fa-utensil-spoon"></i> Special Instructions</h3><textarea id="specialInstructions" class="instructions-input" placeholder="E.g., Extra crispy, less spicy, no onions, etc."></textarea></div>
+                    <div class="name-section"><h3 class="section-subtitle"><i class="fas fa-tag"></i> Name Your Creation</h3><input type="text" id="customName" class="name-input" placeholder="e.g., My Special Pizza" maxlength="50"><div class="name-hint"><i class="fas fa-info-circle"></i> Give your creation a unique name</div></div>
+                    <div class="action-buttons"><button class="btn btn-secondary" onclick="goToHome()"><i class="fas fa-times"></i> Cancel</button><button class="btn btn-primary" onclick="addToCart()"><i class="fas fa-shopping-cart"></i> Add to Cart</button></div>
                 </div>
             </div>
-
-            <!-- Success Actions -->
-            <div id="successActions" class="success-actions" style="display: none;">
-                <div class="success-icon">
-                    <i class="fas fa-check-circle"></i>
-                </div>
-                <div class="success-message">
-                    Added to Cart Successfully!
-                </div>
-                <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
-                    <button class="btn btn-success btn-large" onclick="viewCart()">
-                        <i class="fas fa-shopping-cart"></i> View Cart
-                    </button>
-                    <button class="btn btn-primary btn-large" onclick="craftAnother()">
-                        <i class="fas fa-plus"></i> Craft Another
-                    </button>
-                </div>
-            </div>
+            <div id="successActions" class="success-actions" style="display: none;"><div class="success-icon"><i class="fas fa-check-circle"></i></div><div class="success-message">Added to Cart Successfully!</div><div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;"><button class="btn btn-success btn-large" onclick="viewCart()"><i class="fas fa-shopping-cart"></i> View Cart</button><button class="btn btn-primary btn-large" onclick="craftAnother()"><i class="fas fa-plus"></i> Craft Another</button></div></div>
         </div>
     </main>
-
-    <!-- Message Toast -->
     <div id="message" class="message"></div>
-
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getFirestore, doc, getDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyAT4CDao7eHCFU0OO_dee_m6BpjzKv_308",
-            authDomain: "mealcraft-9db35.firebaseapp.com",
-            projectId: "mealcraft-9db35",
-            messagingSenderId: "1052912873454",
-            appId: "1:1052912873454:web:2b794eb8e9524f0ba068ff"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-
-        let currentUser = null;
-        let currentMeal = null;
-        let allIngredients = [];
-        let selectedIngredients = new Set();
-        let basePrice = 0;
-
-        // Get meal ID from URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const mealId = urlParams.get('id');
-
-        // Check authentication
-        onAuthStateChanged(auth, (user) => {
-            if (!user) {
-                window.location.href = '../login.html';
-                return;
-            }
-            currentUser = user;
-            loadMealData();
-            updateCartCount();
-        });
-
-        // Update cart count
-        const updateCartCount = () => {
-            try {
-                const allCarts = JSON.parse(localStorage.getItem('carts')) || {};
-                const userCart = allCarts[currentUser?.uid] || [];
-                document.getElementById('cartCount').textContent = userCart.length;
-            } catch (error) {
-                console.error('Error updating cart count:', error);
-            }
-        };
-
-        // Load meal data
+        
+        const firebaseConfig = { apiKey: "AIzaSyAT4CDao7eHCFU0OO_dee_m6BpjzKv_308", authDomain: "mealcraft-9db35.firebaseapp.com", projectId: "mealcraft-9db35", messagingSenderId: "1052912873454", appId: "1:1052912873454:web:2b794eb8e9524f0ba068ff" };
+        const app = initializeApp(firebaseConfig); const auth = getAuth(app); const db = getFirestore(app);
+        
+        let currentUser = null, currentMeal = null, allIngredients = [], selectedIngredients = new Set(), basePrice = 0;
+        let categorySelectionMap = new Map(); // For non-Other categories, store selected ingredient id
+        let otherCategorySelections = new Set(); // For "Other" category, store multiple selections
+        const OTHER_CATEGORY = "Other";
+        const urlParams = new URLSearchParams(window.location.search); const mealId = urlParams.get('id');
+        
+        onAuthStateChanged(auth, (user) => { if (!user) { window.location.href = '../login.html'; return; } currentUser = user; loadMealData(); updateCartCount(); });
+        
+        const updateCartCount = () => { try { const allCarts = JSON.parse(localStorage.getItem('carts')) || {}; const userCart = allCarts[currentUser?.uid] || []; document.getElementById('cartCount').textContent = userCart.length; } catch(e) { console.error(e); } };
+        
         const loadMealData = async () => {
-            if (!mealId) {
-                showMessage('No meal selected', 'error');
-                setTimeout(() => window.location.href = 'home.html', 2000);
-                return;
-            }
-
+            if (!mealId) { showMessage('No meal selected', 'error'); setTimeout(() => window.location.href = 'home.html', 2000); return; }
             try {
-                // Load meal details
                 const mealDoc = await getDoc(doc(db, 'meals', mealId));
-                if (!mealDoc.exists()) {
-                    showMessage('Meal not found', 'error');
-                    setTimeout(() => window.location.href = 'home.html', 2000);
-                    return;
-                }
-
-                currentMeal = { id: mealDoc.id, ...mealDoc.data() };
-                basePrice = currentMeal.price || 0;
-
-                // Update preview
+                if (!mealDoc.exists()) { showMessage('Meal not found', 'error'); setTimeout(() => window.location.href = 'home.html', 2000); return; }
+                currentMeal = { id: mealDoc.id, ...mealDoc.data() }; basePrice = currentMeal.price || 0;
                 document.getElementById('previewMealName').textContent = currentMeal.name;
                 document.getElementById('previewMealDesc').textContent = currentMeal.description;
-                document.getElementById('mealTypeBadge').textContent = 
-                    currentMeal.type === 'veg' ? '🌱 VEG' : '🍗 NON-VEG';
+                document.getElementById('mealTypeBadge').textContent = currentMeal.type === 'veg' ? '🌱 VEG' : '🍗 NON-VEG';
+                document.getElementById('basePriceDisplay').textContent = `₹${basePrice}`; document.getElementById('basePriceValue').textContent = `₹${basePrice}`;
                 
-                document.getElementById('basePriceDisplay').textContent = `₹${basePrice}`;
-                document.getElementById('basePriceValue').textContent = `₹${basePrice}`;
+                const previewImg = document.getElementById('previewImageSrc'); const previewIcon = document.querySelector('#previewImage i:not(#mealTypeBadge)');
+                const imageName = currentMeal.name.toLowerCase().replace(/\s+/g, '_'); previewImg.src = `../assets/meals/${imageName}.png`;
+                previewImg.onload = () => { previewImg.style.display = 'block'; previewIcon.style.display = 'none'; };
+                previewImg.onerror = () => { previewImg.style.display = 'none'; previewIcon.style.display = 'flex'; const cat = currentMeal.category; if(cat === 'Pizza') previewIcon.className = 'fas fa-pizza-slice'; else if(cat === 'Burger') previewIcon.className = 'fas fa-hamburger'; else previewIcon.className = 'fas fa-utensils'; };
                 
-                // Set preview image
-                const previewImage = document.getElementById('previewImage');
-                const previewImg = document.getElementById('previewImageSrc');
-                const previewIcon = previewImage.querySelector('i:not(#mealTypeBadge)');
+                const ingredientsSnapshot = await getDocs(collection(db, 'ingredients')); allIngredients = []; ingredientsSnapshot.forEach(doc => allIngredients.push({ id: doc.id, ...doc.data() }));
+                const mealIngQuery = query(collection(db, 'mealIngredients'), where('mealId', '==', mealId)); const mealIngSnapshot = await getDocs(mealIngQuery);
+                const availableIngredientIds = new Set(); mealIngSnapshot.forEach(doc => availableIngredientIds.add(doc.data().ingredientId));
+                const availableIngredients = allIngredients.filter(ing => availableIngredientIds.has(ing.id));
                 
-                // Create image path from meal name
-                const imageName = currentMeal.name.toLowerCase().replace(/\s+/g, '_');
-                const imagePath = `../assets/meals/${imageName}.png`;
-                
-                previewImg.src = imagePath;
-                previewImg.onload = () => {
-                    previewImg.style.display = 'block';
-                    previewIcon.style.display = 'none';
-                };
-                previewImg.onerror = () => {
-                    previewImg.style.display = 'none';
-                    previewIcon.style.display = 'flex';
-                    
-                    // Set appropriate icon
-                    if (currentMeal.category === 'Pizza') {
-                        previewIcon.className = 'fas fa-pizza-slice';
-                    } else if (currentMeal.category === 'Burger') {
-                        previewIcon.className = 'fas fa-hamburger';
-                    } else if (currentMeal.category === 'Pasta') {
-                        previewIcon.className = 'fas fa-utensils';
-                    } else {
-                        previewIcon.className = 'fas fa-utensils';
-                    }
-                };
-
-                // Load all ingredients
-                const ingredientsSnapshot = await getDocs(collection(db, 'ingredients'));
-                allIngredients = [];
-                ingredientsSnapshot.forEach(doc => {
-                    allIngredients.push({ id: doc.id, ...doc.data() });
-                });
-
-                // Load meal ingredients relationships
-                const mealIngQuery = query(
-                    collection(db, 'mealIngredients'),
-                    where('mealId', '==', mealId)
-                );
-                const mealIngSnapshot = await getDocs(mealIngQuery);
-                
-                const availableIngredientIds = new Set();
-                mealIngSnapshot.forEach(doc => {
-                    availableIngredientIds.add(doc.data().ingredientId);
-                });
-
-                const availableIngredients = allIngredients.filter(ing => 
-                    availableIngredientIds.has(ing.id)
-                );
-
-                displayIngredients(availableIngredients);
-                
-                document.getElementById('loadingState').style.display = 'none';
-                document.getElementById('previewCard').style.display = 'block';
-                document.getElementById('customizationCard').style.display = 'block';
-
+                displayIngredientsByCategory(availableIngredients);
+                document.getElementById('loadingState').style.display = 'none'; document.getElementById('previewCard').style.display = 'block'; document.getElementById('customizationCard').style.display = 'block';
                 updateTotal();
-
-            } catch (error) {
-                console.error('Error loading meal:', error);
-                showMessage('Error loading meal', 'error');
-            }
+            } catch(error) { console.error(error); showMessage('Error loading meal', 'error'); }
         };
-
-        // Display ingredients with images - VERTICAL ONLY
-        const displayIngredients = (ingredients) => {
+        
+        const displayIngredientsByCategory = (ingredients) => {
             const container = document.getElementById('ingredientsGrid');
-            
-            if (ingredients.length === 0) {
-                container.innerHTML = '<div class="empty-state">No ingredients available</div>';
-                return;
-            }
-
-            let html = '';
-            ingredients.forEach(ing => {
-                // Create ingredient image path
-                const ingImageName = ing.name.toLowerCase().replace(/\s+/g, '_');
-                const ingImagePath = `../assets/Ingredients/${ingImageName}.png`;
-                
-                // Determine icon based on category
-                let iconClass = 'fa-leaf';
-                if (ing.category) {
-                    const category = ing.category.toLowerCase();
-                    if (category.includes('cheese')) iconClass = 'fa-cheese';
-                    else if (category.includes('vegetable')) iconClass = 'fa-carrot';
-                    else if (category.includes('meat') || category.includes('chicken')) iconClass = 'fa-drumstick-bite';
-                    else if (category.includes('sauce')) iconClass = 'fa-pepper-hot';
-                }
-                
-                html += `
-                    <div class="ingredient-item" id="ingredient-${ing.id}" onclick="toggleIngredient('${ing.id}')">
-                        <div class="ingredient-check" id="check-${ing.id}">
-                            <i class="fas fa-check" style="opacity: 0;"></i>
-                        </div>
-                        <div class="ingredient-image">
-                            <img src="${ingImagePath}" alt="${ing.name}" 
-                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-                                 onload="this.style.display='block'">
-                            <i class="fas ${iconClass}" style="display: none;"></i>
-                        </div>
-                        <div class="ingredient-info">
-                            <div class="ingredient-name">${ing.name}</div>
-                            <div class="ingredient-category">${ing.category}</div>
-                        </div>
-                        <div class="ingredient-price">+₹${ing.price}</div>
-                    </div>
-                `;
+            if (!ingredients.length) { container.innerHTML = '<div class="empty-state">No ingredients available</div>'; return; }
+            const grouped = {};
+            ingredients.forEach(ing => { 
+                let cat = ing.category || 'Other';
+                // Normalize category names to handle case sensitivity
+                if (cat !== 'Other' && cat !== 'other' && cat !== 'OTHER') cat = ing.category;
+                else cat = 'Other';
+                if (!grouped[cat]) grouped[cat] = [];
+                grouped[cat].push(ing);
             });
             
+            // Sort categories: put "Other" at the end, others alphabetically
+            const categories = Object.keys(grouped).sort((a, b) => {
+                if (a === 'Other') return 1;
+                if (b === 'Other') return -1;
+                return a.localeCompare(b);
+            });
+            
+            let html = '';
+            categories.forEach(category => {
+                const isOtherCategory = (category === 'Other');
+                const limitText = isOtherCategory ? '✨ Select multiple' : '⚠️ Select only 1';
+                const limitClass = isOtherCategory ? 'multiple' : '';
+                
+                html += `<div class="ingredient-category-group" data-category="${category}">
+                    <div class="category-group-title">
+                        <span><i class="fas fa-tag"></i> ${category}</span>
+                        <span class="category-select-limit ${limitClass}">${limitText}</span>
+                    </div>`;
+                grouped[category].forEach(ing => {
+                    const ingImageName = ing.name.toLowerCase().replace(/\s+/g, '_');
+                    const ingImagePath = `../assets/Ingredients/${ingImageName}.png`;
+                    let iconClass = 'fa-leaf';
+                    const catLower = (ing.category || '').toLowerCase();
+                    if (catLower.includes('cheese')) iconClass = 'fa-cheese';
+                    else if (catLower.includes('vegetable')) iconClass = 'fa-carrot';
+                    else if (catLower.includes('meat') || catLower.includes('chicken')) iconClass = 'fa-drumstick-bite';
+                    else if (catLower.includes('sauce')) iconClass = 'fa-pepper-hot';
+                    const isSelected = selectedIngredients.has(ing.id);
+                    html += `<div class="ingredient-item ${isSelected ? 'selected' : ''}" id="ingredient-${ing.id}" data-category="${category}" data-is-other="${isOtherCategory}" onclick="toggleIngredientWithRules('${ing.id}', '${category}', ${isOtherCategory})">
+                        <div class="ingredient-check" id="check-${ing.id}"><i class="fas fa-check" style="opacity: ${isSelected ? '1' : '0'};"></i></div>
+                        <div class="ingredient-image"><img src="${ingImagePath}" alt="${ing.name}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" onload="this.style.display='block'"><i class="fas ${iconClass}" style="display: none;"></i></div>
+                        <div class="ingredient-info"><div class="ingredient-name">${ing.name}</div><div class="ingredient-category">${ing.category || 'Ingredient'}</div></div>
+                        <div class="ingredient-price">+₹${ing.price}</div>
+                    </div>`;
+                });
+                html += `</div>`;
+            });
             container.innerHTML = html;
         };
-
-        // Toggle ingredient
-        window.toggleIngredient = (ingredientId) => {
-            const card = document.getElementById(`ingredient-${ingredientId}`);
-            const check = document.getElementById(`check-${ingredientId}`).querySelector('i');
-            
-            if (selectedIngredients.has(ingredientId)) {
-                selectedIngredients.delete(ingredientId);
-                card.classList.remove('selected');
-                check.style.opacity = '0';
+        
+        // Toggle with category rules: Other category allows multiple, others only 1 per category
+        window.toggleIngredientWithRules = (ingredientId, category, isOtherCategory) => {
+            if (isOtherCategory) {
+                // OTHER CATEGORY: Allow multiple selections
+                if (selectedIngredients.has(ingredientId)) {
+                    // Remove this ingredient
+                    selectedIngredients.delete(ingredientId);
+                    otherCategorySelections.delete(ingredientId);
+                    updateIngredientUI(ingredientId, false);
+                    showMessage(`Removed ${getIngredientName(ingredientId)} from ${category}`, 'info');
+                } else {
+                    // Add new ingredient
+                    selectedIngredients.add(ingredientId);
+                    otherCategorySelections.add(ingredientId);
+                    updateIngredientUI(ingredientId, true);
+                    showMessage(`Added ${getIngredientName(ingredientId)} to ${category}`, 'success');
+                }
             } else {
-                selectedIngredients.add(ingredientId);
-                card.classList.add('selected');
-                check.style.opacity = '1';
+                // NON-OTHER CATEGORIES: Only 1 per category
+                const currentlySelectedForCategory = categorySelectionMap.get(category);
+                
+                if (selectedIngredients.has(ingredientId)) {
+                    // Remove this ingredient
+                    selectedIngredients.delete(ingredientId);
+                    categorySelectionMap.delete(category);
+                    updateIngredientUI(ingredientId, false);
+                    showMessage(`Removed from ${category}`, 'info');
+                } else {
+                    // Check if category already has a selection
+                    if (currentlySelectedForCategory) {
+                        // Replace: remove existing, add new
+                        const existingId = currentlySelectedForCategory;
+                        selectedIngredients.delete(existingId);
+                        updateIngredientUI(existingId, false);
+                        showMessage(`Replaced ${getIngredientName(existingId)} with new choice in ${category}`, 'info');
+                    }
+                    // Add new ingredient
+                    selectedIngredients.add(ingredientId);
+                    categorySelectionMap.set(category, ingredientId);
+                    updateIngredientUI(ingredientId, true);
+                    showMessage(`Added ${getIngredientName(ingredientId)} to ${category}`, 'success');
+                }
             }
-            
             updatePreview();
             updateTotal();
         };
-
-        // Update preview
+        
+        const updateIngredientUI = (ingredientId, isSelected) => {
+            const item = document.getElementById(`ingredient-${ingredientId}`);
+            const check = document.getElementById(`check-${ingredientId}`)?.querySelector('i');
+            if (item) {
+                if (isSelected) {
+                    item.classList.add('selected');
+                    if (check) check.style.opacity = '1';
+                } else {
+                    item.classList.remove('selected');
+                    if (check) check.style.opacity = '0';
+                }
+            }
+        };
+        
+        const getIngredientName = (id) => { const ing = allIngredients.find(i => i.id === id); return ing ? ing.name : 'Ingredient'; };
+        
         const updatePreview = () => {
             const previewContainer = document.getElementById('selectedIngredientsPreview');
             const selectedIngs = allIngredients.filter(ing => selectedIngredients.has(ing.id));
-            
             if (selectedIngs.length === 0) {
                 previewContainer.innerHTML = '<span class="empty-selected">No ingredients selected yet</span>';
                 document.getElementById('addonsTotalDisplay').textContent = '+₹0';
                 return;
             }
-
-            let tagsHtml = '';
-            let addonsTotal = 0;
-            
+            let tagsHtml = '', addonsTotal = 0;
             selectedIngs.forEach(ing => {
-                tagsHtml += `
-                    <span class="selected-tag">
-                        <i class="fas fa-check-circle"></i> ${ing.name}
-                        <span class="tag-price">+₹${ing.price}</span>
-                        <span class="remove-tag" onclick="removeIngredient('${ing.id}', event)">
-                            <i class="fas fa-times"></i>
-                        </span>
-                    </span>
-                `;
+                const isOther = (ing.category === 'Other');
+                tagsHtml += `<span class="selected-tag">
+                    <i class="fas fa-check-circle"></i> ${ing.name} <span class="tag-price">+₹${ing.price}</span>
+                    <span class="remove-tag" onclick="removeIngredientWrapper('${ing.id}', '${ing.category || 'Other'}', event)"><i class="fas fa-times"></i></span>
+                </span>`;
                 addonsTotal += ing.price;
             });
-
             previewContainer.innerHTML = tagsHtml;
             document.getElementById('addonsTotalDisplay').textContent = `+₹${addonsTotal}`;
         };
-
-        // Remove ingredient
-        window.removeIngredient = (ingredientId, event) => {
+        
+        window.removeIngredientWrapper = (ingredientId, category, event) => {
             event.stopPropagation();
-            
             if (selectedIngredients.has(ingredientId)) {
-                const card = document.getElementById(`ingredient-${ingredientId}`);
-                const check = document.getElementById(`check-${ingredientId}`).querySelector('i');
-                
                 selectedIngredients.delete(ingredientId);
-                card.classList.remove('selected');
-                check.style.opacity = '0';
-                
+                if (category === 'Other') {
+                    otherCategorySelections.delete(ingredientId);
+                } else {
+                    if (categorySelectionMap.get(category) === ingredientId) {
+                        categorySelectionMap.delete(category);
+                    }
+                }
+                updateIngredientUI(ingredientId, false);
                 updatePreview();
                 updateTotal();
+                showMessage(`Removed ${getIngredientName(ingredientId)}`, 'info');
             }
         };
-
-        // Update total
-        const updateTotal = () => {
-            let addonsTotal = 0;
-            selectedIngredients.forEach(id => {
-                const ing = allIngredients.find(i => i.id === id);
-                if (ing) addonsTotal += ing.price;
-            });
-            
-            const total = basePrice + addonsTotal;
-            
-            document.getElementById('previewTotalPrice').textContent = `₹${total}`;
-        };
-
-        // Special instructions
+        
+        const updateTotal = () => { let addonsTotal = 0; selectedIngredients.forEach(id => { const ing = allIngredients.find(i => i.id === id); if (ing) addonsTotal += ing.price; }); const total = basePrice + addonsTotal; document.getElementById('previewTotalPrice').textContent = `₹${total}`; };
+        
         document.getElementById('specialInstructions')?.addEventListener('input', function(e) {
             const preview = document.getElementById('specialInstructionsPreview');
             const previewText = document.getElementById('previewInstructions');
-            
-            if (e.target.value.trim()) {
-                preview.style.display = 'block';
-                previewText.textContent = e.target.value;
-            } else {
-                preview.style.display = 'none';
-            }
+            if (e.target.value.trim()) { preview.style.display = 'block'; previewText.textContent = e.target.value; } 
+            else { preview.style.display = 'none'; }
         });
-
-        // Add to cart
+        
         window.addToCart = async () => {
             const customName = document.getElementById('customName').value.trim();
             const specialInstructions = document.getElementById('specialInstructions').value.trim();
-            
-            if (!customName) {
-                document.getElementById('customName').classList.add('error');
-                showMessage('Please name your creation', 'error');
-                return;
-            }
-
+            if (!customName) { document.getElementById('customName').classList.add('error'); showMessage('Please name your creation', 'error'); return; }
             document.getElementById('customName').classList.remove('error');
-
+            
             const selectedIngs = allIngredients.filter(ing => selectedIngredients.has(ing.id));
             const addonsTotal = selectedIngs.reduce((sum, ing) => sum + ing.price, 0);
             const totalPrice = basePrice + addonsTotal;
-
-            // Create image path for meal
             const imageName = currentMeal.name.toLowerCase().replace(/\s+/g, '_');
             const mealImagePath = `../assets/meals/${imageName}.png`;
-
+            
             const customizedMeal = {
                 id: 'cart_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
-                mealId: mealId,
-                mealName: currentMeal.name,
-                mealImage: mealImagePath,
-                customName: customName,
-                basePrice: basePrice,
-                selectedIngredients: selectedIngs.map(ing => ({
-                    id: ing.id,
-                    name: ing.name,
-                    price: ing.price,
-                    category: ing.category,
-                    image: `../assets/Ingredients/${ing.name.toLowerCase().replace(/\s+/g, '_')}.png`
-                })),
-                addonsTotal: addonsTotal,
-                specialInstructions: specialInstructions,
-                totalPrice: totalPrice,
-                userId: currentUser.uid,
-                userEmail: currentUser.email,
-                createdAt: new Date().toISOString()
+                mealId: mealId, mealName: currentMeal.name, mealImage: mealImagePath,
+                customName: customName, basePrice: basePrice,
+                selectedIngredients: selectedIngs.map(ing => ({ id: ing.id, name: ing.name, price: ing.price, category: ing.category, image: `../assets/Ingredients/${ing.name.toLowerCase().replace(/\s+/g, '_')}.png` })),
+                addonsTotal: addonsTotal, specialInstructions: specialInstructions, totalPrice: totalPrice,
+                userId: currentUser.uid, userEmail: currentUser.email, createdAt: new Date().toISOString()
             };
-
+            
             try {
                 const allCarts = JSON.parse(localStorage.getItem('carts')) || {};
                 const userCart = allCarts[currentUser.uid] || [];
-                
                 userCart.push(customizedMeal);
                 allCarts[currentUser.uid] = userCart;
                 localStorage.setItem('carts', JSON.stringify(allCarts));
-                
                 document.getElementById('cartCount').textContent = userCart.length;
-
                 document.getElementById('previewCard').style.display = 'none';
                 document.getElementById('customizationCard').style.display = 'none';
                 document.getElementById('successActions').style.display = 'flex';
-                
                 showMessage('✅ Added to cart!', 'success');
-
-            } catch (error) {
-                console.error('Error saving to cart:', error);
-                showMessage('Error adding to cart', 'error');
-            }
+            } catch(error) { console.error(error); showMessage('Error adding to cart', 'error'); }
         };
-
-        // Navigation
+        
         window.viewCart = () => window.location.href = 'cart.html';
         window.craftAnother = () => window.location.href = 'home.html';
         window.goToHome = () => window.location.href = 'home.html';
         window.goToCart = () => window.location.href = 'cart.html';
-
-        // Show message
+        
         const showMessage = (message, type) => {
             const msgDiv = document.getElementById('message');
-            const icon = type === 'success' ? 'fa-check-circle' : 
-                        type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle';
-            
+            const icon = type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle';
             msgDiv.innerHTML = `<i class="fas ${icon}"></i> ${message}`;
             msgDiv.className = `message ${type}`;
             msgDiv.style.display = 'block';
-            
-            setTimeout(() => {
-                msgDiv.style.display = 'none';
-            }, 3000);
+            setTimeout(() => msgDiv.style.display = 'none', 3000);
         };
     </script>
 </body>
