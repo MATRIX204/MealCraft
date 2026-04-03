@@ -431,27 +431,57 @@
             padding: 16px;
         }
 
-        .base-info-card {
-            background: linear-gradient(135deg, #f8fafc, #ffffff);
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 12px 16px;
-            margin-bottom: 20px;
+        /* Base Options Selector */
+        .base-option-btn {
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: space-between;
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 14px 16px;
+            cursor: pointer;
+            transition: all 0.25s;
+            font-family: inherit;
+            width: 100%;
+            text-align: left;
         }
-
-        .base-info-label {
-            font-weight: 600;
-            color: #64748b;
-            font-size: 0.9rem;
+        .base-option-btn:hover {
+            border-color: #f97316;
+            background: #fff7ed;
         }
-
-        .base-info-value {
+        .base-option-btn.selected {
+            border-color: #f97316;
+            background: linear-gradient(135deg, #fff7ed, #ffedd5);
+            box-shadow: 0 0 0 3px rgba(249,115,22,0.15);
+        }
+        .base-option-name {
             font-weight: 700;
+            color: #1e293b;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .base-option-name .check-icon {
+            width: 20px; height: 20px;
+            border-radius: 50%;
+            border: 2px solid #e2e8f0;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.7rem;
+            color: transparent;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+        .base-option-btn.selected .check-icon {
+            background: #f97316;
+            border-color: #f97316;
+            color: white;
+        }
+        .base-option-price {
+            font-weight: 800;
             color: #f97316;
-            font-size: 1.2rem;
+            font-size: 1rem;
         }
 
         .ingredients-section {
@@ -737,7 +767,20 @@
                 <div class="preview-content">
                     <div class="meal-image-wrapper"><div class="meal-image" id="previewImage"><img id="previewImageSrc" src="" alt="Meal" style="display: none;"><i class="fas fa-utensils"></i><span class="meal-type-badge" id="mealTypeBadge">🌱 VEG</span></div></div>
                     <div class="meal-info"><h1 class="meal-name" id="previewMealName">Loading...</h1><p class="meal-description" id="previewMealDesc"></p></div>
-                    <div class="price-summary"><div class="price-row"><span class="price-label">Base Price</span><span class="price-value" id="basePriceDisplay">₹0</span></div><div class="price-row"><span class="price-label">Add-ons Total</span><span class="price-value highlight" id="addonsTotalDisplay">+₹0</span></div><div class="price-row total-row"><span class="total-label">Total</span><span class="total-value" id="previewTotalPrice">₹0</span></div></div>
+                    <div class="price-summary">
+                        <div class="price-row">
+                            <span class="price-label">Selected Base</span>
+                            <span class="price-value" id="basePriceDisplay">—</span>
+                        </div>
+                        <div class="price-row">
+                            <span class="price-label">Add-ons Total</span>
+                            <span class="price-value highlight" id="addonsTotalDisplay">+₹0</span>
+                        </div>
+                        <div class="price-row total-row">
+                            <span class="total-label">Total</span>
+                            <span class="total-value" id="previewTotalPrice">₹0</span>
+                        </div>
+                    </div>
                     <div class="selected-section"><div class="selected-header"><i class="fas fa-check-circle"></i><h3>Selected Ingredients <span style="font-size:0.7rem; font-weight:normal;">(1 per category, except Other)</span></h3></div><div id="selectedIngredientsPreview" class="selected-tags"><span class="empty-selected">No ingredients selected yet</span></div></div>
                     <div id="specialInstructionsPreview" style="margin-top: 15px; display: none;"><div class="selected-header"><i class="fas fa-utensil-spoon"></i><h3>Special Instructions</h3></div><div style="background: #f8fafc; padding: 12px; border-radius: 10px; color: #64748b; font-size: 0.85rem;" id="previewInstructions"></div></div>
                 </div>
@@ -745,7 +788,13 @@
             <div id="customizationCard" class="customization-card" style="display: none;">
                 <div class="customization-header"><h2><i class="fas fa-magic"></i> Customize Your Meal</h2></div>
                 <div class="customization-content">
-                    <div class="base-info-card"><span class="base-info-label">Base Price</span><span class="base-info-value" id="basePriceValue">₹0</span></div>
+                    <div class="base-options-section" id="baseOptionsSection" style="margin-bottom: 20px;">
+                        <h3 class="section-subtitle"><i class="fas fa-layer-group"></i> Choose Your Base *</h3>
+                        <div id="baseOptionsGrid" style="display: flex; flex-direction: column; gap: 10px;"></div>
+                        <div id="baseOptionError" style="color: #ef4444; font-size: 0.8rem; margin-top: 6px; display: none;">
+                            <i class="fas fa-exclamation-circle"></i> Please select a base option to continue
+                        </div>
+                    </div>
                     <div class="ingredients-section"><h3 class="section-subtitle"><i class="fas fa-carrot"></i> Add Ingredients <span style="font-size:0.8rem; color:#f97316;">(1 per category, "Other" allows multiple)</span></h3><div id="ingredientsGrid" class="ingredients-grid"></div></div>
                     <div class="instructions-section"><h3 class="section-subtitle"><i class="fas fa-utensil-spoon"></i> Special Instructions</h3><textarea id="specialInstructions" class="instructions-input" placeholder="E.g., Extra crispy, less spicy, no onions, etc."></textarea></div>
                     <div class="name-section"><h3 class="section-subtitle"><i class="fas fa-tag"></i> Name Your Creation</h3><input type="text" id="customName" class="name-input" placeholder="e.g., My Special Pizza" maxlength="50"><div class="name-hint"><i class="fas fa-info-circle"></i> Give your creation a unique name</div></div>
@@ -779,11 +828,13 @@
             try {
                 const mealDoc = await getDoc(doc(db, 'meals', mealId));
                 if (!mealDoc.exists()) { showMessage('Meal not found', 'error'); setTimeout(() => window.location.href = 'home.html', 2000); return; }
-                currentMeal = { id: mealDoc.id, ...mealDoc.data() }; basePrice = currentMeal.price || 0;
+                currentMeal = { id: mealDoc.id, ...mealDoc.data() }; basePrice = 0;
                 document.getElementById('previewMealName').textContent = currentMeal.name;
                 document.getElementById('previewMealDesc').textContent = currentMeal.description;
                 document.getElementById('mealTypeBadge').textContent = currentMeal.type === 'veg' ? '🌱 VEG' : '🍗 NON-VEG';
-                document.getElementById('basePriceDisplay').textContent = `₹${basePrice}`; document.getElementById('basePriceValue').textContent = `₹${basePrice}`;
+                document.getElementById('basePriceDisplay').textContent = '—';
+                // Load base options
+                renderBaseOptions(currentMeal.baseOptions || (currentMeal.price ? [{ name: 'Base', price: currentMeal.price }] : []));
                 
                 const previewImg = document.getElementById('previewImageSrc'); const previewIcon = document.querySelector('#previewImage i:not(#mealTypeBadge)');
                 const imageName = currentMeal.name.toLowerCase().replace(/\s+/g, '_'); previewImg.src = `../assets/meals/${imageName}.png`;
@@ -956,7 +1007,52 @@
             }
         };
         
-        const updateTotal = () => { let addonsTotal = 0; selectedIngredients.forEach(id => { const ing = allIngredients.find(i => i.id === id); if (ing) addonsTotal += ing.price; }); const total = basePrice + addonsTotal; document.getElementById('previewTotalPrice').textContent = `₹${total}`; };
+        const renderBaseOptions = (options) => {
+            const grid = document.getElementById('baseOptionsGrid');
+            if (!options || options.length === 0) {
+                grid.innerHTML = '<p style="color: #94a3b8; font-size: 0.85rem;">No base options defined</p>';
+                return;
+            }
+            let html = '';
+            options.forEach((opt, idx) => {
+                html += `
+                    <button class="base-option-btn" id="baseOpt_${idx}" onclick="selectBaseOption(${idx}, '${opt.name}', ${opt.price})">
+                        <div class="base-option-name">
+                            <span class="check-icon"><i class="fas fa-check"></i></span>
+                            ${opt.name}
+                        </div>
+                        <span class="base-option-price">₹${opt.price}</span>
+                    </button>
+                `;
+            });
+            grid.innerHTML = html;
+            // Auto-select first option if only one exists
+            if (options.length === 1) {
+                selectBaseOption(0, options[0].name, options[0].price);
+            }
+        };
+
+        let selectedBaseOptionName = '';
+        window.selectBaseOption = (idx, name, price) => {
+            // Deselect all
+            document.querySelectorAll('.base-option-btn').forEach(btn => btn.classList.remove('selected'));
+            // Select this one
+            const btn = document.getElementById(`baseOpt_${idx}`);
+            if (btn) btn.classList.add('selected');
+            basePrice = price;
+            selectedBaseOptionName = name;
+            document.getElementById('basePriceDisplay').textContent = `${name}: ₹${price}`;
+            document.getElementById('baseOptionError').style.display = 'none';
+            updateTotal();
+        };
+
+        const updateTotal = () => {
+            let addonsTotal = 0;
+            selectedIngredients.forEach(id => { const ing = allIngredients.find(i => i.id === id); if (ing) addonsTotal += ing.price; });
+            const total = basePrice + addonsTotal;
+            document.getElementById('addonsTotalDisplay').textContent = `+₹${addonsTotal}`;
+            document.getElementById('previewTotalPrice').textContent = basePrice > 0 ? `₹${total}` : `₹${addonsTotal} + base`;
+        };
         
         document.getElementById('specialInstructions')?.addEventListener('input', function(e) {
             const preview = document.getElementById('specialInstructionsPreview');
@@ -971,6 +1067,15 @@
             if (!customName) { document.getElementById('customName').classList.add('error'); showMessage('Please name your creation', 'error'); return; }
             document.getElementById('customName').classList.remove('error');
             
+            // Validate base option selected
+            if (!basePrice || basePrice === 0) {
+                document.getElementById('baseOptionError').style.display = 'block';
+                document.getElementById('baseOptionsGrid').scrollIntoView({ behavior: 'smooth' });
+                showMessage('Please select a base option first', 'error');
+                return;
+            }
+            document.getElementById('baseOptionError').style.display = 'none';
+            
             const selectedIngs = allIngredients.filter(ing => selectedIngredients.has(ing.id));
             const addonsTotal = selectedIngs.reduce((sum, ing) => sum + ing.price, 0);
             const totalPrice = basePrice + addonsTotal;
@@ -980,7 +1085,7 @@
             const customizedMeal = {
                 id: 'cart_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
                 mealId: mealId, mealName: currentMeal.name, mealImage: mealImagePath,
-                customName: customName, basePrice: basePrice,
+                customName: customName, basePrice: basePrice, selectedBase: selectedBaseOptionName,
                 selectedIngredients: selectedIngs.map(ing => ({ id: ing.id, name: ing.name, price: ing.price, category: ing.category, image: `../assets/Ingredients/${ing.name.toLowerCase().replace(/\s+/g, '_')}.png` })),
                 addonsTotal: addonsTotal, specialInstructions: specialInstructions, totalPrice: totalPrice,
                 userId: currentUser.uid, userEmail: currentUser.email, createdAt: new Date().toISOString()

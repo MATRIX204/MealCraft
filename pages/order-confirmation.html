@@ -879,6 +879,74 @@
                 padding: 0 10px;
             }
         }
+
+        /* ===== DELIVERY COMPLETE OVERLAY (Customer Screen) ===== */
+        .delivery-complete-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(135deg, #16a34a, #15803d);
+            z-index: 9999;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 30px;
+            animation: greenFadeIn 0.6s ease;
+        }
+        .delivery-complete-overlay.active { display: flex; }
+        @keyframes greenFadeIn {
+            0% { opacity: 0; transform: scale(0.95); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        .delivery-complete-overlay .complete-icon {
+            font-size: 7rem;
+            color: white;
+            margin-bottom: 24px;
+            animation: bounceCheckmark 0.8s ease 0.2s both;
+        }
+        @keyframes bounceCheckmark {
+            0% { transform: scale(0) rotate(-15deg); }
+            60% { transform: scale(1.2) rotate(5deg); }
+            100% { transform: scale(1) rotate(0); }
+        }
+        .delivery-complete-overlay h1 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: white;
+            margin-bottom: 12px;
+            letter-spacing: -1px;
+        }
+        .delivery-complete-overlay p {
+            color: rgba(255,255,255,0.85);
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+        }
+        .delivery-complete-overlay .done-btn {
+            background: white;
+            color: #16a34a;
+            border: none;
+            padding: 18px 60px;
+            border-radius: 60px;
+            font-size: 1.2rem;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+        }
+        .delivery-complete-overlay .done-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+        }
+        /* OTP card pulse when active */
+        .otp-card.active {
+            animation: otpPulse 2s ease infinite;
+        }
+        @keyframes otpPulse {
+            0%, 100% { box-shadow: 0 4px 20px rgba(249,115,22,0.2); }
+            50% { box-shadow: 0 8px 30px rgba(249,115,22,0.4); }
+        }
     </style>
 </head>
 <body>
@@ -903,6 +971,19 @@
     </main>
 
     <div id="message" class="message"></div>
+
+
+    <!-- ===== DELIVERY COMPLETE OVERLAY (Customer) ===== -->
+    <div class="delivery-complete-overlay" id="customerDeliveryComplete">
+        <div class="complete-icon">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <h1>Delivered! 🎉</h1>
+        <p>Your order has been delivered.<br>Enjoy your meal!</p>
+        <button class="done-btn" onclick="document.getElementById('customerDeliveryComplete').classList.remove('active'); window.location.href='home.html'">
+            <i class="fas fa-home"></i> Go Home
+        </button>
+    </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -1165,6 +1246,12 @@
             `;
 
             document.getElementById('loadingState').style.display = 'none';
+            
+            // If already delivered on first load, show overlay
+            if (currentOrder?.status === 'delivered' && !previousStatus) {
+                // Don't show overlay on initial load for already delivered - just show normal UI
+            }
+            previousStatus = currentOrder?.status;
         };
 
         // Clean up listener on page unload

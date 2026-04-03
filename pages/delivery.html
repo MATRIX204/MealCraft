@@ -918,6 +918,178 @@
         input, select, textarea {
             font-size: 16px; /* Prevents zoom on mobile */
         }
+
+        /* ===== GREEN DELIVERY COMPLETE OVERLAY ===== */
+        .delivery-complete-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: #16a34a;
+            z-index: 9999;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            animation: greenPulse 0.5s ease;
+        }
+        .delivery-complete-overlay.active {
+            display: flex;
+        }
+        @keyframes greenPulse {
+            0% { transform: scale(0.9); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .complete-checkmark {
+            font-size: 6rem;
+            color: white;
+            margin-bottom: 24px;
+            animation: bounceIn 0.8s ease 0.2s both;
+        }
+        @keyframes bounceIn {
+            0% { transform: scale(0); }
+            60% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        .complete-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: white;
+            margin-bottom: 12px;
+            letter-spacing: -1px;
+        }
+        .complete-sub {
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.85);
+            margin-bottom: 40px;
+        }
+        .complete-earning {
+            background: rgba(255,255,255,0.2);
+            border: 2px solid rgba(255,255,255,0.4);
+            border-radius: 20px;
+            padding: 20px 40px;
+            margin-bottom: 40px;
+        }
+        .complete-earning .earn-label {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 6px;
+        }
+        .complete-earning .earn-amount {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: white;
+        }
+        .done-btn {
+            background: white;
+            color: #16a34a;
+            border: none;
+            padding: 18px 60px;
+            border-radius: 60px;
+            font-size: 1.2rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+        }
+        .done-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+        }
+        /* ===== ACTIVE DELIVERY BANNER ===== */
+        .active-delivery-banner {
+            display: none;
+            background: linear-gradient(135deg, #1e40af, #3b82f6);
+            color: white;
+            padding: 12px 20px;
+            margin-bottom: 20px;
+            border-radius: 16px;
+            border-left: 4px solid #fbbf24;
+            animation: pulse-blue 2s ease infinite;
+        }
+        @keyframes pulse-blue {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(59,130,246,0.4); }
+            50% { box-shadow: 0 0 0 8px rgba(59,130,246,0); }
+        }
+        .active-delivery-banner.show { display: block; }
+        .active-banner-inner { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+        .active-banner-icon { font-size: 1.5rem; }
+        .active-banner-text strong { font-size: 1rem; display: block; }
+        .active-banner-text span { font-size: 0.85rem; opacity: 0.85; }
+        /* ===== HISTORY PANEL ===== */
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
+        /* ===== STATUS BUSY ===== */
+        .status-busy { background: #fef3c7; color: #92400e; }
+        .busy-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #f59e0b;
+            color: white;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            animation: blink 1.5s ease infinite;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+        .order-card.active-delivery {
+            border-left: 5px solid #f59e0b;
+            background: linear-gradient(to right, #fffbeb, white);
+            box-shadow: 0 4px 20px rgba(245,158,11,0.2);
+        }
+        .start-delivery-btn {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            border: none;
+            padding: 14px 20px;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+        .start-delivery-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(245,158,11,0.4); }
+        /* ===== CURRENT DELIVERY CARD (pinned top) ===== */
+        .current-delivery-section {
+            grid-column: 1/-1;
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            border-radius: 20px;
+            padding: 20px;
+            color: white;
+            margin-bottom: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+        .current-delivery-section::before {
+            content: '';
+            position: absolute;
+            top: -20px; right: -20px;
+            width: 120px; height: 120px;
+            background: rgba(245,158,11,0.15);
+            border-radius: 50%;
+        }
+        .current-del-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .current-del-header h3 { font-size: 1.1rem; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+        .live-badge {
+            background: #ef4444;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            animation: blink 1.5s ease infinite;
+        }
     </style>
 </head>
 <body>
@@ -931,6 +1103,7 @@
                 <i class="fas fa-user"></i>
                 <span id="deliveryName">Loading...</span>
                 <span id="deliveryVehicle" style="background: #334155; padding: 4px 8px; border-radius: 20px; font-size: 0.8rem;"></span>
+                <span id="busyIndicator" class="busy-indicator" style="display:none;"><i class="fas fa-circle"></i> BUSY</span>
             </div>
             <button class="logout-btn" onclick="logout()">
                 <i class="fas fa-sign-out-alt"></i> Logout
@@ -963,8 +1136,9 @@
         </div>
 
         <div class="tab-buttons">
-            <button class="tab-btn btn-primary" onclick="showAvailableOrders()" id="showAvailableBtn">📦 Available Orders</button>
-            <button class="tab-btn btn-secondary" onclick="showMyOrders()" id="showMyBtn">🚚 My Deliveries</button>
+            <button class="tab-btn btn-primary" onclick="showAvailableOrders()" id="showAvailableBtn">📦 Available</button>
+            <button class="tab-btn btn-secondary" onclick="showMyOrders()" id="showMyBtn">🚚 Active</button>
+            <button class="tab-btn btn-secondary" onclick="showHistory()" id="showHistoryBtn">📋 History</button>
         </div>
 
         <h2 class="section-title" id="sectionTitle">
@@ -1015,6 +1189,23 @@
                 <button class="btn btn-success" onclick="verifyOTP()">Verify & Complete</button>
             </div>
         </div>
+    </div>
+
+    
+    <!-- ===== DELIVERY COMPLETE OVERLAY ===== -->
+    <div class="delivery-complete-overlay" id="deliveryCompleteOverlay">
+        <div class="complete-checkmark">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="complete-title">Delivery Complete!</div>
+        <div class="complete-sub">Great job! The order has been delivered.</div>
+        <div class="complete-earning">
+            <div class="earn-label">You Earned</div>
+            <div class="earn-amount" id="completeEarning">₹40</div>
+        </div>
+        <button class="done-btn" onclick="closeDeliveryComplete()">
+            <i class="fas fa-check"></i> Done
+        </button>
     </div>
 
     <div id="message" class="message"></div>
@@ -1147,16 +1338,66 @@
             document.getElementById('sectionTitle').innerHTML = '<i class="fas fa-clipboard-list"></i> Available Orders';
             document.getElementById('showAvailableBtn').className = 'tab-btn btn-primary';
             document.getElementById('showMyBtn').className = 'tab-btn btn-secondary';
+            document.getElementById('showHistoryBtn').className = 'tab-btn btn-secondary';
             displayAvailableOrders();
         };
 
-        // Show my orders
+        // Show my orders (active)
         window.showMyOrders = () => {
             currentView = 'my';
-            document.getElementById('sectionTitle').innerHTML = '<i class="fas fa-motorcycle"></i> My Deliveries';
+            document.getElementById('sectionTitle').innerHTML = '<i class="fas fa-motorcycle"></i> Active Deliveries';
             document.getElementById('showAvailableBtn').className = 'tab-btn btn-secondary';
             document.getElementById('showMyBtn').className = 'tab-btn btn-primary';
+            document.getElementById('showHistoryBtn').className = 'tab-btn btn-secondary';
             displayMyOrders();
+        };
+
+        // Show history
+        window.showHistory = () => {
+            currentView = 'history';
+            document.getElementById('sectionTitle').innerHTML = '<i class="fas fa-history"></i> Delivery History';
+            document.getElementById('showAvailableBtn').className = 'tab-btn btn-secondary';
+            document.getElementById('showMyBtn').className = 'tab-btn btn-secondary';
+            document.getElementById('showHistoryBtn').className = 'tab-btn btn-primary';
+            displayHistory();
+        };
+
+        const displayHistory = () => {
+            const grid = document.getElementById('ordersGrid');
+            const delivered = myOrders.filter(o => o.status === 'delivered').sort((a,b) => {
+                const aTime = a.deliveredAt?.toDate?.() || new Date(0);
+                const bTime = b.deliveredAt?.toDate?.() || new Date(0);
+                return bTime - aTime;
+            });
+            if (delivered.length === 0) {
+                grid.innerHTML = `<div class="empty-state"><i class="fas fa-history"></i><h3>No Delivery History</h3><p>Completed deliveries will appear here</p></div>`;
+                return;
+            }
+            let html = '';
+            delivered.forEach(order => {
+                const deliveryFee = order.deliveryFee || DELIVERY_FEE;
+                const deliveredAt = order.deliveredAt?.toDate ? new Date(order.deliveredAt.toDate()).toLocaleString('en-IN') : 'N/A';
+                html += `
+                    <div class="order-card assigned">
+                        <div class="order-header">
+                            <h3>Order #${order.id.slice(-8)}</h3>
+                            <span class="order-status status-delivered">✅ Delivered</span>
+                        </div>
+                        <div class="order-details">
+                            <div class="detail-row"><span class="detail-label">Customer:</span><span class="detail-value">${order.customerName || 'N/A'}</span></div>
+                            <div class="detail-row"><span class="detail-label">Address:</span><span class="detail-value">${order.address || 'N/A'}</span></div>
+                            <div class="detail-row"><span class="detail-label">Total:</span><span class="detail-value">₹${order.total || 0}</span></div>
+                            <div class="detail-row"><span class="detail-label">Delivered:</span><span class="detail-value">${deliveredAt}</span></div>
+                        </div>
+                        <div class="delivery-fee-badge"><i class="fas fa-coins"></i> Earned: ₹${deliveryFee}</div>
+                        <div class="payment-badge ${order.paymentMethod === 'Cash on Delivery' ? 'cod' : ''}">
+                            <i class="fas ${order.paymentMethod === 'Cash on Delivery' ? 'fa-money-bill' : 'fa-credit-card'}"></i>
+                            ${order.paymentMethod}
+                        </div>
+                    </div>
+                `;
+            });
+            grid.innerHTML = html;
         };
 
         // Display available orders
@@ -1314,8 +1555,11 @@
         // Display my orders
         const displayMyOrders = () => {
             const grid = document.getElementById('ordersGrid');
+            
+            const activeOrders = myOrders.filter(o => o.status === 'out-for-delivery');
+            const pendingAccepted = myOrders.filter(o => o.status !== 'out-for-delivery' && o.status !== 'delivered' && o.acceptedByDeliveryBoy);
 
-            if (myOrders.length === 0) {
+            if (myOrders.length === 0 && pendingAccepted.length === 0) {
                 grid.innerHTML = `
                     <div class="empty-state">
                         <i class="fas fa-motorcycle"></i>
@@ -1327,6 +1571,79 @@
             }
 
             let html = '';
+            
+            // Show active (in-progress) deliveries first — PINNED AT TOP
+            if (activeOrders.length > 0) {
+                html += `<div class="current-delivery-section">
+                    <div class="current-del-header">
+                        <h3><i class="fas fa-motorcycle"></i> Current Delivery</h3>
+                        <span class="live-badge">● LIVE</span>
+                    </div>`;
+                activeOrders.forEach(order => {
+                    const deliveryFee = order.deliveryFee || DELIVERY_FEE;
+                    const cashCollected = order.cashCollected || false;
+                    let actionBtn = '';
+                    if (order.paymentMethod === 'Cash on Delivery' && !cashCollected) {
+                        actionBtn = `<button class="btn btn-cash" onclick="collectCash('${order.id}', ${order.total}, ${deliveryFee})" style="margin-top:10px;"><i class="fas fa-money-bill"></i> Collect Cash ₹${order.total}</button>`;
+                    } else {
+                        actionBtn = `<button class="btn btn-otp" onclick="showOTPModal('${order.id}', ${deliveryFee})" style="margin-top:10px;"><i class="fas fa-key"></i> Enter OTP to Complete</button>`;
+                    }
+                    html += `
+                        <div style="background: rgba(255,255,255,0.1); border-radius: 12px; padding: 15px; margin-top: 10px;">
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                                <strong style="font-size:1.1rem;">Order #${order.id.slice(-8)}</strong>
+                                <span style="background: #f59e0b; color:white; padding: 3px 12px; border-radius: 20px; font-size: 0.75rem; font-weight:700;">🚴 On The Way</span>
+                            </div>
+                            <div style="font-size:0.9rem; opacity:0.9; margin-bottom:5px;"><i class="fas fa-user"></i> ${order.customerName || 'N/A'}</div>
+                            <div style="font-size:0.9rem; opacity:0.9; margin-bottom:5px;"><i class="fas fa-map-marker-alt"></i> ${order.address || 'N/A'}</div>
+                            <div style="font-size:0.9rem; opacity:0.9;"><i class="fas fa-phone"></i> ${order.phone || 'N/A'}</div>
+                            <div style="background: rgba(255,255,255,0.15); border-radius: 8px; padding: 8px 12px; margin-top: 10px; display:flex; justify-content:space-between;">
+                                <span>Order Total: ₹${order.total || 0}</span>
+                                <span style="color:#fbbf24; font-weight:700;">Your Fee: ₹${deliveryFee}</span>
+                            </div>
+                            ${actionBtn}
+                        </div>
+                    `;
+                });
+                html += `</div>`;
+            }
+
+            let html2 = '';
+            // Accepted but not yet started  
+            pendingAccepted.forEach(order => {
+                const deliveryFee = order.deliveryFee || DELIVERY_FEE;
+                html2 += `
+                    <div class="order-card active-delivery">
+                        <div class="order-header">
+                            <h3>Order #${order.id.slice(-8)}</h3>
+                            <span class="busy-indicator"><i class="fas fa-circle"></i> ACCEPTED</span>
+                        </div>
+                        <div class="order-details">
+                            <div class="detail-row"><span class="detail-label">Customer:</span><span class="detail-value">${order.customerName || 'N/A'}</span></div>
+                            <div class="detail-row"><span class="detail-label">Address:</span><span class="detail-value">${order.address || 'N/A'}</span></div>
+                            <div class="detail-row"><span class="detail-label">Phone:</span><span class="detail-value">${order.phone || 'N/A'}</span></div>
+                            <div class="detail-row"><span class="detail-label">Total:</span><span class="detail-value">₹${order.total || 0}</span></div>
+                        </div>
+                        <div class="delivery-fee-badge"><i class="fas fa-motorcycle"></i> Your Fee: ₹${deliveryFee}</div>
+                        <button class="start-delivery-btn" onclick="startDelivery('${order.id}')">
+                            <i class="fas fa-motorcycle"></i> Start Delivery
+                        </button>
+                    </div>
+                `;
+            });
+
+            if (html2) html += `<div class="section-header"><h3>📋 Ready to Start</h3></div>` + html2;
+
+            if (html === '') {
+                grid.innerHTML = `<div class="empty-state"><i class="fas fa-motorcycle"></i><h3>No Active Deliveries</h3><p>Click Available Orders tab to find deliveries</p></div>`;
+                return;
+            }
+
+            grid.innerHTML = html;
+            return;
+
+            // LEGACY - this section replaces old logic
+            let htmlLegacy = '';
             myOrders.forEach(order => {
                 const statusClass = `status-${order.status || 'pending'}`;
                 const deliveryFee = order.deliveryFee || DELIVERY_FEE;
@@ -1413,35 +1730,56 @@
             grid.innerHTML = html;
         };
 
-        // Accept order
+        // Accept order (assigned by admin - needs "Start Delivery" button)
         window.acceptOrder = async (orderId) => {
-            if (!confirm('Accept this order and start delivery?')) return;
-            
+            if (!confirm('Accept this delivery assignment?')) return;
             try {
+                // Generate OTP
                 const otpCode = Math.floor(10000 + Math.random() * 90000).toString();
-                
                 await updateDoc(doc(db, 'orders', orderId), {
-                    status: 'out-for-delivery',
-                    outForDeliveryAt: Timestamp.now(),
+                    acceptedByDeliveryBoy: true,
+                    acceptedAt: Timestamp.now(),
                     otpCode: otpCode,
                     updatedAt: Timestamp.now()
                 });
-                
-                showMessage('✅ Order accepted! Ask customer for OTP.', 'success');
-                showMyOrders();
+                showMessage('✅ Accepted! Click "Start Delivery" to begin.', 'success');
             } catch (error) {
-                console.error('Error accepting order:', error);
                 showMessage('Error: ' + error.message, 'error');
             }
         };
 
-        // Take order
+        // Start actual delivery
+        window.startDelivery = async (orderId) => {
+            if (!confirm('Start delivery for this order?')) return;
+            try {
+                // Mark delivery boy as busy
+                await updateDoc(doc(db, 'deliveryBoys', deliveryId), {
+                    currentStatus: 'busy',
+                    currentOrderId: orderId
+                });
+                await updateDoc(doc(db, 'orders', orderId), {
+                    status: 'out-for-delivery',
+                    outForDeliveryAt: Timestamp.now(),
+                    updatedAt: Timestamp.now()
+                });
+                document.getElementById('busyIndicator').style.display = 'inline-flex';
+                showMessage('🚴 Delivery started! Go deliver it!', 'success');
+                showMyOrders();
+            } catch (error) {
+                showMessage('Error: ' + error.message, 'error');
+            }
+        };
+
+        // Take order (self-assigned from available pool)
         window.takeOrder = async (orderId) => {
             if (!confirm('Take this order for delivery?')) return;
-            
             try {
                 const otpCode = Math.floor(10000 + Math.random() * 90000).toString();
-                
+                // Mark delivery boy as busy
+                await updateDoc(doc(db, 'deliveryBoys', deliveryId), {
+                    currentStatus: 'busy',
+                    currentOrderId: orderId
+                });
                 await updateDoc(doc(db, 'orders', orderId), {
                     deliveryBoyId: deliveryId,
                     deliveryBoyName: deliveryName,
@@ -1449,13 +1787,13 @@
                     status: 'out-for-delivery',
                     outForDeliveryAt: Timestamp.now(),
                     otpCode: otpCode,
+                    acceptedByDeliveryBoy: true,
                     updatedAt: Timestamp.now()
                 });
-                
-                showMessage('✅ Order taken! Ask customer for OTP.', 'success');
+                document.getElementById('busyIndicator').style.display = 'inline-flex';
+                showMessage('✅ Order taken! Start your delivery.', 'success');
                 showMyOrders();
             } catch (error) {
-                console.error('Error taking order:', error);
                 showMessage('Error: ' + error.message, 'error');
             }
         };
@@ -1506,6 +1844,11 @@
         window.closeOTPModal = () => {
             document.getElementById('otpModal').classList.remove('active');
             selectedOrderId = null;
+        };
+
+        window.closeDeliveryComplete = () => {
+            document.getElementById('deliveryCompleteOverlay').classList.remove('active');
+            showMyOrders();
         };
 
         // Verify OTP
@@ -1560,9 +1903,21 @@
                     lastDelivery: Timestamp.now()
                 });
                 
-                showMessage(`✅ Delivered! You earned ₹${order.deliveryFee || DELIVERY_FEE}`, 'success');
+                // Update delivery boy status to active (not busy)
+                try {
+                    await updateDoc(doc(db, 'deliveryBoys', deliveryId), {
+                        currentStatus: 'available',
+                        currentOrderId: null
+                    });
+                } catch(e) {}
+                
                 closeOTPModal();
-                showMyOrders();
+                // Show green completion overlay
+                const earnedFee = order.deliveryFee || DELIVERY_FEE;
+                document.getElementById('completeEarning').textContent = `₹${earnedFee}`;
+                document.getElementById('deliveryCompleteOverlay').classList.add('active');
+                // Hide busy indicator
+                document.getElementById('busyIndicator').style.display = 'none';
             } catch (error) {
                 console.error('Error:', error);
                 showMessage('Error completing delivery', 'error');
