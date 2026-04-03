@@ -769,7 +769,7 @@
 
     // ── Auth ───────────────────────────────────────────────────────────────────
     auth.onAuthStateChanged(async (user) => {
-        if (!user) { window.location.href = 'login.html'; return; }
+        if (!user) { window.location.href = '../login.html'; return; }
         if (user.email !== 'admin@mealcraft.com') { window.location.href = 'home.html'; return; }
         document.getElementById('sidebarEmail').textContent = user.email;
         document.getElementById('sidebarAvatar').textContent = user.email.charAt(0).toUpperCase();
@@ -778,7 +778,7 @@
     });
 
     function logout() {
-        auth.signOut().then(() => { window.location.href = 'login.html'; }).catch(console.error);
+        auth.signOut().then(() => { window.location.href = '../login.html'; }).catch(console.error);
     }
 
     // ── Realtime Listeners ────────────────────────────────────────────────────
