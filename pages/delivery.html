@@ -1456,10 +1456,6 @@
                                     <span class="detail-label">Total:</span>
                                     <span class="detail-value">₹${order.total || 0}</span>
                                 </div>
-                                ${order.specialInstructions ? `<div class="detail-row" style="background:#fffbeb;border-left:3px solid #f59e0b;padding:6px 10px;border-radius:6px;margin-top:4px;">
-                                    <span class="detail-label" style="color:#92400e;font-weight:600;">⚠️ Note:</span>
-                                    <span class="detail-value" style="color:#92400e;">${order.specialInstructions}</span>
-                                </div>` : ''}
                             </div>
 
                             <div class="items-preview">
@@ -1857,7 +1853,7 @@
 
         // Verify OTP
         window.verifyOTP = async () => {
-            const enteredOTP = document.getElementById('otpInput').value;
+            const enteredOTP = document.getElementById('otpInput').value.trim();
             
             if (!selectedOrderId) return;
             
@@ -1866,7 +1862,9 @@
                 return;
             }
             
-            const order = myOrders.find(o => o.id === selectedOrderId) || allOrders.find(o => o.id === selectedOrderId);
+            // Fallback: look in allOrders if not found in myOrders
+            const order = myOrders.find(o => o.id === selectedOrderId) 
+                       || allOrders.find(o => o.id === selectedOrderId);
             if (!order) {
                 showMessage('Order not found', 'error');
                 closeOTPModal();
@@ -1874,57 +1872,62 @@
             }
             
             try {
-                const orderDoc = await getDoc(doc(db, 'orders', selectedOrderId));
-                if (!orderDoc.exists()) {
-                    showMessage('Order not found', 'error');
+                // Always fetch fresh order data from Firestore to get current OTP
+                const orderDocSnap = await getDoc(doc(db, 'orders', selectedOrderId));
+                if (!orderDocSnap.exists()) {
+                    showMessage('Order not found in database', 'error');
                     closeOTPModal();
                     return;
                 }
                 
-                const orderData = orderDoc.data();
+                const orderData = orderDocSnap.data();
                 
-                if (orderData.otpCode !== enteredOTP) {
-                    showMessage('❌ Invalid OTP code', 'error');
+                if (!orderData.otpCode) {
+                    showMessage('No OTP set for this order. Contact admin.', 'error');
+                    return;
+                }
+
+                if (String(orderData.otpCode).trim() !== String(enteredOTP).trim()) {
+                    showMessage('❌ Invalid OTP code. Try again.', 'error');
                     return;
                 }
                 
-                const updates = {
+                // OTP matched — mark order as delivered
+                const orderUpdates = {
                     status: 'delivered',
                     deliveredAt: Timestamp.now(),
                     updatedAt: Timestamp.now()
                 };
-                
                 if (order.paymentMethod === 'Cash on Delivery') {
-                    updates.paymentStatus = 'paid';
+                    orderUpdates.paymentStatus = 'paid';
                 }
+                await updateDoc(doc(db, 'orders', selectedOrderId), orderUpdates);
                 
-                await updateDoc(doc(db, 'orders', selectedOrderId), updates);
-                
-                const deliveryRef = doc(db, 'deliveryBoys', deliveryId);
-                await updateDoc(deliveryRef, {
-                    totalDeliveries: increment(1),
-                    totalEarnings: increment(order.deliveryFee || DELIVERY_FEE),
-                    lastDelivery: Timestamp.now()
-                });
-                
-                // Update delivery boy status to active (not busy)
+                // Update delivery boy stats — both fields in one single call to avoid partial failure
                 try {
                     await updateDoc(doc(db, 'deliveryBoys', deliveryId), {
+                        totalDeliveries: increment(1),
+                        totalEarnings: increment(order.deliveryFee || DELIVERY_FEE),
+                        lastDelivery: Timestamp.now(),
                         currentStatus: 'available',
                         currentOrderId: null
                     });
-                } catch(e) {}
+                } catch(e) {
+                    // Non-fatal: order is already marked delivered, just log
+                    console.warn('Could not update delivery boy stats:', e.message);
+                }
                 
                 closeOTPModal();
+
                 // Show green completion overlay
                 const earnedFee = order.deliveryFee || DELIVERY_FEE;
                 document.getElementById('completeEarning').textContent = `₹${earnedFee}`;
                 document.getElementById('deliveryCompleteOverlay').classList.add('active');
-                // Hide busy indicator
                 document.getElementById('busyIndicator').style.display = 'none';
+
             } catch (error) {
-                console.error('Error:', error);
-                showMessage('Error completing delivery', 'error');
+                console.error('OTP verification error:', error);
+                showMessage('Error completing delivery: ' + error.message, 'error');
             }
         };
 
@@ -1934,19 +1937,15 @@
             window.location.replace("../login.html");
         };
 
-        // Show message — defined BEFORE setupOrderListeners so it's available in error handlers
+        // Show message — declared as function (hoisted) so it's available everywhere including error handlers
         function showMessage(message, type) {
             const msgDiv = document.getElementById('message');
             const icon = type === 'success' ? 'fa-check-circle' : 
                         type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle';
-            
             msgDiv.innerHTML = `<i class="fas ${icon}"></i> ${message}`;
             msgDiv.className = `message ${type}`;
             msgDiv.style.display = 'block';
-            
-            setTimeout(() => {
-                msgDiv.style.display = 'none';
-            }, 3000);
+            setTimeout(() => { msgDiv.style.display = 'none'; }, 3000);
         }
 
         // Initialize
@@ -1964,6 +1963,5 @@
             }
         };
     </script>
-
 </body>
 </html>
