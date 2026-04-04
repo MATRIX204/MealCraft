@@ -238,7 +238,7 @@
             <div class="admin-avatar" id="sidebarAvatar">A</div>
             <div class="admin-info">
                 <h4 id="sidebarName">Admin</h4>
-                <p id="sidebarEmail">admin@mealcraft.com</p>
+                <p id="sidebarEmail"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="bddcd9d0d4d3fdd0d8dcd1decfdcdbc993ded2d0">[email&#160;protected]</a></p>
             </div>
         </div>
         <div class="nav-menu">
@@ -544,7 +544,7 @@
         <form onsubmit="event.preventDefault(); addDeliveryBoy()">
             <input type="text" id="deliveryFullName" placeholder="Full Name *" required oninput="updateEmailPreview(this.value)">
             <div style="margin-bottom:15px;">
-                <label style="display:block;margin-bottom:5px;font-weight:500;">Email will be: <span id="emailPreview" style="color:#ef4444;">name@mealcraft.delivery</span></label>
+                <label style="display:block;margin-bottom:5px;font-weight:500;">Email will be: <span id="emailPreview" style="color:#ef4444;"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="2648474b43664b43474a45544740520842434a4f5043545f">[email&#160;protected]</a></span></label>
             </div>
             <input type="tel" id="deliveryPhone" placeholder="Phone Number *" required>
             <input type="text" id="deliveryMobile" placeholder="Mobile Number (WhatsApp) *" required>
@@ -693,11 +693,14 @@
             <div id="cancellationReasonDiv" style="display:none;margin-bottom:10px;">
                 <textarea id="cancellationReason" placeholder="Reason for cancellation *" rows="3" style="width:100%;padding:12px;border:2px solid #e2e8f0;border-radius:10px;font-family:Inter,sans-serif;"></textarea>
             </div>
-            <div class="modal-actions">
-                <button type="button" class="close-modal" onclick="closeModal('orderDetailsModal')">
+            <div class="modal-actions" style="flex-wrap:wrap;">
+                <button type="button" class="close-modal" onclick="closeModal('orderDetailsModal')" style="flex:1;min-width:110px;">
                     <i class="fas fa-times"></i> Close
                 </button>
-                <button class="add-btn" onclick="updateOrder()">
+                <button class="btn btn-secondary" onclick="downloadOrderPDF()" style="flex:1;min-width:130px;padding:14px;border-radius:12px;font-size:0.95rem;font-weight:600;">
+                    <i class="fas fa-file-pdf"></i> Download PDF
+                </button>
+                <button class="add-btn" onclick="updateOrder()" style="flex:1;min-width:110px;">
                     <i class="fas fa-check"></i> Update
                 </button>
             </div>
@@ -730,7 +733,8 @@
      SCRIPT — NO type="module" so all functions are global (window scope)
      Firebase is loaded via CDN compat scripts below
      ===================================================================== -->
-<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 <script>
@@ -1405,6 +1409,7 @@
                     <p><strong>Phone:</strong> ${order.phone || 'N/A'}</p>
                     <p><strong>Address:</strong> ${order.address || 'N/A'}</p>
                     <p><strong>Payment:</strong> ${order.paymentMethod || 'N/A'} (${order.paymentStatus || 'pending'})</p>
+                    ${order.specialInstructions ? `<p style="background:#fffbeb;border-left:3px solid #f59e0b;padding:8px 12px;border-radius:6px;margin-top:8px;"><strong>⚠️ Special Instructions:</strong> ${order.specialInstructions}</p>` : ''}
                     ${order.cancellationReason ? `<p><strong>Cancellation Reason:</strong> ${order.cancellationReason}</p>` : ''}
                     ${boy ? `<p><strong>Delivery Boy:</strong> ${boy.fullName} (${boy.phone})</p>` : ''}
                 </div>
@@ -1438,6 +1443,164 @@
         db.collection(COLS.ORDERS).doc(orderId).update(updates)
             .then(() => { showMessage(`✅ Order updated to ${newStatus}!`, 'success'); closeModal('orderDetailsModal'); })
             .catch(err => showMessage('Error: ' + err.message, 'error'));
+    }
+
+    function downloadOrderPDF() {
+        const orderId = document.getElementById('orderDetailsModal').dataset.orderId;
+        const order = orders.find(o => o.id === orderId);
+        if (!order) { showMessage('Order not found', 'error'); return; }
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+        const boy = order.deliveryBoyId ? deliveryBoys.find(b => b.id === order.deliveryBoyId) : null;
+        const items = order.items || [];
+
+        // Header bar
+        doc.setFillColor(239, 68, 68);
+        doc.rect(0, 0, 210, 30, 'F');
+        doc.setTextColor(255, 255, 255);
+        doc.setFontSize(20);
+        doc.setFont('helvetica', 'bold');
+        doc.text('MealCraft', 15, 13);
+        doc.setFontSize(10);
+        doc.setFont('helvetica', 'normal');
+        doc.text('Order Invoice', 15, 22);
+        doc.setFontSize(12);
+        doc.setFont('helvetica', 'bold');
+        doc.text(`Order #${order.id.slice(-8).toUpperCase()}`, 195, 13, { align: 'right' });
+        const dateStr = order.createdAt?.toDate ? new Date(order.createdAt.toDate()).toLocaleString('en-IN') : 'N/A';
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(9);
+        doc.text(dateStr, 195, 22, { align: 'right' });
+
+        let y = 42;
+        // Customer info box
+        doc.setFillColor(248, 250, 252);
+        doc.roundedRect(10, y - 5, 190, 52 + (order.specialInstructions ? 10 : 0), 4, 4, 'F');
+        doc.setTextColor(30, 30, 30);
+        doc.setFontSize(11);
+        doc.setFont('helvetica', 'bold');
+        doc.text('Customer Information', 15, y + 2);
+        y += 10;
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(10);
+        const rows = [
+            ['Name', order.customerName || 'N/A'],
+            ['Phone', order.phone || 'N/A'],
+            ['Address', order.address || 'N/A'],
+            ['Payment', `${order.paymentMethod || 'N/A'} (${order.paymentStatus || 'pending'})`],
+        ];
+        if (boy) rows.push(['Delivery By', `${boy.fullName} (${boy.phone})`]);
+        rows.forEach(([label, value]) => {
+            doc.setFont('helvetica', 'bold');
+            doc.setTextColor(100, 116, 139);
+            doc.text(label + ':', 15, y);
+            doc.setFont('helvetica', 'normal');
+            doc.setTextColor(30, 30, 30);
+            const lines = doc.splitTextToSize(value, 130);
+            doc.text(lines, 55, y);
+            y += 7 * lines.length;
+        });
+
+        // Special instructions
+        if (order.specialInstructions) {
+            y += 2;
+            doc.setFillColor(255, 251, 235);
+            doc.roundedRect(10, y - 4, 190, 12, 2, 2, 'F');
+            doc.setFontSize(9);
+            doc.setFont('helvetica', 'bold');
+            doc.setTextColor(146, 64, 14);
+            doc.text('⚠ Special Instructions: ', 15, y + 4);
+            doc.setFont('helvetica', 'normal');
+            const siLines = doc.splitTextToSize(order.specialInstructions, 130);
+            doc.text(siLines, 62, y + 4);
+            y += 8 + siLines.length * 5;
+        }
+
+        y += 10;
+        // Items table header
+        doc.setFillColor(15, 23, 42);
+        doc.rect(10, y - 4, 190, 10, 'F');
+        doc.setTextColor(255, 255, 255);
+        doc.setFontSize(10);
+        doc.setFont('helvetica', 'bold');
+        doc.text('Item', 15, y + 3);
+        doc.text('Extras', 90, y + 3);
+        doc.text('Price', 195, y + 3, { align: 'right' });
+        y += 12;
+
+        // Items rows
+        doc.setFont('helvetica', 'normal');
+        items.forEach((item, idx) => {
+            if (y > 250) { doc.addPage(); y = 20; }
+            const bg = idx % 2 === 0 ? [248, 250, 252] : [255, 255, 255];
+            doc.setFillColor(...bg);
+            doc.rect(10, y - 4, 190, 10, 'F');
+            doc.setTextColor(30, 30, 30);
+            doc.setFontSize(9.5);
+            const itemName = doc.splitTextToSize(item.customName || item.mealName || 'Item', 68);
+            doc.text(itemName, 15, y + 1);
+            const extras = (item.selectedIngredients || []).map(i => i.name).join(', ') || '-';
+            const extrasLines = doc.splitTextToSize(extras, 80);
+            doc.text(extrasLines, 90, y + 1);
+            doc.setFont('helvetica', 'bold');
+            doc.setTextColor(16, 185, 129);
+            doc.text(`₹${item.totalPrice || 0}`, 195, y + 1, { align: 'right' });
+            doc.setFont('helvetica', 'normal');
+            y += Math.max(itemName.length, extrasLines.length) * 6 + 2;
+        });
+
+        // Totals
+        y += 5;
+        doc.setDrawColor(226, 232, 240);
+        doc.line(10, y, 200, y);
+        y += 8;
+        doc.setFontSize(10);
+        doc.setTextColor(100, 116, 139);
+        doc.setFont('helvetica', 'normal');
+        doc.text('Subtotal:', 140, y);
+        doc.setTextColor(30, 30, 30);
+        doc.text(`₹${order.subtotal || 0}`, 195, y, { align: 'right' });
+        y += 7;
+        doc.setTextColor(100, 116, 139);
+        doc.text('Delivery Fee:', 140, y);
+        doc.setTextColor(30, 30, 30);
+        doc.text(`₹${order.deliveryFee || 40}`, 195, y, { align: 'right' });
+        y += 5;
+        doc.setFillColor(239, 68, 68);
+        doc.rect(130, y, 70, 12, 'F');
+        doc.setTextColor(255, 255, 255);
+        doc.setFontSize(12);
+        doc.setFont('helvetica', 'bold');
+        doc.text('Total:', 135, y + 8);
+        doc.text(`₹${order.total || 0}`, 195, y + 8, { align: 'right' });
+
+        // Status badge
+        y += 22;
+        const statusColors = {
+            pending: [133, 100, 4], preparing: [0, 64, 133], delivered: [15, 81, 50],
+            'out-for-delivery': [21, 87, 36], cancelled: [114, 28, 36]
+        };
+        const statusBg = { pending: [255, 243, 205], preparing: [204, 229, 255], delivered: [209, 231, 221], 'out-for-delivery': [212, 237, 218], cancelled: [248, 215, 218] };
+        const st = order.status || 'pending';
+        const [r, g, b] = statusBg[st] || [240, 240, 240];
+        doc.setFillColor(r, g, b);
+        doc.roundedRect(10, y, 50, 10, 3, 3, 'F');
+        const [tr, tg, tb] = statusColors[st] || [60, 60, 60];
+        doc.setTextColor(tr, tg, tb);
+        doc.setFontSize(9);
+        doc.setFont('helvetica', 'bold');
+        doc.text(`Status: ${st.replace(/-/g,' ').toUpperCase()}`, 35, y + 7, { align: 'center' });
+
+        // Footer
+        doc.setFillColor(15, 23, 42);
+        doc.rect(0, 285, 210, 12, 'F');
+        doc.setTextColor(255, 255, 255);
+        doc.setFontSize(8);
+        doc.setFont('helvetica', 'normal');
+        doc.text('MealCraft — Crafted with care, delivered with love', 105, 293, { align: 'center' });
+
+        doc.save(`MealCraft_Order_${order.id.slice(-8).toUpperCase()}.pdf`);
+        showMessage('📄 PDF downloaded!', 'success');
     }
 
     function updateOrderStatus(orderId, newStatus) {

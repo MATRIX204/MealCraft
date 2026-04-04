@@ -1284,7 +1284,7 @@
                     return String(o.deliveryBoyId).trim() === String(deliveryId).trim();
                 });
                 
-                myOrders = assignedOrders.filter(o => o.status === 'out-for-delivery' || o.status === 'delivered');
+                myOrders = assignedOrders.filter(o => o.status === 'out-for-delivery' || o.status === 'delivered' || o.acceptedByDeliveryBoy);
                 
                 console.log('Assigned orders count:', assignedOrders.length);
                 console.log('My accepted orders count:', myOrders.length);
@@ -1456,6 +1456,10 @@
                                     <span class="detail-label">Total:</span>
                                     <span class="detail-value">₹${order.total || 0}</span>
                                 </div>
+                                ${order.specialInstructions ? `<div class="detail-row" style="background:#fffbeb;border-left:3px solid #f59e0b;padding:6px 10px;border-radius:6px;margin-top:4px;">
+                                    <span class="detail-label" style="color:#92400e;font-weight:600;">⚠️ Note:</span>
+                                    <span class="detail-value" style="color:#92400e;">${order.specialInstructions}</span>
+                                </div>` : ''}
                             </div>
 
                             <div class="items-preview">
@@ -1862,7 +1866,7 @@
                 return;
             }
             
-            const order = myOrders.find(o => o.id === selectedOrderId);
+            const order = myOrders.find(o => o.id === selectedOrderId) || allOrders.find(o => o.id === selectedOrderId);
             if (!order) {
                 showMessage('Order not found', 'error');
                 closeOTPModal();
@@ -1930,8 +1934,8 @@
             window.location.replace("../login.html");
         };
 
-        // Show message
-        const showMessage = (message, type) => {
+        // Show message — defined BEFORE setupOrderListeners so it's available in error handlers
+        function showMessage(message, type) {
             const msgDiv = document.getElementById('message');
             const icon = type === 'success' ? 'fa-check-circle' : 
                         type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle';
@@ -1943,7 +1947,7 @@
             setTimeout(() => {
                 msgDiv.style.display = 'none';
             }, 3000);
-        };
+        }
 
         // Initialize
         setupOrderListeners();
@@ -1960,5 +1964,6 @@
             }
         };
     </script>
+
 </body>
 </html>
