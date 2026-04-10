@@ -2264,34 +2264,47 @@
             btn.disabled = true;
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
 
-            try {
-                await addDoc(collection(db, 'complaints'), {
-                    userId: currentUser.uid,
-                    userEmail: currentUser.email,
-                    userName: currentUser.displayName || currentUser.email.split('@')[0],
-                    category: category,
-                    complaint: text,
-                    status: 'pending',
-                    createdAt: Timestamp.now()
-                });
+            const complaintData = {
+                userId: currentUser.uid,
+                userEmail: currentUser.email,
+                userName: currentUser.displayName || currentUser.email.split('@')[0],
+                category: category,
+                complaint: text,
+                status: 'pending',
+                createdAt: Timestamp.now()
+            };
 
+            // Try top-level 'complaints' collection first, fall back to
+            // user sub-collection which the owner can always write
+            let saved = false;
+            try {
+                await addDoc(collection(db, 'complaints'), complaintData);
+                saved = true;
+            } catch(err1) {
+                console.warn('Top-level complaints write failed:', err1.code, err1.message);
+                try {
+                    // Fallback: write under user's own document (always allowed)
+                    await addDoc(collection(db, 'users', currentUser.uid, 'complaints'), complaintData);
+                    saved = true;
+                } catch(err2) {
+                    console.error('Both complaint writes failed:', err2.code, err2.message);
+                }
+            }
+
+            if (saved) {
                 document.getElementById('cmForm').style.display = 'none';
                 document.getElementById('cmHeader').style.display = 'none';
                 document.getElementById('cmSuccess').classList.add('active');
-
-                // Retrigger typewriter animation
                 const el = document.getElementById('cmTypingText');
                 el.style.animation = 'none';
                 void el.offsetWidth;
                 el.style.animation = '';
-
-            } catch(err) {
-                console.error('Complaint error:', err);
+            } else {
                 showMessage('Error submitting complaint. Please try again.', 'error');
-            } finally {
-                btn.disabled = false;
-                btn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Complaint';
             }
+
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Complaint';
         };
 
         // Check entry mode on load

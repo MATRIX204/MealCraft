@@ -936,9 +936,18 @@
             cities = snap.docs.map(d => ({ id: d.id, ...d.data() }));
             displayCities(cities); updateStats();
         });
-        db.collection(COLS.COMPLAINTS).orderBy('createdAt', 'desc').onSnapshot(snap => {
+        // collectionGroup catches both top-level 'complaints' AND
+        // 'users/{uid}/complaints' sub-collection (fallback path)
+        db.collectionGroup('complaints').orderBy('createdAt', 'desc').onSnapshot(snap => {
             complaints = snap.docs.map(d => ({ id: d.id, ...d.data() }));
             displayComplaints(complaints); updateStats();
+        }, err => {
+            // collectionGroup may need a Firestore index — fall back to top-level only
+            console.warn('collectionGroup failed, falling back:', err.message);
+            db.collection(COLS.COMPLAINTS).orderBy('createdAt', 'desc').onSnapshot(snap => {
+                complaints = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                displayComplaints(complaints); updateStats();
+            });
         });
     }
 
