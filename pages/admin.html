@@ -204,6 +204,67 @@
         .recent-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: white; border-radius: 10px; margin-bottom: 10px; border: 1px solid #e2e8f0; transition: all 0.3s; }
         .recent-item:hover { border-color: #ef4444; transform: translateX(5px); }
 
+
+        /* Complaints */
+        .complaint-row {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 14px;
+            transition: all 0.3s;
+            border-left: 4px solid #e2e8f0;
+        }
+        .complaint-row:hover { border-color: #ef4444; box-shadow: 0 5px 20px rgba(239,68,68,0.08); }
+        .complaint-row.status-pending  { border-left-color: #f59e0b; }
+        .complaint-row.status-reviewed { border-left-color: #10b981; }
+        .complaint-row.status-resolved { border-left-color: #3b82f6; }
+
+        .complaint-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        .complaint-user { display: flex; align-items: center; gap: 10px; }
+        .complaint-avatar {
+            width: 40px; height: 40px;
+            background: linear-gradient(135deg, #ef4444, #f87171);
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-weight: 700; font-size: 1rem;
+            flex-shrink: 0;
+        }
+        .complaint-user-info h4 { font-size: 0.95rem; font-weight: 700; color: #0f172a; }
+        .complaint-user-info p  { font-size: 0.8rem; color: #64748b; }
+        .complaint-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .complaint-category {
+            background: #fff3cd; color: #856404;
+            padding: 4px 12px; border-radius: 20px;
+            font-size: 0.75rem; font-weight: 600;
+        }
+        .complaint-status-badge {
+            padding: 4px 12px; border-radius: 20px;
+            font-size: 0.75rem; font-weight: 600;
+        }
+        .cs-pending  { background: #fef3c7; color: #92400e; }
+        .cs-reviewed { background: #d1fae5; color: #065f46; }
+        .cs-resolved { background: #dbeafe; color: #1e40af; }
+        .complaint-text {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 12px 16px;
+            font-size: 0.9rem;
+            color: #374151;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+        .complaint-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+        .complaint-date { font-size: 0.78rem; color: #94a3b8; display: flex; align-items: center; gap: 5px; }
+
         /* Responsive */
         @media (max-width: 1024px) {
             .sidebar { width: 80px; }
@@ -274,6 +335,10 @@
             <div class="nav-item" onclick="switchSection('orders', event)">
                 <i class="fas fa-shopping-bag"></i><span>Orders</span>
                 <span class="badge" id="ordersBadge">0</span>
+            </div>
+            <div class="nav-item" onclick="switchSection('complaints', event)">
+                <i class="fas fa-exclamation-circle"></i><span>Complaints</span>
+                <span class="badge" id="complaintsBadge" style="background:#ef4444;">0</span>
             </div>
         </div>
     </div>
@@ -534,6 +599,23 @@
             </div>
             <div id="ordersList" class="orders-list"></div>
         </div>
+
+        <!-- Complaints -->
+        <div id="complaintsSection" class="section" style="display:none;">
+            <div class="section-header">
+                <h2><i class="fas fa-exclamation-circle"></i> User Complaints</h2>
+            </div>
+            <div class="filter-bar">
+                <select id="complaintStatusFilter" class="filter-select" onchange="filterComplaints()">
+                    <option value="all">All Status</option>
+                    <option value="pending">🟡 Pending</option>
+                    <option value="reviewed">🟢 Reviewed</option>
+                    <option value="resolved">🔵 Resolved</option>
+                </select>
+                <input type="text" id="complaintSearch" class="search-box" placeholder="Search by user or keyword..." onkeyup="searchComplaints()">
+            </div>
+            <div id="complaintsList"></div>
+        </div>
     </div>
 </div>
 
@@ -788,10 +870,11 @@
     const COLS = {
         MEALS: 'meals', INGREDIENTS: 'ingredients',
         MEAL_INGREDIENTS: 'mealIngredients', DELIVERY_BOYS: 'deliveryBoys',
-        USERS: 'users', ORDERS: 'orders', STATES: 'states', CITIES: 'cities'
+        USERS: 'users', ORDERS: 'orders', STATES: 'states', CITIES: 'cities',
+        COMPLAINTS: 'complaints'
     };
     let meals = [], ingredients = [], mealIngredients = [], deliveryBoys = [];
-    let users = [], orders = [], states = [], cities = [];
+    let users = [], orders = [], states = [], cities = [], complaints = [];
     let currentSection = 'dashboard';
 
     // ── DateTime ───────────────────────────────────────────────────────────────
@@ -853,6 +936,10 @@
             cities = snap.docs.map(d => ({ id: d.id, ...d.data() }));
             displayCities(cities); updateStats();
         });
+        db.collection(COLS.COMPLAINTS).orderBy('createdAt', 'desc').onSnapshot(snap => {
+            complaints = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+            displayComplaints(complaints); updateStats();
+        });
     }
 
     // ── Stats ─────────────────────────────────────────────────────────────────
@@ -868,6 +955,8 @@
         setText('usersBadge', users.length);
         setText('ordersBadge', orders.filter(o => o.status === 'pending').length);
         setText('outletsBadge', states.length + cities.length);
+        const pendingComplaints = complaints.filter(c => c.status === 'pending').length;
+        setText('complaintsBadge', pendingComplaints || complaints.length);
     }
     function setText(id, val) { const el = document.getElementById(id); if (el) el.textContent = val; }
 
@@ -877,7 +966,7 @@
         document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
         if (event && event.currentTarget) event.currentTarget.classList.add('active');
 
-        const allSections = ['dashboard','meals','addMeal','ingredients','addIngredient','delivery','users','outlets','orders'];
+        const allSections = ['dashboard','meals','addMeal','ingredients','addIngredient','delivery','users','outlets','orders','complaints'];
         allSections.forEach(s => {
             const el = document.getElementById(s + 'Section');
             if (el) el.style.display = 'none';
@@ -888,7 +977,8 @@
         const titles = {
             dashboard:'Dashboard', meals:'All Meals', addMeal:'Add New Meal',
             ingredients:'Ingredients', addIngredient:'Add Ingredient',
-            delivery:'Delivery Boys', users:'Users', outlets:'Outlets', orders:'Orders'
+            delivery:'Delivery Boys', users:'Users', outlets:'Outlets', orders:'Orders',
+            complaints:'Complaints'
         };
         setText('pageTitle', titles[section] || 'Dashboard');
 

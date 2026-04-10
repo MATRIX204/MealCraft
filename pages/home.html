@@ -1436,6 +1436,222 @@
                 font-size: 0.8rem;
             }
         }
+
+        /* ===== COMPLAINT BUTTON IN FOOTER ===== */
+        .complaint-btn-footer {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: none;
+            border: 2px solid #fee2e2;
+            color: #ef4444;
+            padding: 9px 18px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 14px;
+        }
+        .complaint-btn-footer:hover {
+            background: #fee2e2;
+            transform: translateY(-2px);
+        }
+
+        /* ===== COMPLAINT MODAL ===== */
+        .complaint-modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.55);
+            backdrop-filter: blur(6px);
+            z-index: 3000;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+        .complaint-modal-overlay.active { display: flex; }
+
+        .complaint-modal-box {
+            background: white;
+            border-radius: 24px;
+            width: 100%;
+            max-width: 480px;
+            overflow: hidden;
+            box-shadow: 0 30px 70px rgba(0,0,0,0.25);
+            animation: cmSlideUp 0.35s cubic-bezier(0.34,1.56,0.64,1);
+        }
+        @keyframes cmSlideUp {
+            from { opacity:0; transform: translateY(40px) scale(0.97); }
+            to   { opacity:1; transform: translateY(0) scale(1); }
+        }
+        .cm-header {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            padding: 22px 24px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: white;
+        }
+        .cm-header-left { display: flex; align-items: center; gap: 12px; }
+        .cm-header-icon {
+            width: 42px; height: 42px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.3rem;
+        }
+        .cm-header h3 { font-size: 1.2rem; font-weight: 800; }
+        .cm-header p  { font-size: 0.8rem; opacity: 0.85; margin-top: 2px; }
+        .cm-close-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            width: 34px; height: 34px;
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex; align-items: center; justify-content: center;
+            transition: background 0.2s;
+            flex-shrink: 0;
+        }
+        .cm-close-btn:hover { background: rgba(255,255,255,0.35); }
+
+        .cm-body { padding: 22px 24px; }
+
+        .cm-field { margin-bottom: 16px; }
+        .cm-field label {
+            display: block;
+            font-weight: 700;
+            font-size: 0.82rem;
+            color: #374151;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .cm-field select,
+        .cm-field textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            color: #1a1a1a;
+            transition: border-color 0.2s;
+            background: #fafafa;
+            resize: vertical;
+        }
+        .cm-field select:focus,
+        .cm-field textarea:focus {
+            outline: none;
+            border-color: #ef4444;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(239,68,68,0.08);
+        }
+        .cm-field textarea { min-height: 110px; }
+
+        .cm-char-count {
+            text-align: right;
+            font-size: 0.75rem;
+            color: #9ca3af;
+            margin-top: 4px;
+        }
+
+        .cm-submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s;
+            margin-top: 4px;
+        }
+        .cm-submit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(239,68,68,0.35); }
+        .cm-submit-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+        /* ===== COMPLAINT SUCCESS SCREEN ===== */
+        .cm-success-screen {
+            display: none;
+            padding: 36px 24px 30px;
+            text-align: center;
+            animation: cmSlideUp 0.4s cubic-bezier(0.34,1.56,0.64,1);
+        }
+        .cm-success-screen.active { display: block; }
+        .cm-success-checkmark {
+            width: 80px; height: 80px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 2.2rem;
+            color: white;
+            animation: checkPop 0.5s cubic-bezier(0.34,1.56,0.64,1) 0.1s both;
+        }
+        @keyframes checkPop {
+            from { transform: scale(0) rotate(-20deg); }
+            to   { transform: scale(1) rotate(0); }
+        }
+        .cm-success-title {
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: #1a1a1a;
+            margin-bottom: 10px;
+        }
+        .cm-success-msg {
+            color: #64748b;
+            font-size: 0.92rem;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+        .cm-success-typing {
+            display: inline-block;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 10px;
+            padding: 10px 18px;
+            color: #15803d;
+            font-weight: 600;
+            font-size: 0.9rem;
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 3px solid #15803d;
+            animation: typeText 2.4s steps(50,end) 0.3s both, blinkCursor 0.7s step-end 0.3s 4;
+            max-width: 100%;
+        }
+        @keyframes typeText {
+            from { width: 0; }
+            to   { width: 100%; }
+        }
+        @keyframes blinkCursor {
+            50% { border-color: transparent; }
+        }
+        .cm-success-done-btn {
+            display: block;
+            width: 100%;
+            padding: 13px;
+            background: #f37021;
+            color: white;
+            border: none;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            margin-top: 22px;
+            transition: all 0.3s;
+        }
+        .cm-success-done-btn:hover { background: #e6651a; transform: translateY(-2px); }
+
     </style>
 </head>
 <body>
@@ -1577,6 +1793,9 @@
                 <a href="#">Help Center</a>
                 <a href="#">Contact Us</a>
                 <a href="#">FAQs</a>
+                <button class="complaint-btn-footer" onclick="openComplaintModal()">
+                    <i class="fas fa-exclamation-circle"></i> File a Complaint
+                </button>
             </div>
             <div class="footer-col">
                 <h4>Hours & Location</h4>
@@ -1589,6 +1808,62 @@
             &copy; 2025 Meal Craft. All rights reserved.
         </div>
     </footer>
+
+
+    <!-- ===== COMPLAINT MODAL ===== -->
+    <div class="complaint-modal-overlay" id="complaintModal">
+        <div class="complaint-modal-box">
+            <!-- Header -->
+            <div class="cm-header" id="cmHeader">
+                <div class="cm-header-left">
+                    <div class="cm-header-icon"><i class="fas fa-exclamation-circle"></i></div>
+                    <div>
+                        <h3>File a Complaint</h3>
+                        <p>We'll look into it right away</p>
+                    </div>
+                </div>
+                <button class="cm-close-btn" onclick="closeComplaintModal()"><i class="fas fa-times"></i></button>
+            </div>
+
+            <!-- Form -->
+            <div class="cm-body" id="cmForm">
+                <div class="cm-field">
+                    <label><i class="fas fa-tag"></i> &nbsp;Category</label>
+                    <select id="complaintCategory">
+                        <option value="">— Select type —</option>
+                        <option value="Order Issue">🛒 Order Issue</option>
+                        <option value="Wrong Item Delivered">❌ Wrong Item Delivered</option>
+                        <option value="Delivery Delay">⏱ Delivery Delay</option>
+                        <option value="Food Quality">🍽 Food Quality</option>
+                        <option value="Payment Problem">💳 Payment Problem</option>
+                        <option value="Rude Delivery Staff">😠 Rude Delivery Staff</option>
+                        <option value="App / Website Issue">📱 App / Website Issue</option>
+                        <option value="Other">💬 Other</option>
+                    </select>
+                </div>
+                <div class="cm-field">
+                    <label><i class="fas fa-edit"></i> &nbsp;Your Complaint</label>
+                    <textarea id="complaintText" placeholder="Describe your issue in detail..." maxlength="500"
+                        oninput="document.getElementById('cmCharCount').textContent = this.value.length + '/500'"></textarea>
+                    <div class="cm-char-count" id="cmCharCount">0/500</div>
+                </div>
+                <button class="cm-submit-btn" id="cmSubmitBtn" onclick="submitComplaint()">
+                    <i class="fas fa-paper-plane"></i> Submit Complaint
+                </button>
+            </div>
+
+            <!-- Success Screen -->
+            <div class="cm-success-screen" id="cmSuccess">
+                <div class="cm-success-checkmark"><i class="fas fa-check"></i></div>
+                <div class="cm-success-title">Complaint Submitted!</div>
+                <div class="cm-success-msg">Thank you for letting us know. Our team will review your complaint and take appropriate action.</div>
+                <div class="cm-success-typing" id="cmTypingText">Your complaint submitted — our team will contact you soon if needed.</div>
+                <button class="cm-success-done-btn" onclick="closeComplaintModal()">
+                    <i class="fas fa-check-circle"></i> Done
+                </button>
+            </div>
+        </div>
+    </div>
 
     <!-- Message Toast -->
     <div id="message" class="message"></div>
@@ -2067,6 +2342,66 @@
             setTimeout(() => {
                 msgDiv.style.display = 'none';
             }, 3000);
+        };
+
+
+        // ===== COMPLAINT FUNCTIONS =====
+        window.openComplaintModal = () => {
+            if (!currentUser) { showLoginPrompt(); return; }
+            // Reset form
+            document.getElementById('complaintCategory').value = '';
+            document.getElementById('complaintText').value = '';
+            document.getElementById('cmCharCount').textContent = '0/500';
+            document.getElementById('cmForm').style.display = 'block';
+            document.getElementById('cmSuccess').classList.remove('active');
+            document.getElementById('cmHeader').style.display = 'flex';
+            document.getElementById('complaintModal').classList.add('active');
+        };
+
+        window.closeComplaintModal = () => {
+            document.getElementById('complaintModal').classList.remove('active');
+        };
+
+        window.submitComplaint = async () => {
+            const category = document.getElementById('complaintCategory').value;
+            const text = document.getElementById('complaintText').value.trim();
+
+            if (!category) { showMessage('Please select a complaint category', 'error'); return; }
+            if (!text || text.length < 10) { showMessage('Please describe your complaint (min 10 characters)', 'error'); return; }
+
+            const btn = document.getElementById('cmSubmitBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+
+            try {
+                await db.collection('complaints').add({
+                    userId: currentUser.uid,
+                    userEmail: currentUser.email,
+                    userName: currentUser.displayName || currentUser.email.split('@')[0],
+                    category: category,
+                    complaint: text,
+                    status: 'pending',
+                    createdAt: firebase.firestore.Timestamp.now()
+                });
+
+                // Hide form, show success
+                document.getElementById('cmForm').style.display = 'none';
+                document.getElementById('cmHeader').style.display = 'none';
+                document.getElementById('cmSuccess').classList.add('active');
+
+                // Reset typing animation by re-creating element
+                const typingEl = document.getElementById('cmTypingText');
+                typingEl.style.animation = 'none';
+                void typingEl.offsetWidth; // reflow
+                typingEl.style.animation = '';
+
+            } catch(err) {
+                console.error(err);
+                showMessage('Error submitting complaint. Please try again.', 'error');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Complaint';
+            }
         };
 
         // Check entry mode on load
