@@ -1862,15 +1862,6 @@
                 return;
             }
             
-            // Fallback: look in allOrders if not found in myOrders
-            const order = myOrders.find(o => o.id === selectedOrderId) 
-                       || allOrders.find(o => o.id === selectedOrderId);
-            if (!order) {
-                showMessage('Order not found', 'error');
-                closeOTPModal();
-                return;
-            }
-            
             try {
                 // Always fetch fresh order data from Firestore to get current OTP
                 const orderDocSnap = await getDoc(doc(db, 'orders', selectedOrderId));
@@ -1893,12 +1884,14 @@
                 }
                 
                 // OTP matched — mark order as delivered
+                // Use fresh orderData from Firestore (not stale memory) for all checks
+                const earnedFee = orderData.deliveryFee || DELIVERY_FEE;
                 const orderUpdates = {
                     status: 'delivered',
                     deliveredAt: Timestamp.now(),
                     updatedAt: Timestamp.now()
                 };
-                if (order.paymentMethod === 'Cash on Delivery') {
+                if (orderData.paymentMethod === 'Cash on Delivery') {
                     orderUpdates.paymentStatus = 'paid';
                 }
                 await updateDoc(doc(db, 'orders', selectedOrderId), orderUpdates);
@@ -1907,7 +1900,7 @@
                 try {
                     await updateDoc(doc(db, 'deliveryBoys', deliveryId), {
                         totalDeliveries: increment(1),
-                        totalEarnings: increment(order.deliveryFee || DELIVERY_FEE),
+                        totalEarnings: increment(earnedFee),
                         lastDelivery: Timestamp.now(),
                         currentStatus: 'available',
                         currentOrderId: null
@@ -1916,12 +1909,12 @@
                     // Non-fatal: order is already marked delivered, just log
                     console.warn('Could not update delivery boy stats:', e.message);
                 }
-                
+
+                // Capture overlay values and close modal BEFORE snapshot can re-render
+                document.getElementById('completeEarning').textContent = `₹${earnedFee}`;
                 closeOTPModal();
 
                 // Show green completion overlay
-                const earnedFee = order.deliveryFee || DELIVERY_FEE;
-                document.getElementById('completeEarning').textContent = `₹${earnedFee}`;
                 document.getElementById('deliveryCompleteOverlay').classList.add('active');
                 document.getElementById('busyIndicator').style.display = 'none';
 
