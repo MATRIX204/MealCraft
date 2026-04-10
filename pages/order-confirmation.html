@@ -939,6 +939,113 @@
             transform: translateY(-3px);
             box-shadow: 0 12px 40px rgba(0,0,0,0.3);
         }
+
+        /* ===== CANCELLED ORDER CARD ===== */
+        .cancelled-card {
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(239,68,68,0.15);
+            border: 2px solid #fecaca;
+            animation: scaleIn 0.5s ease;
+            margin-bottom: 20px;
+        }
+        .cancelled-banner {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            padding: 30px 24px;
+            text-align: center;
+            color: white;
+        }
+        .cancelled-banner .cancel-icon {
+            font-size: 4rem;
+            margin-bottom: 12px;
+            animation: shake 0.5s ease 0.3s both;
+        }
+        @keyframes shake {
+            0%,100% { transform: translateX(0); }
+            20% { transform: translateX(-8px) rotate(-3deg); }
+            40% { transform: translateX(8px) rotate(3deg); }
+            60% { transform: translateX(-5px); }
+            80% { transform: translateX(5px); }
+        }
+        .cancelled-banner h2 {
+            font-size: 2rem;
+            font-weight: 900;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+        .cancelled-banner p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+        .cancelled-reason-box {
+            padding: 24px;
+        }
+        .cancelled-reason-box .reason-label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #9ca3af;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .cancelled-reason-box .reason-text {
+            background: #fff5f5;
+            border: 1px solid #fecaca;
+            border-left: 4px solid #ef4444;
+            border-radius: 12px;
+            padding: 16px 20px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #991b1b;
+            line-height: 1.5;
+        }
+        .cancelled-reason-box .cancelled-time {
+            margin-top: 12px;
+            font-size: 0.8rem;
+            color: #9ca3af;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .cancelled-cta {
+            padding: 0 24px 24px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .cancelled-cta a, .cancelled-cta button {
+            flex: 1;
+            min-width: 140px;
+            padding: 14px 20px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            border: none;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .cancelled-cta .btn-home {
+            background: linear-gradient(135deg, #f97316, #e67e22);
+            color: white;
+            box-shadow: 0 4px 15px rgba(249,115,22,0.3);
+        }
+        .cancelled-cta .btn-home:hover { transform: translateY(-2px); }
+        .cancelled-cta .btn-reorder {
+            background: #f1f5f9;
+            color: #374151;
+        }
+        .cancelled-cta .btn-reorder:hover { background: #e2e8f0; }
+
         /* OTP card pulse when active */
         .otp-card.active {
             animation: otpPulse 2s ease infinite;
@@ -1058,7 +1165,79 @@
         // Display order with animations
         const displayOrder = () => {
             const mainContent = document.getElementById('mainContent');
-            
+
+            // ── CANCELLED STATE ─────────────────────────────────────────────────
+            if (currentOrder.status === 'cancelled') {
+                const reason = currentOrder.cancellationReason || 'No reason provided';
+                const cancelledAt = currentOrder.cancelledAt?.toDate
+                    ? new Date(currentOrder.cancelledAt.toDate()).toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' })
+                    : '';
+                mainContent.innerHTML = `
+                    <!-- Order Header -->
+                    <div class="order-header-card">
+                        <div class="order-title">
+                            <h1>Order Cancelled</h1>
+                            <p><i class="fas fa-hashtag" style="color:#ef4444;"></i> ${orderId.slice(-8)}</p>
+                        </div>
+                        <div class="order-id-badge" style="background:#fff5f5;color:#ef4444;">
+                            <i class="fas fa-ban"></i>
+                            Cancelled
+                        </div>
+                    </div>
+
+                    <!-- Cancelled Card -->
+                    <div class="cancelled-card">
+                        <div class="cancelled-banner">
+                            <div class="cancel-icon"><i class="fas fa-times-circle"></i></div>
+                            <h2>Order Cancelled</h2>
+                            <p>We're sorry, your order could not be fulfilled.</p>
+                        </div>
+                        <div class="cancelled-reason-box">
+                            <div class="reason-label"><i class="fas fa-comment-alt"></i> Reason from MealCraft</div>
+                            <div class="reason-text">${reason}</div>
+                            ${cancelledAt ? `<div class="cancelled-time"><i class="fas fa-clock"></i> Cancelled on ${cancelledAt}</div>` : ''}
+                        </div>
+                        <div class="cancelled-cta">
+                            <button class="btn-home" onclick="window.location.href='home.html'">
+                                <i class="fas fa-utensils"></i> Order Again
+                            </button>
+                            <button class="btn-reorder" onclick="window.location.href='home.html'">
+                                <i class="fas fa-home"></i> Go Home
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Order Summary (still show what was ordered) -->
+                    <div class="order-details-card">
+                        <div class="details-header">
+                            <i class="fas fa-receipt"></i>
+                            <h2>What You Ordered</h2>
+                        </div>
+                        <div class="order-items">
+                            ${currentOrder.items.map(item => `
+                                <div class="order-item" style="opacity:0.65;">
+                                    <div class="item-info">
+                                        <div class="item-name">${item.customName || item.mealName}</div>
+                                        <div class="item-extras">${item.selectedIngredients?.map(ing => ing.name).join(', ') || 'No extras'}</div>
+                                    </div>
+                                    <div class="item-price">₹${item.totalPrice}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="order-summary">
+                            <div class="summary-row"><span>Total</span><span class="total-amount">₹${currentOrder.total || 0}</span></div>
+                            <div class="payment-badge">
+                                <i class="fas fa-${currentOrder.paymentMethod === 'Cash on Delivery' ? 'money-bill' : 'credit-card'}"></i>
+                                ${currentOrder.paymentMethod}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                document.getElementById('loadingState').style.display = 'none';
+                return;
+            }
+            // ── END CANCELLED STATE ─────────────────────────────────────────────
+
             // Get order dates for each status
             const dates = {
                 pending: currentOrder.createdAt?.toDate ? new Date(currentOrder.createdAt.toDate()) : new Date(),

@@ -727,6 +727,40 @@
     </div>
 </div>
 
+
+<!-- Cancel Order Modal -->
+<div class="modal" id="cancelOrderModal">
+    <div class="modal-content" style="max-width:460px;">
+        <h3 style="color:#ef4444;"><i class="fas fa-ban"></i> Cancel Order</h3>
+        <input type="hidden" id="cancelTargetOrderId">
+        <div style="background:#fff5f5;border:1px solid #fecaca;border-radius:12px;padding:16px;margin-bottom:18px;">
+            <p style="color:#991b1b;font-size:0.9rem;display:flex;align-items:center;gap:8px;"><i class="fas fa-exclamation-triangle"></i> <strong>This action cannot be undone.</strong> The customer will see your reason.</p>
+        </div>
+        <label style="font-weight:600;font-size:0.9rem;display:block;margin-bottom:8px;color:#374151;">Reason for Cancellation *</label>
+        <select id="cancelReasonPreset" style="width:100%;padding:14px 18px;margin-bottom:12px;border:2px solid #e2e8f0;border-radius:12px;font-family:Inter,sans-serif;font-size:0.95rem;" onchange="onCancelReasonPresetChange()">
+            <option value="">— Select a reason —</option>
+            <option value="Item(s) out of stock">🥡 Item(s) out of stock</option>
+            <option value="Restaurant closed">🏪 Restaurant closed</option>
+            <option value="Customer requested cancellation">👤 Customer requested cancellation</option>
+            <option value="Delivery not available in this area">🚫 Delivery not available in this area</option>
+            <option value="Duplicate order">🔁 Duplicate order</option>
+            <option value="Payment issue">💳 Payment issue</option>
+            <option value="other">✏️ Other (specify below)</option>
+        </select>
+        <div id="cancelReasonCustomDiv" style="display:none;">
+            <textarea id="cancelReasonCustom" placeholder="Please describe the reason..." rows="3" style="width:100%;padding:14px 18px;border:2px solid #e2e8f0;border-radius:12px;font-family:Inter,sans-serif;font-size:0.95rem;resize:vertical;"></textarea>
+        </div>
+        <div class="modal-actions" style="margin-top:20px;">
+            <button type="button" class="close-modal" onclick="closeModal('cancelOrderModal')">
+                <i class="fas fa-times"></i> Go Back
+            </button>
+            <button class="add-btn" style="background:linear-gradient(135deg,#ef4444,#dc2626);" onclick="confirmCancelOrder()">
+                <i class="fas fa-ban"></i> Confirm Cancel
+            </button>
+        </div>
+    </div>
+</div>
+
 <div id="message" class="message"></div>
 
 <!-- =====================================================================

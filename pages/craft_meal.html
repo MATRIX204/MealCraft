@@ -1097,11 +1097,7 @@
                 userCart.push(customizedMeal);
                 allCarts[currentUser.uid] = userCart;
                 localStorage.setItem('carts', JSON.stringify(allCarts));
-                document.getElementById('cartCount').textContent = userCart.length;
-                document.getElementById('previewCard').style.display = 'none';
-                document.getElementById('customizationCard').style.display = 'none';
-                document.getElementById('successActions').style.display = 'flex';
-                showMessage('✅ Added to cart!', 'success');
+                window.location.href = 'cart.html';
             } catch(error) { console.error(error); showMessage('Error adding to cart', 'error'); }
         };
         
