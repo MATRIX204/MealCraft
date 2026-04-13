@@ -1813,6 +1813,96 @@
         }
         displayOrders(filtered);
     }
+
+    // ── Display: Complaints ───────────────────────────────────────────────────
+    function displayComplaints(list) {
+        const container = document.getElementById('complaintsList');
+        if (!container) return;
+        if (!list || !list.length) {
+            container.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-circle"></i><h3>No Complaints</h3><p>No complaints have been submitted yet.</p></div>';
+            return;
+        }
+        container.innerHTML = list.map(c => {
+            const date = c.createdAt?.toDate ? new Date(c.createdAt.toDate()).toLocaleString('en-IN') : 'N/A';
+            const statusClass = `status-${(c.status || 'pending').replace(/\s+/g, '-')}`;
+            const initials = (c.userName || c.userEmail || 'U').charAt(0).toUpperCase();
+            return `<div class="complaint-row ${statusClass}">
+                <div class="complaint-top">
+                    <div class="complaint-user">
+                        <div class="complaint-avatar">${initials}</div>
+                        <div class="complaint-user-info">
+                            <h4>${c.userName || 'Anonymous'}</h4>
+                            <p>${c.userEmail || 'N/A'}</p>
+                        </div>
+                    </div>
+                    <div class="complaint-meta">
+                        <span class="complaint-category">${c.category || 'General'}</span>
+                        <span class="complaint-status-badge ${statusClass}">${c.status || 'pending'}</span>
+                        <span class="complaint-date"><i class="fas fa-clock"></i> ${date}</span>
+                    </div>
+                </div>
+                <div class="complaint-text">${c.complaint || 'No details provided.'}</div>
+                <div class="complaint-actions">
+                    ${c.status !== 'reviewed' ? `<button class="btn btn-warning" onclick="updateComplaintStatus('${c.id}','reviewed')"><i class="fas fa-eye"></i> Mark Reviewed</button>` : ''}
+                    ${c.status !== 'resolved' ? `<button class="btn btn-success" onclick="updateComplaintStatus('${c.id}','resolved')"><i class="fas fa-check"></i> Resolve</button>` : ''}
+                    <button class="btn btn-danger" onclick="deleteComplaint('${c.id}', '${c.userId || ''}')"><i class="fas fa-trash"></i> Delete</button>
+                </div>
+            </div>`;
+        }).join('');
+    }
+
+    function filterComplaints() {
+        const status = document.getElementById('complaintStatusFilter').value;
+        const filtered = status === 'all' ? complaints : complaints.filter(c => (c.status || 'pending') === status);
+        displayComplaints(filtered);
+    }
+
+    function searchComplaints() {
+        const term = document.getElementById('complaintSearch').value.toLowerCase();
+        const filtered = complaints.filter(c =>
+            (c.userName || '').toLowerCase().includes(term) ||
+            (c.userEmail || '').toLowerCase().includes(term) ||
+            (c.complaint || '').toLowerCase().includes(term) ||
+            (c.category || '').toLowerCase().includes(term)
+        );
+        displayComplaints(filtered);
+    }
+
+    function updateComplaintStatus(complaintId, newStatus) {
+        // Try top-level collection first, then fallback sub-collection lookup
+        db.collection('complaints').doc(complaintId).update({
+            status: newStatus,
+            updatedAt: firebase.firestore.Timestamp.now()
+        }).then(() => {
+            showMessage(`✅ Complaint marked as ${newStatus}!`, 'success');
+        }).catch(() => {
+            // Complaint may be in a user sub-collection; find it from local array
+            const c = complaints.find(x => x.id === complaintId);
+            if (c && c.userId) {
+                db.collection('users').doc(c.userId).collection('complaints').doc(complaintId)
+                    .update({ status: newStatus, updatedAt: firebase.firestore.Timestamp.now() })
+                    .then(() => showMessage(`✅ Complaint marked as ${newStatus}!`, 'success'))
+                    .catch(err => showMessage('Error: ' + err.message, 'error'));
+            } else {
+                showMessage('Could not find complaint to update.', 'error');
+            }
+        });
+    }
+
+    function deleteComplaint(complaintId, userId) {
+        if (!confirm('Delete this complaint permanently?')) return;
+        db.collection('complaints').doc(complaintId).delete()
+            .then(() => showMessage('✅ Complaint deleted!', 'success'))
+            .catch(() => {
+                if (userId) {
+                    db.collection('users').doc(userId).collection('complaints').doc(complaintId).delete()
+                        .then(() => showMessage('✅ Complaint deleted!', 'success'))
+                        .catch(err => showMessage('Error: ' + err.message, 'error'));
+                } else {
+                    showMessage('Could not delete complaint.', 'error');
+                }
+            });
+    }
 </script>
 </body>
 </html>
