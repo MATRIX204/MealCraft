@@ -298,6 +298,77 @@
             text-decoration: underline;
         }
 
+        /* ===== ENTRY ANIMATIONS ===== */
+        @keyframes fadeSlideUp {
+            from { opacity: 0; transform: translateY(32px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes scalePop {
+            0%   { opacity: 0; transform: scale(0.85); }
+            70%  { transform: scale(1.03); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        @keyframes spinIn {
+            from { opacity: 0; rotate: -60deg; scale: 0.5; }
+            to   { opacity: 1; rotate: 0deg; scale: 1; }
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50%       { transform: translateY(-6px); }
+        }
+        @keyframes progressFill {
+            from { width: 0; }
+        }
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(243,112,33,0); }
+            50%       { box-shadow: 0 0 0 8px rgba(243,112,33,0.15); }
+        }
+
+        .container { animation: fadeSlideUp 0.65s ease both; }
+
+        .mini-logo-card {
+            animation: spinIn 0.6s 0.1s cubic-bezier(.34,1.56,.64,1) both,
+                       float 3s 0.8s ease-in-out infinite;
+        }
+
+        .card h1     { animation: fadeSlideUp 0.55s 0.25s ease both; }
+        .card .subtitle { animation: fadeSlideUp 0.5s 0.32s ease both; }
+        .progress-steps { animation: fadeSlideUp 0.5s 0.38s ease both; }
+
+        .form-group:nth-child(1) { animation: fadeSlideUp 0.5s 0.42s ease both; }
+        .form-group:nth-child(2) { animation: fadeSlideUp 0.5s 0.47s ease both; }
+        .form-group:nth-child(3) { animation: fadeSlideUp 0.5s 0.52s ease both; }
+        .form-group:nth-child(4) { animation: fadeSlideUp 0.5s 0.57s ease both; }
+        .form-group:nth-child(5) { animation: fadeSlideUp 0.5s 0.62s ease both; }
+        .action-buttons { animation: fadeSlideUp 0.5s 0.67s ease both; }
+        .later-note { animation: fadeSlideUp 0.5s 0.72s ease both; }
+
+        .step.active {
+            animation: progressFill 0.8s 0.5s ease both;
+        }
+
+        .btn-primary {
+            transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.2s;
+        }
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 14px 30px rgba(243,112,33,0.35) !important;
+        }
+        .btn-primary:active:not(:disabled) { transform: translateY(0); }
+
+        .btn-secondary {
+            transition: transform 0.2s ease, border-color 0.2s, color 0.2s;
+        }
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            animation: pulse-glow 1.6s ease infinite;
+        }
+
         /* Responsive */
         @media (max-width: 640px) {
             .card {
@@ -617,10 +688,12 @@
                 console.log("Data saved successfully!");
 
                 showMessage('✅ Profile completed! Redirecting...', 'success');
-                
+
                 setTimeout(() => {
-                    window.location.href = 'home.html';
-                }, 1500);
+                    document.body.style.transition = 'opacity 0.45s ease';
+                    document.body.style.opacity = '0';
+                    setTimeout(() => { window.location.href = 'home.html'; }, 450);
+                }, 1200);
             } catch (error) {
                 console.error('Error saving profile:', error);
                 showMessage('❌ Error: ' + error.message, 'error');
@@ -659,8 +732,10 @@
                 showMessage('⏰ You can complete your profile later from settings', 'info');
                 
                 setTimeout(() => {
-                    window.location.href = 'home.html';
-                }, 1500);
+                    document.body.style.transition = 'opacity 0.45s ease';
+                    document.body.style.opacity = '0';
+                    setTimeout(() => { window.location.href = 'home.html'; }, 450);
+                }, 1200);
             } catch (error) {
                 console.error('Error skipping profile:', error);
                 showMessage('❌ Error: ' + error.message, 'error');

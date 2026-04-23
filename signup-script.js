@@ -5,7 +5,8 @@ import {
     createUserWithEmailAndPassword,
     GoogleAuthProvider,
     signInWithPopup,
-    updateProfile
+    updateProfile,
+    onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 import { 
     getFirestore, 
@@ -32,7 +33,7 @@ const db = getFirestore(app);
 const authForm = document.getElementById('auth-form');
 const toLoginBtn = document.getElementById('to-login-btn');
 const submitBtn = document.getElementById('submit-btn');
-const googleBtn = document.getElementById('google-signup');
+const googleBtn = document.getElementById('google-signup'); // may be null — handled below
 const messageDiv = document.getElementById('message');
 
 // Input Elements
@@ -72,10 +73,10 @@ const clearErrors = () => {
 // Show field error
 const showFieldError = (field, message) => {
     const errorMap = {
-        name: { element: nameError, input: fullNameInput },
-        email: { element: emailError, input: emailInput },
+        name:     { element: nameError,     input: fullNameInput },
+        email:    { element: emailError,    input: emailInput },
         password: { element: passwordError, input: passwordInput },
-        confirm: { element: confirmError, input: confirmInput }
+        confirm:  { element: confirmError,  input: confirmInput }
     };
     
     if (errorMap[field]) {
@@ -85,229 +86,240 @@ const showFieldError = (field, message) => {
     }
 };
 
-// ===== PASSWORD STRENGTH CHECKER =====
-passwordInput.addEventListener('input', () => {
-    const password = passwordInput.value;
-    let strength = 0;
-    
-    if (password.length >= 8) strength++;
-    if (password.match(/[a-z]/) && password.match(/[A-Z]/)) strength++;
-    if (password.match(/[0-9]/)) strength++;
-    if (password.match(/[^a-zA-Z0-9]/)) strength++;
-    
-    // Update strength bar
-    if (password.length === 0) {
-        strengthBar.className = 'strength-bar';
-    } else if (strength <= 1) {
-        strengthBar.className = 'strength-bar weak';
-    } else if (strength === 2) {
-        strengthBar.className = 'strength-bar medium';
-    } else {
-        strengthBar.className = 'strength-bar strong';
-    }
-    
-    // Clear password error on input
-    passwordError.classList.remove('visible');
-    passwordInput.classList.remove('error');
-});
+// ===== PASSWORD STRENGTH CHECKER (visual only — no enforcement) =====
+if (passwordInput) {
+    passwordInput.addEventListener('input', () => {
+        const password = passwordInput.value;
+        let strength = 0;
+
+        if (password.length >= 8) strength++;
+        if (password.match(/[a-z]/) && password.match(/[A-Z]/)) strength++;
+        if (password.match(/[0-9]/)) strength++;
+        if (password.match(/[^a-zA-Z0-9]/)) strength++;
+
+        if (password.length === 0) {
+            strengthBar.className = 'strength-bar';
+        } else if (strength <= 1) {
+            strengthBar.className = 'strength-bar weak';
+        } else if (strength === 2) {
+            strengthBar.className = 'strength-bar medium';
+        } else {
+            strengthBar.className = 'strength-bar strong';
+        }
+
+        if (passwordError) {
+            passwordError.classList.remove('visible');
+            passwordInput.classList.remove('error');
+        }
+    });
+}
 
 // ===== PASSWORD MATCH CHECKER =====
-confirmInput.addEventListener('input', () => {
-    const password = passwordInput.value;
-    const confirm = confirmInput.value;
-    
-    if (confirm.length > 0 && password !== confirm) {
-        confirmError.textContent = 'Passwords do not match';
-        confirmError.classList.add('visible');
-        confirmInput.classList.add('error');
-    } else {
-        confirmError.classList.remove('visible');
-        confirmInput.classList.remove('error');
-    }
-});
+if (confirmInput) {
+    confirmInput.addEventListener('input', () => {
+        const password = passwordInput.value;
+        const confirm = confirmInput.value;
 
-// ===== AUTH STATE CHECK - MODIFIED =====
-auth.onAuthStateChanged((user) => {
-    if (user) {
-        // Check if this is a new signup (we'll set a flag in session storage)
-        const isNewSignup = sessionStorage.getItem('isNewSignup');
-        
-        if (isNewSignup === 'true') {
-            // Clear the flag and stay on role page
-            sessionStorage.removeItem('isNewSignup');
-            console.log("New user, staying on role page");
+        if (confirm.length > 0 && password !== confirm) {
+            confirmError.textContent = 'Passwords do not match';
+            confirmError.classList.add('visible');
+            confirmInput.classList.add('error');
         } else {
-            // Existing user - check if profile is completed
-            // This will be handled by role.html redirect
-            console.log("Existing user, let role page handle redirect");
+            confirmError.classList.remove('visible');
+            confirmInput.classList.remove('error');
         }
+    });
+}
+
+// ===== SMOOTH REDIRECT HELPER =====
+const smoothRedirect = (url, delayMs = 1200) => {
+    setTimeout(() => {
+        // Fade-out the page then navigate
+        document.body.style.transition = 'opacity 0.5s ease';
+        document.body.style.opacity = '0';
+        setTimeout(() => {
+            window.location.href = url;
+        }, 500);
+    }, delayMs);
+};
+
+// ===== AUTH STATE CHECK =====
+// Only redirect when a *persisted* session exists on page load — do NOT
+// intercept the auth event that fires immediately after our own signup.
+let signupInProgress = false;
+
+onAuthStateChanged(auth, (user) => {
+    if (user && !signupInProgress) {
+        // Already logged in — send them to role page or home
+        window.location.replace('pages/role.html');
     }
 });
 
 // ===== EVENT LISTENERS =====
 // Login button
-toLoginBtn.addEventListener('click', () => {
-    window.location.href = 'login.html';
-});
+if (toLoginBtn) {
+    toLoginBtn.addEventListener('click', () => {
+        document.body.style.transition = 'opacity 0.4s ease';
+        document.body.style.opacity = '0';
+        setTimeout(() => { window.location.href = 'login.html'; }, 400);
+    });
+}
 
-// Google signup
-googleBtn.addEventListener('click', async () => {
-    clearErrors();
-    const provider = new GoogleAuthProvider();
-    
-    try {
-        setLoading(true);
-        showMessage('Connecting to Google...', 'info');
+// Google signup (button may not be present in all layouts)
+if (googleBtn) {
+    googleBtn.addEventListener('click', async () => {
+        clearErrors();
+        const provider = new GoogleAuthProvider();
 
-        const result = await signInWithPopup(auth, provider);
-        const user = result.user;
+        try {
+            signupInProgress = true;
+            setLoading(true);
+            showMessage('Connecting to Google...', 'info');
 
-        // Set flag for new signup
-        sessionStorage.setItem('isNewSignup', 'true');
+            const result = await signInWithPopup(auth, provider);
+            const user = result.user;
 
-        await setDoc(doc(db, 'users', user.uid), {
-            email: user.email,
-            username: user.displayName || user.email.split('@')[0],
-            fullName: user.displayName || user.email.split('@')[0],
-            role: 'customer',
-            status: 'active',
-            createdAt: serverTimestamp(),
-            updatedAt: serverTimestamp()
-        });
+            await setDoc(doc(db, 'users', user.uid), {
+                email: user.email,
+                username: user.displayName || user.email.split('@')[0],
+                fullName: user.displayName || user.email.split('@')[0],
+                role: 'customer',
+                status: 'active',
+                profileCompleted: false,
+                createdAt: serverTimestamp(),
+                updatedAt: serverTimestamp()
+            }, { merge: true });
 
-        showMessage('Account created successfully! Redirecting...', 'success');
-        
-        setTimeout(() => {
-            window.location.href = 'pages/role.html'; // Always go to role page
-        }, 1500);
-        
-    } catch (error) {
-        console.error('Google signup error:', error);
-        handleAuthError(error);
-        setLoading(false);
-    }
-});
+            showMessage('Account created! Redirecting...', 'success');
+            smoothRedirect('pages/role.html');
 
-// Form submission
-authForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    clearErrors();
-    
-    // Get values
-    const fullName = fullNameInput.value.trim();
-    const email = emailInput.value.trim();
-    const password = passwordInput.value;
-    const confirmPassword = confirmInput.value;
-    
-    // Validate inputs
-    let isValid = true;
-    
-    // Name validation
-    if (!fullName) {
-        showFieldError('name', 'Please enter your full name');
-        isValid = false;
-    } else if (fullName.length < 2) {
-        showFieldError('name', 'Name must be at least 2 characters');
-        isValid = false;
-    }
-    
-    // Email validation
-    if (!email) {
-        showFieldError('email', 'Please enter your email');
-        isValid = false;
-    } else if (!emailPattern.test(email)) {
-        showFieldError('email', 'Please enter a valid email address');
-        isValid = false;
-    } else if (!eduPattern.test(email)) {
-        const usePersonal = confirm("This looks like a personal email. Campus features require a .edu address. Continue anyway?");
-        if (!usePersonal) {
-            showFieldError('email', 'Please use your .edu email');
+        } catch (error) {
+            console.error('Google signup error:', error);
+            handleAuthError(error);
+            signupInProgress = false;
+            setLoading(false);
+        }
+    });
+}
+
+// ===== FORM SUBMISSION =====
+if (authForm) {
+    authForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        clearErrors();
+
+        const fullName       = fullNameInput.value.trim();
+        const email          = emailInput.value.trim();
+        const password       = passwordInput.value;
+        const confirmPassword = confirmInput.value;
+
+        let isValid = true;
+
+        // Name validation
+        if (!fullName) {
+            showFieldError('name', 'Please enter your full name');
+            isValid = false;
+        } else if (fullName.length < 2) {
+            showFieldError('name', 'Name must be at least 2 characters');
             isValid = false;
         }
-    }
-    
-    // Password validation
-    if (!password) {
-        showFieldError('password', 'Please enter a password');
-        isValid = false;
-    } else if (password.length < 8) {
-        showFieldError('password', 'Password must be at least 8 characters');
-        isValid = false;
-    }
-    
-    // Confirm password validation
-    if (!confirmPassword) {
-        showFieldError('confirm', 'Please confirm your password');
-        isValid = false;
-    } else if (password !== confirmPassword) {
-        showFieldError('confirm', 'Passwords do not match');
-        isValid = false;
-    }
-    
-    if (!isValid) return;
-    
-    // Submit to Firebase
-    try {
-        setLoading(true);
-        showMessage('Creating your account...', 'info');
-        
-        // Create user in Firebase Auth
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        const user = userCredential.user;
-        
-        // Set flag for new signup
-        sessionStorage.setItem('isNewSignup', 'true');
-        
-        // Update profile with display name
-        await updateProfile(user, {
-            displayName: fullName
-        });
-        
-        // Save user data to Firestore
-        await setDoc(doc(db, 'users', user.uid), {
-            email: email,
-            username: fullName,
-            fullName: fullName,
-            role: 'customer',
-            status: 'active',
-            createdAt: serverTimestamp(),
-            updatedAt: serverTimestamp()
-        });
-        
-        showMessage('Account created successfully! Redirecting...', 'success');
-        
-        setTimeout(() => {
-            window.location.href = 'pages/role.html'; // Always go to role page
-        }, 1500);
-        
-    } catch (error) {
-        console.error('Signup error:', error);
-        
-        if (error.code === 'auth/email-already-in-use') {
-            showFieldError('email', 'This email is already registered');
-        } else if (error.code === 'auth/weak-password') {
-            showFieldError('password', 'Password is too weak');
-        } else if (error.code === 'auth/invalid-email') {
-            showFieldError('email', 'Invalid email format');
-        } else {
-            handleAuthError(error);
+
+        // Email validation
+        if (!email) {
+            showFieldError('email', 'Please enter your email');
+            isValid = false;
+        } else if (!emailPattern.test(email)) {
+            showFieldError('email', 'Please enter a valid email address');
+            isValid = false;
+        } else if (!eduPattern.test(email)) {
+            const usePersonal = confirm("This looks like a personal email. Campus features require a .edu address. Continue anyway?");
+            if (!usePersonal) {
+                showFieldError('email', 'Please use your .edu email');
+                isValid = false;
+            }
         }
-        
-        setLoading(false);
-    }
-});
+
+        // Password validation — only minimum 8 characters required
+        if (!password) {
+            showFieldError('password', 'Please enter a password');
+            isValid = false;
+        } else if (password.length < 8) {
+            showFieldError('password', 'Password must be at least 8 characters');
+            isValid = false;
+        }
+
+        // Confirm password
+        if (!confirmPassword) {
+            showFieldError('confirm', 'Please confirm your password');
+            isValid = false;
+        } else if (password !== confirmPassword) {
+            showFieldError('confirm', 'Passwords do not match');
+            isValid = false;
+        }
+
+        if (!isValid) return;
+
+        try {
+            signupInProgress = true;
+            setLoading(true);
+            showMessage('Creating your account...', 'info');
+
+            // Create user in Firebase Auth
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // Update display name
+            await updateProfile(user, { displayName: fullName });
+
+            // Save to Firestore
+            await setDoc(doc(db, 'users', user.uid), {
+                email: email,
+                username: fullName,
+                fullName: fullName,
+                role: 'customer',
+                status: 'active',
+                profileCompleted: false,
+                createdAt: serverTimestamp(),
+                updatedAt: serverTimestamp()
+            });
+
+            showMessage('Account created successfully! Redirecting...', 'success');
+            smoothRedirect('pages/role.html');
+
+        } catch (error) {
+            console.error('Signup error:', error);
+            signupInProgress = false;
+
+            if (error.code === 'auth/email-already-in-use') {
+                showFieldError('email', 'This email is already registered');
+            } else if (error.code === 'auth/weak-password') {
+                showFieldError('password', 'Password is too weak (Firebase requires ≥6 chars)');
+            } else if (error.code === 'auth/invalid-email') {
+                showFieldError('email', 'Invalid email format');
+            } else {
+                handleAuthError(error);
+            }
+
+            setLoading(false);
+        }
+    });
+}
 
 // ===== HELPER FUNCTIONS =====
 const setLoading = (loading) => {
-    submitBtn.disabled = loading;
-    googleBtn.disabled = loading;
-    submitBtn.textContent = loading ? 'Processing...' : 'Sign Up';
+    if (submitBtn) {
+        submitBtn.disabled = loading;
+        submitBtn.textContent = loading ? 'Processing...' : 'Sign Up';
+    }
+    // Only touch googleBtn if it actually exists
+    if (googleBtn) googleBtn.disabled = loading;
 };
 
 const showMessage = (message, type) => {
+    if (!messageDiv) return;
     messageDiv.textContent = message;
     messageDiv.className = `message ${type}`;
-    
+
     if (type !== 'error') {
         setTimeout(() => {
             messageDiv.className = 'message';
@@ -317,7 +329,7 @@ const showMessage = (message, type) => {
 
 const handleAuthError = (error) => {
     let message = 'An error occurred. Please try again.';
-    
+
     switch (error.code) {
         case 'auth/network-request-failed':
             message = 'Network error. Check your connection.';
@@ -328,17 +340,21 @@ const handleAuthError = (error) => {
         default:
             message = error.message;
     }
-    
+
     showMessage(message, 'error');
 };
 
 // Clear errors on input
-fullNameInput.addEventListener('input', () => {
-    nameError.classList.remove('visible');
-    fullNameInput.classList.remove('error');
-});
+if (fullNameInput) {
+    fullNameInput.addEventListener('input', () => {
+        nameError.classList.remove('visible');
+        fullNameInput.classList.remove('error');
+    });
+}
 
-emailInput.addEventListener('input', () => {
-    emailError.classList.remove('visible');
-    emailInput.classList.remove('error');
-});
+if (emailInput) {
+    emailInput.addEventListener('input', () => {
+        emailError.classList.remove('visible');
+        emailInput.classList.remove('error');
+    });
+}

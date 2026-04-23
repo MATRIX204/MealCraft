@@ -6,6 +6,122 @@
     <title>Meal Craft - Sign Up</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ===== PAGE ENTRY ANIMATIONS ===== */
+        @keyframes fadeSlideUp {
+            from { opacity: 0; transform: translateY(28px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeSlideLeft {
+            from { opacity: 0; transform: translateX(-30px); }
+            to   { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes fadeSlideRight {
+            from { opacity: 0; transform: translateX(30px); }
+            to   { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes scalePop {
+            0%   { opacity: 0; transform: scale(0.88); }
+            70%  { transform: scale(1.02); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        @keyframes shimmer {
+            0%   { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(243,112,33,0); }
+            50%       { box-shadow: 0 0 0 8px rgba(243,112,33,0.15); }
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50%       { transform: translateY(-6px); }
+        }
+        @keyframes spin-in {
+            from { opacity: 0; rotate: -45deg; scale: 0.6; }
+            to   { opacity: 1; rotate: 0deg; scale: 1; }
+        }
+
+        /* Header */
+        header {
+            animation: fadeSlideUp 0.6s ease both;
+        }
+
+        /* Card halves */
+        .auth-image-side {
+            animation: fadeSlideLeft 0.7s 0.15s ease both;
+        }
+        .auth-form-side {
+            animation: fadeSlideRight 0.7s 0.2s ease both;
+        }
+
+        /* Form elements stagger */
+        .auth-form-side h2     { animation: fadeSlideUp 0.55s 0.30s ease both; }
+        .auth-form-side .subtitle { animation: fadeSlideUp 0.55s 0.38s ease both; }
+        .input-group:nth-child(1) { animation: fadeSlideUp 0.5s 0.42s ease both; }
+        .input-group:nth-child(2) { animation: fadeSlideUp 0.5s 0.48s ease both; }
+        .input-group:nth-child(3) { animation: fadeSlideUp 0.5s 0.54s ease both; }
+        .input-group:nth-child(4) { animation: fadeSlideUp 0.5s 0.60s ease both; }
+        .auth-submit-btn          { animation: scalePop  0.55s 0.66s ease both; }
+        .auth-footer              { animation: fadeSlideUp 0.5s 0.72s ease both; }
+
+        /* Logo animation */
+        .mini-logo-card {
+            animation: spin-in 0.6s 0.1s cubic-bezier(.34,1.56,.64,1) both,
+                       float 3s 1s ease-in-out infinite;
+        }
+
+        /* Submit button shimmer on hover */
+        .auth-submit-btn {
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+        .auth-submit-btn::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.25) 50%, transparent 100%);
+            background-size: 200% 100%;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .auth-submit-btn:hover::after {
+            opacity: 1;
+            animation: shimmer 0.8s linear;
+        }
+        .auth-submit-btn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 14px 30px rgba(243,112,33,0.35) !important;
+        }
+        .auth-submit-btn:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        /* Input focus glow */
+        .input-group input:focus {
+            animation: pulse-glow 1.6s ease infinite;
+        }
+
+        /* Strength bar transitions */
+        .strength-bar {
+            transition: width 0.4s cubic-bezier(.4,0,.2,1),
+                        background 0.4s ease;
+        }
+
+        /* Footer */
+        footer {
+            animation: fadeSlideUp 0.5s 0.8s ease both;
+        }
+
+        /* Exit animation helper (added via JS) */
+        body.page-exit {
+            animation: none !important;
+            opacity: 0;
+            transition: opacity 0.45s ease !important;
+        }
+    </style>
 </head>
 <body class="auth-body">
 
@@ -17,7 +133,6 @@
             <strong>Meal Craft</strong>
         </div>
         <nav class="nav-links">
-        
             <button class="toggle-btn" id="to-login-btn">Log In</button>
         </nav>
     </header>
@@ -35,35 +150,32 @@
                 <h2 id="form-title">CREATE ACCOUNT</h2>
                 <p class="subtitle" id="form-subtitle">Start your culinary journey</p>
 
-                
-
-
                 <form id="auth-form" novalidate>
                     <div class="input-group">
                         <label>Full Name</label>
-                        <input type="text" id="full-name" placeholder="Enter your name">
+                        <input type="text" id="full-name" placeholder="Enter your name" autocomplete="name">
                         <div class="input-error" id="name-error"></div>
                     </div>
 
                     <div class="input-group">
                         <label>E-mail</label>
-                        <input type="email" id="email" placeholder="you@university.edu" required>
+                        <input type="email" id="email" placeholder="you@example.com" autocomplete="email" required>
                         <div class="input-error" id="email-error"></div>
                     </div>
 
                     <div class="input-group">
                         <label>Password</label>
-                        <input type="password" id="password" placeholder="••••••••" required>
+                        <input type="password" id="password" placeholder="••••••••" autocomplete="new-password" required>
                         <div class="strength-meter">
                             <div class="strength-bar" id="strength-bar"></div>
                         </div>
-                        <div class="password-hint">Minimum 8 characters with letters & numbers</div>
+                        <div class="password-hint">Minimum 8 characters</div>
                         <div class="input-error" id="password-error"></div>
                     </div>
 
                     <div class="input-group">
                         <label>Confirm Password</label>
-                        <input type="password" id="confirm-password" placeholder="••••••••" required>
+                        <input type="password" id="confirm-password" placeholder="••••••••" autocomplete="new-password" required>
                         <div class="input-error" id="confirm-error"></div>
                     </div>
 
@@ -71,7 +183,6 @@
                 </form>
 
                 <div class="auth-footer">
-                
                     <p class="terms">
                         By continuing, you agree to Meal Craft's <br>
                         <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>

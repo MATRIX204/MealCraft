@@ -6,8 +6,111 @@
     <title>Meal Craft - Login</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Additional styles for admin button */
+        /* ===== PAGE ENTRY ANIMATIONS ===== */
+        @keyframes fadeSlideUp {
+            from { opacity: 0; transform: translateY(28px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeSlideLeft {
+            from { opacity: 0; transform: translateX(-30px); }
+            to   { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes fadeSlideRight {
+            from { opacity: 0; transform: translateX(30px); }
+            to   { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes scalePop {
+            0%   { opacity: 0; transform: scale(0.88); }
+            70%  { transform: scale(1.02); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        @keyframes shimmer {
+            0%   { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(243,112,33,0); }
+            50%       { box-shadow: 0 0 0 8px rgba(243,112,33,0.15); }
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50%       { transform: translateY(-6px); }
+        }
+        @keyframes spin-in {
+            from { opacity: 0; rotate: -45deg; scale: 0.6; }
+            to   { opacity: 1; rotate: 0deg; scale: 1; }
+        }
+        @keyframes bounceIn {
+            0%   { opacity: 0; transform: scale(0.3); }
+            50%  { opacity: 1; transform: scale(1.05); }
+            70%  { transform: scale(0.95); }
+            100% { transform: scale(1); }
+        }
+
+        /* Staggered entrance */
+        header { animation: fadeSlideUp 0.6s ease both; }
+
+        .auth-image-side { animation: fadeSlideLeft 0.7s 0.15s ease both; }
+        .auth-form-side  { animation: fadeSlideRight 0.7s 0.2s ease both; }
+
+        .auth-form-side h2        { animation: fadeSlideUp 0.55s 0.30s ease both; }
+        .auth-form-side .subtitle { animation: fadeSlideUp 0.55s 0.38s ease both; }
+        .google-btn               { animation: fadeSlideUp 0.5s 0.43s ease both; }
+        .divider                  { animation: fadeSlideUp 0.5s 0.48s ease both; }
+        .input-group:nth-child(1) { animation: fadeSlideUp 0.5s 0.52s ease both; }
+        .input-group:nth-child(2) { animation: fadeSlideUp 0.5s 0.58s ease both; }
+        .auth-submit-btn          { animation: scalePop  0.55s 0.64s ease both; }
+        .admin-quick-login        { animation: fadeSlideUp 0.5s 0.70s ease both; }
+
+        .mini-logo-card {
+            animation: spin-in 0.6s 0.1s cubic-bezier(.34,1.56,.64,1) both,
+                       float 3s 1s ease-in-out infinite;
+        }
+
+        footer { animation: fadeSlideUp 0.5s 0.76s ease both; }
+
+        /* Submit button shimmer */
+        .auth-submit-btn {
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+        .auth-submit-btn::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.25) 50%, transparent 100%);
+            background-size: 200% 100%;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .auth-submit-btn:hover::after {
+            opacity: 1;
+            animation: shimmer 0.8s linear;
+        }
+        .auth-submit-btn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 14px 30px rgba(243,112,33,0.35) !important;
+        }
+        .auth-submit-btn:active:not(:disabled) { transform: translateY(0); }
+
+        /* Google button hover */
+        .google-btn {
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+        }
+        .google-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+        }
+
+        /* Input glow */
+        .input-group input:focus {
+            animation: pulse-glow 1.6s ease infinite;
+        }
+
+        /* Admin button */
         .admin-quick-login {
             margin-top: 20px;
             padding: 15px;
@@ -19,14 +122,16 @@
             justify-content: space-between;
             flex-wrap: wrap;
             gap: 15px;
+            transition: box-shadow 0.2s;
         }
-
+        .admin-quick-login:hover {
+            box-shadow: 0 4px 16px rgba(243,112,33,0.12);
+        }
         .admin-quick-info {
             display: flex;
             align-items: center;
             gap: 12px;
         }
-
         .admin-icon {
             width: 40px;
             height: 40px;
@@ -37,20 +142,18 @@
             justify-content: center;
             color: white;
             font-size: 1.2rem;
+            animation: bounceIn 0.6s 0.8s ease both;
         }
-
         .admin-quick-info h4 {
             font-size: 1rem;
             font-weight: 700;
             color: #1a1a1a;
             margin-bottom: 4px;
         }
-
         .admin-quick-info p {
             font-size: 0.85rem;
             color: #666;
         }
-
         .admin-quick-btn {
             background: #f37021;
             color: white;
@@ -60,21 +163,17 @@
             font-weight: 600;
             font-size: 0.9rem;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.25s ease;
             display: flex;
             align-items: center;
             gap: 8px;
         }
-
         .admin-quick-btn:hover {
             background: #e6651a;
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(243, 112, 33, 0.3);
+            box-shadow: 0 5px 15px rgba(243,112,33,0.35);
         }
-
-        .admin-quick-btn i {
-            font-size: 1rem;
-        }
+        .admin-quick-btn:active { transform: translateY(0); }
     </style>
 </head>
 <body class="auth-body">
@@ -87,7 +186,6 @@
             <strong>Meal Craft</strong>
         </div>
         <nav class="nav-links">
-          
             <button class="toggle-btn" id="to-signup-btn">Sign Up</button>
         </nav>
     </header>
@@ -102,7 +200,7 @@
             </div>
 
             <div class="auth-form-side">
-                <h2 id="form-title">YOU NEED YOU BUILD</h2>
+                <h2 id="form-title">WELCOME BACK</h2>
                 <p class="subtitle" id="form-subtitle">Custom meals for your life</p>
 
                 <button class="google-btn" id="google-login">
@@ -115,7 +213,7 @@
                 <form id="auth-form" novalidate>
                     <div class="input-group">
                         <label>E-mail</label>
-                        <input type="email" id="email" placeholder="you@university.edu" required>
+                        <input type="email" id="email" placeholder="you@example.com" autocomplete="email" required>
                         <div class="input-error" id="email-error"></div>
                     </div>
 
@@ -124,14 +222,14 @@
                             <label>Password</label>
                             <a href="#" class="forgot-link" id="forgot-link">Forgot password?</a>
                         </div>
-                        <input type="password" id="password" placeholder="••••••••" required>
+                        <input type="password" id="password" placeholder="••••••••" autocomplete="current-password" required>
                         <div class="input-error" id="password-error"></div>
                     </div>
 
                     <button type="submit" class="auth-submit-btn" id="submit-btn">Log In</button>
                 </form>
 
-                <!-- Admin Quick Login Button -->
+                <!-- Admin Quick Login -->
                 <div class="admin-quick-login">
                     <div class="admin-quick-info">
                         <div class="admin-icon">
@@ -147,7 +245,6 @@
                     </button>
                 </div>
 
-
                 <div id="message" class="message"></div>
             </div>
         </div>
@@ -157,8 +254,35 @@
         &copy; 2026 Meal Craft. All rights reserved. Crafted with <i class="fas fa-heart" style="color: #f37021;"></i> for food lovers.
     </footer>
 
-    <!-- Font Awesome for icons -->
-    <script src="https://kit.fontawesome.com/your-kit-code.js" crossorigin="anonymous"></script>
     <script type="module" src="login-script.js"></script>
+
+    <script>
+        // Smooth page transitions for nav buttons
+        document.addEventListener('DOMContentLoaded', () => {
+            const toSignupBtn = document.getElementById('to-signup-btn');
+            if (toSignupBtn) {
+                toSignupBtn.addEventListener('click', () => {
+                    document.body.style.transition = 'opacity 0.4s ease';
+                    document.body.style.opacity = '0';
+                    setTimeout(() => { window.location.href = 'signup.html'; }, 400);
+                });
+            }
+        });
+
+        // Admin autofill helper
+        function fillAdminCredentials() {
+            const emailInput = document.getElementById('email');
+            const passInput  = document.getElementById('password');
+            if (emailInput) emailInput.value = 'admin@mealcraft.com';
+            if (passInput)  passInput.value  = 'Admin@123';
+            // Small visual flash to confirm
+            [emailInput, passInput].forEach(el => {
+                if (!el) return;
+                el.style.transition = 'background 0.3s';
+                el.style.background = 'rgba(243,112,33,0.08)';
+                setTimeout(() => { el.style.background = ''; }, 600);
+            });
+        }
+    </script>
 </body>
 </html>
