@@ -51,7 +51,6 @@ const strengthBar = document.getElementById('strength-bar');
 
 // ===== VALIDATION =====
 const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-const eduPattern = /\.edu$/;
 
 // Clear all errors
 const clearErrors = () => {
@@ -231,12 +230,6 @@ if (authForm) {
         } else if (!emailPattern.test(email)) {
             showFieldError('email', 'Please enter a valid email address');
             isValid = false;
-        } else if (!eduPattern.test(email)) {
-            const usePersonal = confirm("This looks like a personal email. Campus features require a .edu address. Continue anyway?");
-            if (!usePersonal) {
-                showFieldError('email', 'Please use your .edu email');
-                isValid = false;
-            }
         }
 
         // Password validation — only minimum 8 characters required

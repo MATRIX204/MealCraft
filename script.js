@@ -1,5 +1,45 @@
 // ===== SPLASH SCREEN SCRIPT =====
 
+// ── Sign out any active admin Firebase session immediately ──────────────
+// We load Firebase compat scripts lazily to do this without making
+// index.html depend on Firebase modules in a blocking way.
+(async () => {
+    try {
+        // Dynamically import Firebase so the rest of the page doesn't wait
+        const { initializeApp, getApps } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js");
+        const { getAuth, signOut, onAuthStateChanged } = await import("https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js");
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAT4CDao7eHCFU0OO_dee_m6BpjzKv_308",
+            authDomain: "mealcraft-9db35.firebaseapp.com",
+            projectId: "mealcraft-9db35",
+            messagingSenderId: "1052912873454",
+            appId: "1:1052912873454:web:2b794eb8e9524f0ba068ff"
+        };
+
+        const ADMIN_EMAIL = 'admin@mealcraft.com';
+        const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user && user.email === ADMIN_EMAIL) {
+                // Admin is still signed in — sign them out so they can't bleed into guest mode
+                await signOut(auth);
+                // Also clear any localStorage traces of admin
+                localStorage.removeItem('lastLoggedInUser');
+                localStorage.removeItem('lastUserName');
+                localStorage.removeItem('lastUserRole');
+                sessionStorage.clear();
+                // Refresh UI now that we know there's no last user
+                checkLastUser();
+            }
+        });
+    } catch (e) {
+        // Firebase unavailable (offline) — just continue
+        console.warn('Firebase check skipped:', e.message);
+    }
+})();
+
 // DOM Elements
 const orderBtn = document.getElementById('order-btn');
 const loadingWrapper = document.getElementById('loading-wrapper');
@@ -36,14 +76,17 @@ const setGuestMode = () => {
     localStorage.removeItem('lastLoggedInUser'); // Clear any previous login
 };
 
-// Clear admin data if present
+// Clear ALL admin-related data unconditionally every time the splash loads
 const clearAdminData = () => {
     const lastUser = localStorage.getItem('lastLoggedInUser');
-    if (lastUser === 'admin@mealcraft.com') {
+    if (!lastUser || lastUser === 'admin@mealcraft.com') {
         localStorage.removeItem('lastLoggedInUser');
         localStorage.removeItem('lastUserName');
         localStorage.removeItem('lastUserRole');
     }
+    // Always clear session — admin panel uses sessionStorage for its state
+    sessionStorage.removeItem('deliveryId');
+    sessionStorage.removeItem('deliveryLoginMethod');
 };
 
 // Loading animation

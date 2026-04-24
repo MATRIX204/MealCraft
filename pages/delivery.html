@@ -1814,17 +1814,24 @@
 
         window.cashCollected = async () => {
             if (!currentCashOrderId) return;
-            
+
+            // Snapshot the values BEFORE closeCashModal() nulls them
+            const orderId = currentCashOrderId;
+
             try {
-                await updateDoc(doc(db, 'orders', currentCashOrderId), {
+                await updateDoc(doc(db, 'orders', orderId), {
                     cashCollected: true,
                     cashCollectedAt: Timestamp.now(),
                     updatedAt: Timestamp.now()
                 });
-                
-                showMessage('✅ Cash collected! Now enter OTP', 'success');
+
+                // Close the cash modal
                 closeCashModal();
-                showOTPModal(currentCashOrderId, currentDeliveryFee);
+
+                // The Firestore real-time listener will re-render the card
+                // and show the "Enter OTP" button now that cashCollected === true.
+                showMessage('✅ Cash recorded! Tap "Enter OTP" on the card to complete delivery.', 'success');
+
             } catch (error) {
                 console.error('Error:', error);
                 showMessage('Error recording cash collection', 'error');

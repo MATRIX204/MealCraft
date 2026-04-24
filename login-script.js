@@ -179,7 +179,20 @@ auth.onAuthStateChanged(async (user) => {
             
             if (userDoc.exists()) {
                 const userData = userDoc.data();
-                
+
+                // ── BLOCKED USER CHECK ──────────────────────────────────
+                if (userData.status === 'blocked' && user.email !== ADMIN_EMAIL) {
+                    await auth.signOut();
+                    // Show the login page message (we're already on login.html)
+                    const msgEl = document.getElementById('message');
+                    if (msgEl) {
+                        msgEl.textContent = '🚫 Your account has been blocked by the admin. Please contact admin@mealcraft.com for help.';
+                        msgEl.className = 'message error';
+                    }
+                    return;
+                }
+                // ────────────────────────────────────────────────────────
+
                 if (userData.role === 'admin' || user.email === ADMIN_EMAIL) {
                     window.location.href = 'pages/admin.html';
                 } else if (userData.role === 'delivery') {
@@ -277,11 +290,26 @@ googleBtn.addEventListener('click', async () => {
             window.location.href = 'pages/role.html';
         } else {
             const userData = userDoc.data();
+
+            // ── BLOCKED USER CHECK ──────────────────────────────────
+            if (userData.status === 'blocked') {
+                await auth.signOut();
+                showMessage(
+                    '🚫 Your account has been blocked by the admin. Please contact admin@mealcraft.com for help.',
+                    'error'
+                );
+                setLoading(false);
+                return;
+            }
+            // ────────────────────────────────────────────────────────
+
             if (userData.role === 'admin') {
                 window.location.href = 'pages/admin.html';
             } else if (userData.role === 'delivery') {
                 window.location.href = 'pages/delivery.html';
             } else {
+                localStorage.setItem('lastLoggedInUser', user.email);
+                localStorage.setItem('lastUserName', userData.fullName || userData.username || user.email.split('@')[0]);
                 window.location.href = 'pages/home.html';
             }
         }
@@ -350,12 +378,28 @@ authForm.addEventListener('submit', async (e) => {
         
         if (userDoc.exists()) {
             const userData = userDoc.data();
-            
+
+            // ── BLOCKED USER CHECK ──────────────────────────────────────
+            if (userData.status === 'blocked' && email !== ADMIN_EMAIL) {
+                // Sign them back out immediately so Firebase session is cleared
+                await auth.signOut();
+                showMessage(
+                    '🚫 Your account has been blocked by the admin. Please contact admin@mealcraft.com for help.',
+                    'error'
+                );
+                setLoading(false);
+                return;
+            }
+            // ────────────────────────────────────────────────────────────
+
             if (userData.role === 'admin' || email === ADMIN_EMAIL) {
                 window.location.href = 'pages/admin.html';
             } else if (userData.role === 'delivery') {
                 window.location.href = 'pages/delivery.html';
             } else {
+                // Save last logged-in user (non-admin) for splash screen
+                localStorage.setItem('lastLoggedInUser', user.email);
+                localStorage.setItem('lastUserName', userData.fullName || userData.username || user.email.split('@')[0]);
                 window.location.href = 'pages/home.html';
             }
         } else {
