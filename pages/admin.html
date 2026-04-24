@@ -1168,13 +1168,15 @@
             const sc = `status-${order.status || 'pending'}`;
             const st = (order.status || 'pending').replace(/-/g, ' ');
             const boy = order.deliveryBoyId ? deliveryBoys.find(b => b.id === order.deliveryBoyId) : null;
+            const isCancelledByUser = order.status === 'cancelled' && order.cancelledBy === 'user';
             return `<div class="order-row">
                 <div class="order-info">
                     <span class="order-id">#${order.id.slice(-8)}</span>
                     <div class="order-customer"><i class="fas fa-user"></i><span>${order.customerName || 'N/A'}</span></div>
                     <div class="order-customer"><i class="fas fa-phone"></i><span>${order.phone || 'N/A'}</span></div>
                     <span class="order-amount">₹${order.total || 0}</span>
-                    <span class="order-status-badge ${sc}">${st}</span>
+                    <span class="order-status-badge ${sc}">${isCancelledByUser ? '👤 Cancelled by User' : st}</span>
+                    ${isCancelledByUser && order.cancellationReason ? `<span style="color:#991b1b;font-size:0.8rem;background:#fff5f5;border:1px solid #fecaca;border-radius:20px;padding:3px 10px;"><i class="fas fa-comment-alt" style="margin-right:4px;"></i>${order.cancellationReason}</span>` : ''}
                     <span style="color:#64748b;font-size:0.85rem;">${boy ? 'Assigned: ' + boy.fullName : 'Not assigned'}</span>
                 </div>
                 <div class="order-actions">
@@ -1533,6 +1535,19 @@
         if (!order) return;
         const items = order.items || [];
         const boy = order.deliveryBoyId ? deliveryBoys.find(b => b.id === order.deliveryBoyId) : null;
+        const cancelledByUser = order.status === 'cancelled' && order.cancelledBy === 'user';
+        const cancelledByAdmin = order.status === 'cancelled' && order.cancelledBy !== 'user';
+        const cancelInfo = order.status === 'cancelled'
+            ? (cancelledByUser
+                ? `<div style="background:#fff5f5;border:2px solid #fecaca;border-radius:12px;padding:14px;margin-top:12px;">
+                    <p style="font-weight:700;color:#ef4444;margin-bottom:6px;"><i class="fas fa-user-times"></i> Cancelled by Customer</p>
+                    <p style="color:#991b1b;font-size:0.9rem;"><strong>Reason:</strong> ${order.cancellationReason || 'No reason provided'}</p>
+                   </div>`
+                : `<div style="background:#fff5f5;border:2px solid #fecaca;border-radius:12px;padding:14px;margin-top:12px;">
+                    <p style="font-weight:700;color:#ef4444;margin-bottom:6px;"><i class="fas fa-ban"></i> Cancelled by Admin</p>
+                    <p style="color:#991b1b;font-size:0.9rem;"><strong>Reason:</strong> ${order.cancellationReason || 'No reason provided'}</p>
+                   </div>`)
+            : '';
         document.getElementById('orderDetailsContent').innerHTML = `
             <div style="max-height:400px;overflow-y:auto;padding-right:10px;">
                 <div style="background:#f8fafc;padding:15px;border-radius:12px;margin-bottom:15px;">
@@ -1543,8 +1558,8 @@
                     <p><strong>Address:</strong> ${order.address || 'N/A'}</p>
                     <p><strong>Payment:</strong> ${order.paymentMethod || 'N/A'} (${order.paymentStatus || 'pending'})</p>
                     ${order.specialInstructions ? `<p style="background:#fffbeb;border-left:3px solid #f59e0b;padding:8px 12px;border-radius:6px;margin-top:8px;"><strong>⚠️ Special Instructions:</strong> ${order.specialInstructions}</p>` : ''}
-                    ${order.cancellationReason ? `<p><strong>Cancellation Reason:</strong> ${order.cancellationReason}</p>` : ''}
                     ${boy ? `<p><strong>Delivery Boy:</strong> ${boy.fullName} (${boy.phone})</p>` : ''}
+                    ${cancelInfo}
                 </div>
                 <h4 style="margin:15px 0 10px;">Items:</h4>
                 ${items.map(item => `<div style="background:#f8fafc;padding:15px;margin-bottom:10px;border-radius:12px;border:1px solid #e2e8f0;">
