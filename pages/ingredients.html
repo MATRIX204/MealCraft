@@ -316,24 +316,40 @@
         }
 
         .ingredient-icon {
-            width: 60px;
-            height: 60px;
+            width: 100%;
+            aspect-ratio: 1 / 1;
             background: #fff3e0;
-            border-radius: 50%;
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
             margin: 0 auto 15px;
             color: #f37021;
             font-size: 1.8rem;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .ingredient-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 14px;
+            display: none;
+        }
+
+        .ingredient-icon i {
+            position: absolute;
+            font-size: 1.8rem;
         }
 
         @media (min-width: 768px) {
             .ingredient-icon {
-                width: 80px;
-                height: 80px;
                 font-size: 2.2rem;
                 margin: 0 auto 20px;
+            }
+            .ingredient-icon i {
+                font-size: 2.2rem;
             }
         }
 
@@ -628,6 +644,8 @@
                 let html = '';
                 snapshot.forEach(doc => {
                     const ing = doc.data();
+                    const imgName = ing.name.toLowerCase().replace(/\s+/g, '_');
+                    const imgPath = `../assets/Ingredients/${imgName}.png`;
                     const icon = ing.category === 'Cheese' ? 'fa-cheese' : 
                                 ing.category === 'Vegetable' ? 'fa-carrot' :
                                 ing.category === 'Meat' ? 'fa-drumstick-bite' : 
@@ -636,6 +654,12 @@
                     html += `
                         <div class="ingredient-card">
                             <div class="ingredient-icon">
+                                <img 
+                                    src="${imgPath}" 
+                                    alt="${ing.name}"
+                                    onload="this.style.display='block'; this.nextElementSibling.style.display='none';"
+                                    onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                                >
                                 <i class="fas ${icon}"></i>
                             </div>
                             <h3>${ing.name}</h3>

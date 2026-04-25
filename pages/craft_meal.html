@@ -431,57 +431,82 @@
             padding: 16px;
         }
 
-        /* Base Options Selector */
+        /* Base Options Selector - Box Grid */
+        #baseOptionsGrid {
+            display: grid !important;
+            grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+            gap: 10px;
+            flex-direction: unset !important;
+        }
         .base-option-btn {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: space-between;
+            justify-content: center;
             background: white;
             border: 2px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 14px 16px;
+            border-radius: 14px;
+            padding: 14px 8px 10px;
             cursor: pointer;
             transition: all 0.25s;
             font-family: inherit;
             width: 100%;
-            text-align: left;
+            text-align: center;
+            gap: 8px;
+            min-height: 90px;
         }
         .base-option-btn:hover {
-            border-color: #f97316;
-            background: #fff7ed;
+            border-color: #22c55e;
+            background: #f0fdf4;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(34,197,94,0.12);
         }
         .base-option-btn.selected {
-            border-color: #f97316;
-            background: linear-gradient(135deg, #fff7ed, #ffedd5);
-            box-shadow: 0 0 0 3px rgba(249,115,22,0.15);
+            border-color: #22c55e;
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+            box-shadow: 0 0 0 3px rgba(34,197,94,0.15);
+        }
+        .base-option-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            background: #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            overflow: hidden;
+            transition: all 0.2s;
+        }
+        .base-option-btn.selected .base-option-icon {
+            background: #bbf7d0;
+        }
+        .base-option-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
         .base-option-name {
             font-weight: 700;
             color: #1e293b;
-            font-size: 0.95rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            font-size: 0.78rem;
+            text-align: center;
+            line-height: 1.2;
         }
-        .base-option-name .check-icon {
-            width: 20px; height: 20px;
-            border-radius: 50%;
-            border: 2px solid #e2e8f0;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 0.7rem;
-            color: transparent;
-            transition: all 0.2s;
-            flex-shrink: 0;
-        }
-        .base-option-btn.selected .check-icon {
-            background: #f97316;
-            border-color: #f97316;
-            color: white;
+        .base-option-btn.selected .base-option-name {
+            color: #15803d;
         }
         .base-option-price {
             font-weight: 800;
-            color: #f97316;
-            font-size: 1rem;
+            color: #22c55e;
+            font-size: 0.82rem;
+            background: #f0fdf4;
+            border-radius: 20px;
+            padding: 2px 8px;
+        }
+        .base-option-btn.selected .base-option-price {
+            background: #bbf7d0;
+            color: #15803d;
         }
 
         .ingredients-section {
@@ -554,62 +579,56 @@
         }
 
         .category-select-limit.multiple {
-            background: #e6f7e6;
-            color: #10b981;
+            background: #dcfce7;
+            color: #16a34a;
+        }
+
+        /* Ingredient items as box cards */
+        .ingredient-items-row {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        @media (min-width: 768px) {
+            .ingredient-items-row {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 14px;
+            }
         }
 
         .ingredient-item {
             background: #f8fafc;
             border: 2px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 12px;
+            border-radius: 16px;
+            padding: 12px 8px 10px;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 12px;
+            gap: 8px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.25s;
             width: 100%;
-            margin-bottom: 8px;
+            text-align: center;
         }
 
         .ingredient-item:hover {
-            border-color: #f97316;
-            background: #fff7ed;
-            transform: translateX(5px);
+            border-color: #22c55e;
+            background: #f0fdf4;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(34,197,94,0.14);
         }
 
         .ingredient-item.selected {
-            border-color: #f97316;
-            background: #fff7ed;
-        }
-
-        .ingredient-check {
-            width: 20px;
-            height: 20px;
-            border: 2px solid #cbd5e1;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 0.7rem;
-            transition: all 0.2s;
-            flex-shrink: 0;
-        }
-
-        .ingredient-item.selected .ingredient-check {
-            background: #f97316;
-            border-color: #f97316;
-        }
-
-        .ingredient-item.selected .ingredient-check i {
-            color: white;
+            border-color: #22c55e;
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+            box-shadow: 0 0 0 3px rgba(34,197,94,0.18);
         }
 
         .ingredient-image {
-            width: 45px;
-            height: 45px;
-            border-radius: 10px;
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            border-radius: 12px;
             overflow: hidden;
             background: white;
             display: flex;
@@ -617,6 +636,12 @@
             justify-content: center;
             flex-shrink: 0;
             border: 1px solid #e2e8f0;
+            transition: all 0.2s;
+        }
+
+        .ingredient-item.selected .ingredient-image {
+            border-color: #bbf7d0;
+            background: #f0fdf4;
         }
 
         .ingredient-image img {
@@ -626,41 +651,40 @@
         }
 
         .ingredient-image i {
-            font-size: 1.5rem;
+            font-size: 2.2rem;
             color: #f97316;
         }
 
-        .ingredient-info {
-            flex: 1;
-            min-width: 0;
+        .ingredient-item.selected .ingredient-image i {
+            color: #16a34a;
         }
 
         .ingredient-name {
             font-weight: 600;
             color: #1e293b;
-            margin-bottom: 4px;
-            font-size: 0.9rem;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            font-size: 0.8rem;
+            line-height: 1.2;
+            text-align: center;
+            word-break: break-word;
         }
 
-        .ingredient-category {
-            font-size: 0.7rem;
-            color: #94a3b8;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+        .ingredient-item.selected .ingredient-name {
+            color: #15803d;
         }
 
         .ingredient-price {
             font-weight: 700;
-            color: #f97316;
-            font-size: 1rem;
+            color: #22c55e;
+            font-size: 0.75rem;
             white-space: nowrap;
-            flex-shrink: 0;
-            background: #fff3e0;
-            padding: 4px 10px;
+            background: #f0fdf4;
+            padding: 3px 9px;
             border-radius: 20px;
+        }
+
+        .ingredient-item.selected .ingredient-price {
+            background: #bbf7d0;
+            color: #15803d;
         }
 
         .instructions-section, .name-section { margin-bottom: 20px; }
@@ -790,7 +814,7 @@
                 <div class="customization-content">
                     <div class="base-options-section" id="baseOptionsSection" style="margin-bottom: 20px;">
                         <h3 class="section-subtitle"><i class="fas fa-layer-group"></i> Choose Your Base *</h3>
-                        <div id="baseOptionsGrid" style="display: flex; flex-direction: column; gap: 10px;"></div>
+                        <div id="baseOptionsGrid"></div>
                         <div id="baseOptionError" style="color: #ef4444; font-size: 0.8rem; margin-top: 6px; display: none;">
                             <i class="fas fa-exclamation-circle"></i> Please select a base option to continue
                         </div>
@@ -882,7 +906,8 @@
                     <div class="category-group-title">
                         <span><i class="fas fa-tag"></i> ${category}</span>
                         <span class="category-select-limit ${limitClass}">${limitText}</span>
-                    </div>`;
+                    </div>
+                    <div class="ingredient-items-row">`;
                 grouped[category].forEach(ing => {
                     const ingImageName = ing.name.toLowerCase().replace(/\s+/g, '_');
                     const ingImagePath = `../assets/Ingredients/${ingImageName}.png`;
@@ -894,13 +919,12 @@
                     else if (catLower.includes('sauce')) iconClass = 'fa-pepper-hot';
                     const isSelected = selectedIngredients.has(ing.id);
                     html += `<div class="ingredient-item ${isSelected ? 'selected' : ''}" id="ingredient-${ing.id}" data-category="${category}" data-is-other="${isOtherCategory}" onclick="toggleIngredientWithRules('${ing.id}', '${category}', ${isOtherCategory})">
-                        <div class="ingredient-check" id="check-${ing.id}"><i class="fas fa-check" style="opacity: ${isSelected ? '1' : '0'};"></i></div>
                         <div class="ingredient-image"><img src="${ingImagePath}" alt="${ing.name}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" onload="this.style.display='block'"><i class="fas ${iconClass}" style="display: none;"></i></div>
-                        <div class="ingredient-info"><div class="ingredient-name">${ing.name}</div><div class="ingredient-category">${ing.category || 'Ingredient'}</div></div>
+                        <div class="ingredient-name">${ing.name}</div>
                         <div class="ingredient-price">+₹${ing.price}</div>
                     </div>`;
                 });
-                html += `</div>`;
+                html += `</div></div>`;
             });
             container.innerHTML = html;
         };
@@ -954,14 +978,11 @@
         
         const updateIngredientUI = (ingredientId, isSelected) => {
             const item = document.getElementById(`ingredient-${ingredientId}`);
-            const check = document.getElementById(`check-${ingredientId}`)?.querySelector('i');
             if (item) {
                 if (isSelected) {
                     item.classList.add('selected');
-                    if (check) check.style.opacity = '1';
                 } else {
                     item.classList.remove('selected');
-                    if (check) check.style.opacity = '0';
                 }
             }
         };
@@ -1015,12 +1036,15 @@
             }
             let html = '';
             options.forEach((opt, idx) => {
+                const imgName = opt.name.toLowerCase().replace(/\s+/g, '_');
+                const imgPath = `../assets/base/${imgName}.png`;
                 html += `
                     <button class="base-option-btn" id="baseOpt_${idx}" onclick="selectBaseOption(${idx}, '${opt.name}', ${opt.price})">
-                        <div class="base-option-name">
-                            <span class="check-icon"><i class="fas fa-check"></i></span>
-                            ${opt.name}
+                        <div class="base-option-icon">
+                            <img src="${imgPath}" alt="${opt.name}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" onload="this.style.display='block'">
+                            <span style="display:none; width:100%; height:100%; align-items:center; justify-content:center; font-size:1.4rem;">🍽️</span>
                         </div>
+                        <div class="base-option-name">${opt.name}</div>
                         <span class="base-option-price">₹${opt.price}</span>
                     </button>
                 `;

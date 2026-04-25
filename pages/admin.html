@@ -710,7 +710,7 @@
 </div>
 
 <div class="modal" id="editIngredientModal">
-    <div class="modal-content">
+    <div class="modal-content" style="max-width:560px;">
         <h3><i class="fas fa-edit"></i> Edit Ingredient</h3>
         <input type="hidden" id="editIngredientId">
         <input type="text" id="editIngredientName" placeholder="Ingredient Name" required>
@@ -726,7 +726,27 @@
             <option value="veg">🌱 Veg</option>
             <option value="nonveg">🍗 Non-Veg</option>
         </select>
-        <div class="modal-actions">
+
+        <!-- Meal Assignment -->
+        <div style="margin-top:8px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+                <label style="font-weight:600;font-size:0.95rem;display:flex;align-items:center;gap:8px;">
+                    <i class="fas fa-utensils" style="color:#ef4444;"></i> Available in Meals
+                </label>
+                <div style="display:flex;gap:6px;">
+                    <button type="button" onclick="selectAllEditMeals(true)" style="background:#d1fae5;color:#065f46;border:none;padding:5px 12px;border-radius:8px;cursor:pointer;font-size:0.8rem;font-weight:600;">Select All</button>
+                    <button type="button" onclick="selectAllEditMeals(false)" style="background:#fee2e2;color:#991b1b;border:none;padding:5px 12px;border-radius:8px;cursor:pointer;font-size:0.8rem;font-weight:600;">Clear All</button>
+                </div>
+            </div>
+            <div id="editIngredientMealsList" class="checkbox-group" style="max-height:220px;">
+                <p style="color:#94a3b8;text-align:center;padding:20px 0;">Loading meals...</p>
+            </div>
+            <p style="font-size:0.78rem;color:#94a3b8;margin-top:6px;display:flex;align-items:center;gap:5px;">
+                <i class="fas fa-info-circle"></i> Toggle meals where this ingredient should be available
+            </p>
+        </div>
+
+        <div class="modal-actions" style="margin-top:20px;">
             <button type="button" class="close-modal" onclick="closeModal('editIngredientModal')">
                 <i class="fas fa-times"></i> Cancel
             </button>
@@ -1398,17 +1418,68 @@
         document.getElementById('editIngredientPrice').value = ing.price;
         document.getElementById('editIngredientCategory').value = ing.category;
         document.getElementById('editIngredientType').value = ing.type;
+
+        // Load meals with current assignments pre-checked
+        const container = document.getElementById('editIngredientMealsList');
+        if (!meals.length) {
+            container.innerHTML = '<p style="color:#94a3b8;text-align:center;padding:20px 0;">No meals yet. Add meals first.</p>';
+        } else {
+            const assignedMealIds = new Set(
+                mealIngredients.filter(mi => mi.ingredientId === id).map(mi => mi.mealId)
+            );
+            container.innerHTML = meals.map(m => {
+                const checked = assignedMealIds.has(m.id) ? 'checked' : '';
+                const priceLabel = m.baseOptions?.length
+                    ? m.baseOptions.map(o => `₹${o.price}`).join(' / ')
+                    : (m.price ? `₹${m.price}` : '');
+                return `<div class="checkbox-item">
+                    <input type="checkbox" id="editMeal_${m.id}" value="${m.id}" ${checked}>
+                    <label for="editMeal_${m.id}" style="display:flex;justify-content:space-between;width:100%;gap:10px;">
+                        <span>${m.name}</span>
+                        <span style="color:#94a3b8;font-size:0.82rem;white-space:nowrap;">${priceLabel}</span>
+                    </label>
+                </div>`;
+            }).join('');
+        }
+
         document.getElementById('editIngredientModal').classList.add('active');
+    }
+
+    function selectAllEditMeals(checked) {
+        document.querySelectorAll('#editIngredientMealsList input[type="checkbox"]').forEach(cb => cb.checked = checked);
     }
 
     function updateIngredient() {
         const id = document.getElementById('editIngredientId').value;
-        const name = document.getElementById('editIngredientName').value;
+        const name = document.getElementById('editIngredientName').value.trim();
         const price = parseFloat(document.getElementById('editIngredientPrice').value);
         const category = document.getElementById('editIngredientCategory').value;
         const type = document.getElementById('editIngredientType').value;
-        db.collection(COLS.INGREDIENTS).doc(id).update({ name, price, category, type, updatedAt: firebase.firestore.Timestamp.now() })
-            .then(() => { showMessage('✅ Ingredient updated!', 'success'); closeModal('editIngredientModal'); })
+        if (!name || isNaN(price)) { showMessage('Please fill all fields', 'error'); return; }
+
+        // Gather newly checked meal IDs
+        const newlyChecked = new Set(
+            Array.from(document.querySelectorAll('#editIngredientMealsList input[type="checkbox"]:checked')).map(cb => cb.value)
+        );
+        // Current meal assignments
+        const currentlyAssigned = new Set(
+            mealIngredients.filter(mi => mi.ingredientId === id).map(mi => mi.mealId)
+        );
+
+        const toAdd    = [...newlyChecked].filter(mId => !currentlyAssigned.has(mId));
+        const toRemove = [...currentlyAssigned].filter(mId => !newlyChecked.has(mId));
+
+        const promises = [
+            db.collection(COLS.INGREDIENTS).doc(id).update({ name, price, category, type, updatedAt: firebase.firestore.Timestamp.now() }),
+            ...toAdd.map(mId => db.collection(COLS.MEAL_INGREDIENTS).doc(`${mId}_${id}`).set({ mealId: mId, ingredientId: id, type: 'available', createdAt: firebase.firestore.Timestamp.now() })),
+            ...toRemove.map(mId => db.collection(COLS.MEAL_INGREDIENTS).doc(`${mId}_${id}`).delete())
+        ];
+
+        Promise.all(promises)
+            .then(() => {
+                showMessage('✅ Ingredient updated!', 'success');
+                closeModal('editIngredientModal');
+            })
             .catch(err => showMessage('Error: ' + err.message, 'error'));
     }
 
